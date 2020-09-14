@@ -6,16 +6,17 @@
 		"selenium-webdriver": ">=4.0.0-alpha.7"
 	},
 	"devDependencies": {
-		"@types/node-red": ">=1.1.0"
+		"@types/node-red": ">=1.1.0",
+		"@types/selenium-webdriver": ">=3.0.8"
 	},
 	"license": "Apache-2.0",
 	"keywords": [
 		"node-red",
-		"selenium-webdriver"
+		"selenium-wd2"
 	],
 	"node-red": {
 		"nodes": {
-			"selenium-webdriver": "selenium-webdriver.js"
+			"selenium-wd2": "selenium-wd2.js"
 		}
 	},
 	"repository": {
