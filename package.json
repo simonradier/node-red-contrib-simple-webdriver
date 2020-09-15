@@ -16,7 +16,7 @@
 	],
 	"node-red": {
 		"nodes": {
-			"selenium-wd2": "selenium-wd2.js"
+			"selenium-wd2": "build/selenium-wd2.js"
 		}
 	},
 	"repository": {
