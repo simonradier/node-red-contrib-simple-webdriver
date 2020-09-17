@@ -3,6 +3,7 @@ import { WebDriver } from "selenium-webdriver";
 
 export * from "./open-web";
 export * from "./close-web";
+export * from "./find-element";
 export * from "./selenium-server";
 
 export interface SeleniumNode {
