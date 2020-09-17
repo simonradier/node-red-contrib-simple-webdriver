@@ -1,11 +1,7 @@
 import { NodeAPI, NodeAPISettingsWithData, server } from "node-red";
-import { Observable } from "rxjs";
 import { Builder, WebDriver } from "selenium-webdriver";
 import * as chrome from "selenium-webdriver/chrome";
 import * as firefox from "selenium-webdriver/firefox";
-import * as edge from "selenium-webdriver/edge";
-import * as safari from "selenium-webdriver/safari";
-import * as ie from "selenium-webdriver/ie";
 import { NodeOpenWebDef } from "./nodes/node";
 import { portCheck } from "./utils";
 
