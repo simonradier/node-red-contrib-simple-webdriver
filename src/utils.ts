@@ -1,3 +1,5 @@
+import { Socket } from "net";
+
 function getValueFromPropertyNameRec(obj : any, listProp : Array<string>)
 {
     let res = obj;
@@ -31,4 +33,23 @@ export function replaceVar (str :string, msg : any) {
     } else {
         return str;
     }
+}
+
+export async function portCheck(host : string, port : number) : Promise<boolean> {
+    return new Promise<boolean> ((resolve, reject) => {
+        let socket = new Socket();
+        let status : boolean = false;
+        // Socket connection established, port is open
+        socket.on('connect', function() { 
+            status = true;
+            socket.end();});
+        socket.setTimeout(2000);// If no response, assume port is not listening
+        socket.on('timeout', function() {
+            socket.destroy();
+            resolve(status);
+        });
+        socket.on('error', function(exception) {resolve(status)});
+        socket.on('close', function(exception) {resolve(status)});    
+        socket.connect(port, host); 
+    });
 }

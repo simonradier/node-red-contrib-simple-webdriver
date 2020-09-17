@@ -1,0 +1,216 @@
+<script type="text/x-red" data-template-name="open-web">
+	<div class="form-row">
+		<label for="node-input-serverURL"><i class="fa fa-globe"></i> <span>Server</span></label>
+		<input type="text" id="node-input-serverURL">
+	</div>
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
+	</div>
+	<div class="form-row">
+        <label for="node-input-browser"><i class="fa fa-empire"></i> <span>Browser</span></label>
+        <select id="node-input-browser" style="width:125px !important">
+            <option value="chrome">Chrome</option>
+            <option value="firefox">Firefox</option>
+            <option value="safari">Safari</option>
+			<option value="opera">Opera</option>
+            <option value="edge">Edge</option>
+            <option value="ie">IE</option>
+        </select>
+    </div>
+	<div class="form-row">
+		<label for="node-input-webURL"><i class="fa fa-empire"></i> <span>Web URL</span></label>
+		<input type="text" id="node-input-webURL">
+	</div>
+	<div class="form-row">
+		<label for="node-input-width"><i class="fa fa-empire"></i> <span>Width</span></label>
+		<input type="text" id="node-input-width" value="1024">
+	</div>
+	<div class="form-row">
+		<label for="node-input-height"><i class="fa fa-empire"></i> <span>Height</span></label>
+		<input type="text" id="node-input-height" value="768">
+	</div>
+	<div class="form-row">
+		<label for="node-input-webTitle"><i class="fa fa-empire"></i> <span>Web Title</span></label>
+		<input type="text" id="node-input-webTitle">
+	</div>
+	<div class="form-row">
+		<label for="node-input-timeout"><i class="fa fa-empire"></i> <span>Timeout</span></label>
+		<input type="text" id="node-input-timeout" value="1000">
+	</div>
+	<div class="form-row">
+		<input type="checkbox" id="node-input-maximized" checked style="display: inline-block; width: auto; vertical-align: top;">
+		<label for="node-input-maximized" style="width: auto;">Maximize window</label>
+	</div>
+	<div class="form-row">
+		<input type="checkbox" id="node-input-headless" checked style="display: inline-block; width: auto; vertical-align: top;">
+		<label for="node-input-headless" style="width: auto;">Launch Headless</label>
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="open-web">
+	<p>Create an instance of selenium webdriver and connect to the Selenium Server when an event is triggered.</p>
+	<strong>Inputs:</strong>
+	<p><ul>
+		<li><a>Server</a>: specify the selenium server configuration. It could be localhost or remote Selenium Server.</li>
+	    <li><a>Browser</a>: specify the selenium node which support the web browser you wan tot test such as [Chrome, Firefox etc.,]</li>
+		<li><a>Web URL</a>: specify the web page to start browsing the targeted application for your test.</li>
+		<li><a>Web Title</a>: specify the expected title to compare if set. Otherwise this node will bypass the sanity check operation.</li>
+		<li><a>Timeout</a>: specify the timeout during lookup for the title operation.</li>
+	</ul></p>
+	<strong>Outputs:</strong>
+	<ul>
+	<li><u>First output : </u> this ouput is used in case of success of the Selenium action.</li>
+	<li><u>Second output : </u> this ouput is used in case of failure of the Selenium action.<li>
+	<ul>
+	<strong>MSG:</strong>
+	<p><code>msg.error</code> When the title is unexpected or cannot find element, this node generates the error with detail information</p>
+	<p><code>msg.driver</code> Always pass webdriver object to the next node for ad-hoc function code.</p>
+	<p><code>msg.element</code> If the element is found, it will be passed though the msg object to the next node.</p>
+	<p><code>msg.payload</code> contains the title of the opened web page. This payload value will be used to compare with the expected Web Title value if that value is set.</p>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('open-web', {
+		category : 'wd2',
+		defaults : {
+			name : {
+				value : ""
+			},
+            browser : {
+                value : "chrome",
+                required : true
+            },
+			webURL : {
+				value : "https://www.google.com/",
+				required : true
+			},
+			width : {
+				value : 1280,
+				validate : RED.validators.number()
+			},
+			height : {
+				value : 1024,
+				validate : RED.validators.number()
+			},
+			webTitle : {
+				value : ""
+			},
+			timeout : {
+				value : 3000,
+				required : true,
+				validate : RED.validators.number()
+			},
+			maximized : {
+				value : true,
+				required : true
+			},
+			headless : {
+				value : false,
+				required : true
+			},
+			serverURL : {
+				type : "selenium-server",
+				required : true
+			}
+		},
+		color : "#47B6EE",
+		inputs : 1,
+		outputs : 2,
+		outputLabels: ["success","error"],
+		icon : function() {
+			return this.browser + ".svg";
+		},
+		label : function() {
+			return this.name || this.topic || "Open URL";
+		},
+		labelStyle : function() {
+			return this.name ? "node_label_italic" : "";
+		}
+	}); 
+</script>
+
+<script type="text/x-red" data-template-name="close-web">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
+	</div>
+	<div class="form-row">
+		<label for="node-input-waitfor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
+		<input type="text" id="node-input-waitfor" value="00">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="close-web">
+	<p>Close the web browser which is openned by the open-web node and finalize the selenium session.</p>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('close-web', {
+		category : 'wd2',
+		defaults : {
+			name : {
+				value : ""
+			}, 
+			waitfor : {
+				value : 500,
+				validate : RED.validators.number()
+			}
+		},
+		color : "#47B6EE",
+		inputs : 1,
+		outputs : 2,
+		icon : "font-awesome/fa-window-close-o",
+		label : function() {
+			return this.name || "Close";
+		},
+		labelStyle : function() {
+			return this.name ? "node_label_italic" : "";
+		}
+	}); 
+</script>
+
+<script type="text/x-red" data-template-name="wd2-server">
+	<div class="form-row">
+		<ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-wd2-server-tabs"></ul>
+	</div>
+		<div id="node-config-wd2-server-tabs-content" style="min-height: 170px;">
+			<div id="wd2-server-tab-connection" style="display:none">
+			<div class="form-row node-input-remoteurl">
+				<label for="node-config-input-remoteurl"><i class="fa fa-globe"></i> <span>Remote Url</span></label>
+				<input class="input-append-left" type="text" id="node-config-input-remoteurl" placeholder="http://localhost:4444/wd/hub" style="width: 40%;" >
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('no', {
+		category : 'config',
+		defaults : {
+			remoteurl : {
+				value : "http://localhost:4444/wd/hub",
+				required : true
+			}
+		},
+		label : function() {
+			return (this.remoteurl ? this.remoteurl : "localhost@4444");
+		},
+		oneditprepare : function() {
+			var tabs = RED.tabs.create({
+				id : "node-config-wd2-server-tabs",
+				onchange : function(tab) {
+					$("#node-config-wd2-server-tabs-content").children().hide();
+					$("#" + tab.id).show();
+				}
+			});
+			tabs.addTab({
+				id : "wd2-server-tab-connection",
+				label : "Selenium Server"
+			});
+			setTimeout(function() {
+				tabs.resize();
+			}, 0);
+		}
+	}); 
+</script>

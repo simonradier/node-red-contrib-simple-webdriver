@@ -3,7 +3,8 @@
 	"version": "0.0.1",
 	"description": "A selenium-webdriver nodes for Node-RED based on node-red-contrib-selenium-webdriver",
 	"dependencies": {
-		"selenium-webdriver": ">=4.0.0-alpha.7"
+		"selenium-webdriver": ">=4.0.0-alpha.7",
+		"rxjs": ">=6.6.3"
 	},
 	"devDependencies": {
 		"@types/node-red": ">=1.1.0",
