@@ -35,6 +35,7 @@ export function NodeFindElementConstructor (this : NodeFindElement, conf : NodeF
                         msg.element = await msg.driver.wait(until.elementLocated(By[selector](target)), timeout);
                     }
                     this.status({ fill : "green", shape : "dot", text : "success"})
+                    if (msg.error) { delete msg.error; }
                     send([msg, null]);
                     done();
                 } catch (e) {

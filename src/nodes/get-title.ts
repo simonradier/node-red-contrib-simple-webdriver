@@ -34,7 +34,8 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                         this.status({ fill : "green", shape : "dot", text : "success"});
                         done();
                     } catch (e) {
-                        let error = { message : "Browser windows title does not have the expected value", expected : webTitle, found : await msg.driver.getTitle()}
+                        msg.webTitle = await msg.driver.getTitle();
+                        let error = { message : "Browser windows title does not have the expected value", expected : webTitle, found : msg.webTitle}
                         this.warn(error.message);
                         msg.error = error;
                         this.status({ fill : "yellow", shape : "dot", text : "wrong title"});
@@ -44,8 +45,9 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                 } else {
                     try {
                         msg.webTitle = await msg.driver.getTitle();
-                        send([msg, null]);
                         this.status({ fill : "green", shape : "dot", text : "success"});
+                        if (msg.error) { delete msg.error; }
+                        send([msg, null]);
                         done();
                     } catch (e) {
                         msg.webTitle == null;
