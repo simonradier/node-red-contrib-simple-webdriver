@@ -1,5 +1,5 @@
 import { NodeMessageInFlow } from "node-red__registry";
-import { WebDriver } from "selenium-webdriver";
+import { WebDriver, WebElement } from "selenium-webdriver";
 
 export * from "./open-web";
 export * from "./close-web";
@@ -10,7 +10,7 @@ export interface SeleniumNode {
     selector : string;
     target : string;
     timeout : number;
-    waitfor : number;
+    waitFor : number;
 }
 
 export interface SeleniumMsg extends NodeMessageInFlow {
@@ -20,4 +20,6 @@ export interface SeleniumMsg extends NodeMessageInFlow {
     timeout? : number;
     waitFor? : number;
     error? : any;
+    element? : WebElement;
+    webTitle? : string;
 }

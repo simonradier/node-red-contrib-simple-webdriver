@@ -4,8 +4,7 @@ import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode } from "./node";
 
 export interface NodeCloseWebDef extends NodeDef, SeleniumNode {
-    name : string;
-    waitfor : number;
+ 
 }
 
 export interface NodeCloseWeb extends Node<any> {
@@ -40,7 +39,7 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
                     send([null, msg]);
                     done();
                 }
-            }, conf.waitfor || msg.waitFor || 0);
+            }, conf.waitFor || msg.waitFor || 0);
         }    
     });
 }

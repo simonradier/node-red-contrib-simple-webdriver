@@ -10,8 +10,6 @@ export interface NodeOpenWebDef extends NodeDef, SeleniumNode {
     webURL : string;
     width : number;
     heigth : number;
-    webTitle : string;
-    timeOut : number;
     maximized : boolean;
     headless : boolean; 
 }
@@ -22,7 +20,7 @@ export interface NodeOpenWeb extends Node<any> {
 
 export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDef) {
     WD2Manager.RED.nodes.createNode(this, conf);
-    this.status({});      
+   
     if (!conf.serverURL) {
         this.log("Selenium server URL is undefined");
         this.status({ fill : "red", shape : "ring", text : "no server defined"});      
@@ -44,9 +42,7 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
         // Cheat to allow correct typing in typescript
         let msg : SeleniumMsg = message;
         let driverError = false;
-
         msg.driver = WD2Manager.getDriver(conf);
-
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {
             await msg.driver.get(conf.webURL);
@@ -66,25 +62,9 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
                             await msg.driver.manage().window().setSize(conf.width, conf.heigth);
                         else
                             await msg.driver.manage().window().maximize();
-                if (conf.webTitle && conf.webTitle != "") {
-                    try {
-                        await msg.driver.wait(until.titleIs(conf.webTitle), conf.timeout || 3000);
-                        send([msg, null]);
-                        this.status({ fill : "green", shape : "dot", text : "success"});
-                        done();
-                    } catch (e) {
-                        let error = { message : "Title has not the correct value", expected : conf.webTitle, found : await msg.driver.getTitle()}
-                        this.warn(error.message);
-                        msg.error = error;
-                        this.status({ fill : "yellow", shape : "dot", text : "wrong title"});
-                        send([null, msg]);
-                        done();
-                    }
-                } else {
-                    send([msg, null]);
-                    this.status({ fill : "green", shape : "dot", text : "success"});
-                    done();
-                }
+                send(msg);
+                this.status({ fill : "green", shape : "dot", text : "success"});
+                done();
             }
         } catch (e) {
             this.error("Can't resize the instance of " + conf.browser);
