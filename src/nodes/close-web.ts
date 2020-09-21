@@ -23,7 +23,8 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
             this.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
-            this.status({ fill : "blue", shape : "ring", text : "waiting"});
+            let waitFor = conf.waitFor || msg.waitFor;
+            this.status({ fill : "blue", shape : "ring", text : "waiting for " + (waitFor / 1000).toFixed(1) + " s"});
             setTimeout(async () => {
                 try {
                     this.status({ fill : "blue", shape : "ring", text : "closing"});
@@ -39,7 +40,7 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
                     send([null, msg]);
                     done();
                 }
-            }, conf.waitFor || msg.waitFor || 0);
+            }, waitFor);
         }    
     });
 }

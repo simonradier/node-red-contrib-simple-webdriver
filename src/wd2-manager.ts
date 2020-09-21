@@ -59,8 +59,4 @@ export class WD2Manager {
         return driver;
     } 
 
-    public static waitToGetElement(driver: WebDriver, selector : string, target : string, timeOut : number) {
-        
-    }
-
 }

@@ -6,6 +6,8 @@ export * from "./open-web";
 export * from "./close-web";
 export * from "./find-element";
 export * from "./selenium-server";
+export * from "./get-title";
+export * from "./click-on";
 
 export interface SeleniumNode {
     selector : string;
@@ -23,7 +25,7 @@ export interface SeleniumMsg extends NodeMessageInFlow {
     error? : any;
     element? : WebElement;
     webTitle? : string;
-    clickOn? : string;
+    click? : boolean;
 }
 
 /**
@@ -46,6 +48,12 @@ export function waitForElement(conf : SeleniumNode, msg : SeleniumMsg) : Observa
                 if (target != "" && selector != "") {
                        //@ts-ignore
                     element = await msg.driver.wait(until.elementLocated(By[selector](target)), timeout);
+                } else {
+                    if (msg.element) {
+                       element = msg.element;
+                    } else {
+
+                    }
                 }
                 subscriber.next(element);
                 subscriber.complete();

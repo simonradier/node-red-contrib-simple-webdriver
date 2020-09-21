@@ -410,6 +410,7 @@
 		<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
 		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
 		<li><a>Wait For</a>: specify the time to wait before looing up. The <code>msg.waitfor</code> will override the <code>Wait For</code> field if set.</li>
+		<li><a>Click On</a>: specify to wait until user click action on the node. The <code>msg.clickOn</code> will override the <code>Click On</code> field if set.</li>
 	</ul></p>	
 	<strong>Outputs:</strong>
 	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
@@ -444,7 +445,7 @@
 		color : "#47B6EE",
 		inputs : 1,
 		outputs : 2,
-		icon : "debug.png",
+		icon : "font-awesome/fa-mouse-pointer",
 		label : function() {
 			return this.name || "Click On";
 		},

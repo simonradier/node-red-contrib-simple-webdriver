@@ -4,6 +4,7 @@ import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, waitForElement } from "./node";
 
 export interface NodeClickOnDef extends NodeDef, SeleniumNode {
+    clickOn? : boolean;
 }
 
 export interface NodeClickOn extends Node<any> {
@@ -19,46 +20,67 @@ export function NodeClickOnConstructor (this : NodeClickOn, conf : NodeClickOnDe
         let msg : SeleniumMsg = message;
         let node = this;
         this.status({});    
-        if (msg.driver == null) {
+        if (msg.driver == null && !msg.click) {
             let error = new Error("Open URL must be call before any other action. For node : " + conf.name);
             this.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
-            waitForElement(conf, msg).subscribe ({
-                next (val)  {
-                    if (typeof val === "string") {
-                        node.status({ fill : "blue", shape : "dot", text : val});
-                    } else {
-                        msg.element = val;
-                    }
-                },
-                error(err) {
-                    node.status({ fill : "yellow", shape : "dot", text : "location error"});
-                    msg.error = err;
+            if (msg.click && node.__msg) {
+                msg = node.__msg; // msg restoration
+                try {
+                    await msg.element.click()
+                    node.status({ fill : "green", shape : "dot", text : "success"})
+                    if (msg.error) { delete msg.error; }
+                    send([msg, null]);
+                    done();
+                } catch(err) {
+                    msg.error = {
+                        value : "Can't click on the the element : " + err.message
+                    };
+                    node.status({ fill : "yellow", shape : "dot", text : "click error"})
                     send([null, msg]);
                     done();
-                },
-                complete () {
-                    node.status({ fill : "blue", shape : "dot", text : "located"});
-                    if (!msg.clickOn) {
-                        msg.element.click().then (() => {
-                            node.status({ fill : "green", shape : "dot", text : "success"})
-                            if (msg.error) { delete msg.error; }
-                            send([msg, null]);
-                            done();
-                        }).catch( err => {
-                            msg.error = {
-                                value : "Can't click on the the element : " + err.message
-                            };
-                            node.status({ fill : "yellow", shape : "dot", text : "click error"})
-                            send([null, msg]);
-                            done();
-                        });
-                    } else {
-                        node.__msg = msg;
-                    }
                 }
-            });
+            } else {
+                waitForElement(conf, msg).subscribe ({
+                    next (val)  {
+                        if (typeof val === "string") {
+                            node.status({ fill : "blue", shape : "dot", text : val});
+                        } else {
+                            msg.element = val;
+                        }
+                    },
+                    error(err) {
+                        node.status({ fill : "yellow", shape : "dot", text : "location error"});
+                        msg.error = err;
+                        send([null, msg]);
+                        done();
+                    },
+                    async complete () {
+                        node.status({ fill : "blue", shape : "dot", text : "located"});
+                        // If we don't wait for the user click button
+                        if (!conf.clickOn) {
+                            try {
+                                await msg.element.click()
+                                node.status({ fill : "green", shape : "dot", text : "success"})
+                                if (msg.error) { delete msg.error; }
+                                send([msg, null]);
+                                done();
+                            } catch(err) {
+                                msg.error = {
+                                    value : "Can't click on the the element : " + err.message
+                                };
+                                node.status({ fill : "yellow", shape : "dot", text : "click error"})
+                                send([null, msg]);
+                                done();
+                            }
+                        } else { // If we have to wait for the user click and we save the msg
+                            node.status({ fill : "blue", shape : "dot", text : "waiting for user click"});
+                            node.__msg = msg;
+                        }
+                    }
+                });
+            }
         }
     });
 
@@ -67,7 +89,7 @@ export function NodeClickOnConstructor (this : NodeClickOn, conf : NodeClickOnDe
 		if (node != null) {
 			try {
                 //@ts-ignore
-				node.receive({ waitFor : 1 });
+				node.receive({ click : true });
 				res.sendStatus(200);
 			} catch(err) {
 				res.sendStatus(500);
