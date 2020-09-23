@@ -9,6 +9,7 @@ export * from "./selenium-server";
 export * from "./get-title";
 export * from "./click-on";
 export * from "./send-keys";
+export * from "./get-value";
 
 export interface SeleniumNode {
     selector : string;
@@ -29,6 +30,7 @@ export interface SeleniumMsg extends NodeMessageInFlow {
     click? : boolean;
     clearVal? : boolean;
     value? : string;
+    expected? : string;
 }
 
 /**
