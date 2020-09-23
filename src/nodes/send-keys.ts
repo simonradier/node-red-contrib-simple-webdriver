@@ -22,7 +22,7 @@ export function NodeSendKeysConstructor (this : NodeSendKeys, conf : NodeSendKey
         let msg : SeleniumMsg = message;
         let node = this;
         this.status({});    
-        if (msg.driver == null && !msg.click) {
+        if (msg.driver == null) {
             let error = new Error("Open URL must be call before any other action. For node : " + conf.name);
             this.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
