@@ -1,6 +1,5 @@
 import { Node, NodeDef, nodes } from "node-red"
 import { By, until, WebDriver } from "selenium-webdriver";
-import { checkIfCritical } from "../utils";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, waitForElement } from "./node";
 
@@ -38,7 +37,7 @@ export function NodeSendKeysConstructor (this : NodeSendKeys, conf : NodeSendKey
                     }
                 },
                 error(err) {
-                    if (checkIfCritical(err)) {
+                    if (WD2Manager.checkIfCritical(err)) {
                         node.status({ fill : "red", shape : "dot", text : "critical error"});
                         done(err);
                     } else {    
@@ -64,7 +63,7 @@ export function NodeSendKeysConstructor (this : NodeSendKeys, conf : NodeSendKey
                         send([msg, null]);
                         done();
                     } catch(err) {
-                        if (checkIfCritical(err)) {
+                        if (WD2Manager.checkIfCritical(err)) {
                             node.status({ fill : "red", shape : "dot", text : "critical error"});
                             done(err);
                         } else {

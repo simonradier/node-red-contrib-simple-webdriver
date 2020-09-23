@@ -1,6 +1,5 @@
 import { Node, NodeDef, nodes } from "node-red"
 import { By, until, WebDriver } from "selenium-webdriver";
-import { checkIfCritical } from "../utils";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, waitForElement } from "./node";
 
@@ -35,7 +34,7 @@ export function NodeClickOnConstructor (this : NodeClickOn, conf : NodeClickOnDe
                     send([msg, null]);
                     done();
                 } catch(err) {
-                    if (checkIfCritical(err)) {
+                    if (WD2Manager.checkIfCritical(err)) {
                         node.status({ fill : "red", shape : "dot", text : "critical error"});
                         done(err);
                     } else {
@@ -73,7 +72,7 @@ export function NodeClickOnConstructor (this : NodeClickOn, conf : NodeClickOnDe
                                 send([msg, null]);
                                 done();
                             } catch(err) {
-                                if (checkIfCritical(err)) {
+                                if (WD2Manager.checkIfCritical(err)) {
                                     node.status({ fill : "red", shape : "dot", text : "critical error"});
                                     done(err);
                                 } else {
