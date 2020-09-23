@@ -53,3 +53,19 @@ export async function portCheck(host : string, port : number) : Promise<boolean>
         socket.connect(port, host); 
     });
 }
+
+export function checkIfCritical(error : Error) : boolean {
+    // Blocking error in case of "WebDriverError : Failed to decode response from marionett"
+    if (error.toString().includes("decode response"))
+        return true;
+    // Blocking error in case of "NoSuchSessionError: Tried to run command without establishing a connection"
+    if (error.name.includes("NoSuchSessionError"))
+        return true;
+    // Blocking error in case of "ReferenceError" like in case of msg.driver is modified
+    if (error.name.includes("ReferenceError"))
+        return true;
+    // Blocking error in case of "TypeError" like in case of msg.driver is modified
+    if (error.name.includes("TypeError"))
+        return true;
+    return false;
+}

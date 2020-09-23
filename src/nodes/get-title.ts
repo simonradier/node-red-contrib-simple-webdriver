@@ -1,5 +1,6 @@
 import { Node, NodeDef, nodes } from "node-red"
 import { until } from "selenium-webdriver";
+import { checkIfCritical } from "../utils";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode } from "./node";
 
@@ -17,42 +18,54 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
         let msg : SeleniumMsg = message;
-        this.status({});    
+        let node = this;
+        node.status({});    
         if (msg.driver == null) {
             let error = new Error("Open URL must be call before any other action. For node : " + conf.name);
-            this.status({ fill : "red", shape : "ring", text : "error"});
+            node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else { 
-            let webTitle = msg.webTitle || conf.webTitle;
-            let waitFor = msg.waitFor || conf.waitFor;
-            let timeout = msg.timeout || conf.timeout;
+            let webTitle = msg.webTitle ?? conf.webTitle;
+            let waitFor = msg.waitFor ?? conf.waitFor;
+            let timeout = msg.timeout ?? conf.timeout;
             setTimeout (async () => {
                 if (webTitle && webTitle != "") {
                     try {
                         await msg.driver.wait(until.titleIs(webTitle), timeout);
                         send([msg, null]);
-                        this.status({ fill : "green", shape : "dot", text : "success"});
+                        node.status({ fill : "green", shape : "dot", text : "success"});
                         done();
                     } catch (e) {
-                        msg.webTitle = await msg.driver.getTitle();
-                        let error = { message : "Browser windows title does not have the expected value", expected : webTitle, found : msg.webTitle}
-                        this.warn(error.message);
-                        msg.error = error;
-                        this.status({ fill : "yellow", shape : "dot", text : "wrong title"});
-                        send([null, msg]);
-                        done();
+                        if (checkIfCritical(e)) {
+                            node.status({ fill : "red", shape : "dot", text : "critical error"});
+                            done(e);
+                        } else {
+                            let test = e;
+                            console.log(test);
+                            try {
+                                msg.webTitle = await msg.driver.getTitle();
+                            } catch (sube) {
+                                msg.webTitle = "[Unknown]";
+                            }
+                            let error = { message : "Browser windows title does not have the expected value", expected : webTitle, found : msg.webTitle}
+                            node.warn(error.message);
+                            msg.error = error;
+                            node.status({ fill : "yellow", shape : "dot", text : "wrong title"});
+                            send([null, msg]);
+                            done();
+                        }
                     }
                 } else {
                     try {
                         msg.webTitle = await msg.driver.getTitle();
-                        this.status({ fill : "green", shape : "dot", text : "success"});
+                        node.status({ fill : "green", shape : "dot", text : "success"});
                         if (msg.error) { delete msg.error; }
                         send([msg, null]);
                         done();
                     } catch (e) {
                         msg.webTitle == null;
-                        this.status({ fill : "red", shape : "dot", text : "error"});
-                        this.error("Can'g get title of the browser window. Check msg.error for more information");
+                        node.status({ fill : "red", shape : "dot", text : "error"});
+                        node.error("Can't get title of the browser window. Check msg.error for more information");
                         done (e);
                     }
                 }

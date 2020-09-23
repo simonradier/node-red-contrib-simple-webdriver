@@ -1,5 +1,6 @@
 import { Node, NodeDef, nodes } from "node-red"
 import { By, until, WebDriver } from "selenium-webdriver";
+import { checkIfCritical } from "../utils";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, waitForElement } from "./node";
 
@@ -32,11 +33,16 @@ export function NodeFindElementConstructor (this : NodeFindElement, conf : NodeF
                     }
                 },
                 error(err) {
-                    node.status({ fill : "yellow", shape : "dot", text : "location error"});
-                    msg.error = err;
-                    node.error(err.message);
-                    send([null, msg]);
-                    done();
+                    if (checkIfCritical(err)) {
+                        node.status({ fill : "red", shape : "dot", text : "critical error"});
+                        done(err);
+                    } else {
+                        node.status({ fill : "yellow", shape : "dot", text : "location error"});
+                        msg.error = err;
+                        node.error(err.message);
+                        send([null, msg]);
+                        done();
+                    }
                 },
                 complete () {
                     node.status({ fill : "green", shape : "dot", text : "success"});

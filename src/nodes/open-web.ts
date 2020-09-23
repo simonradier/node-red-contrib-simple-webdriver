@@ -41,6 +41,7 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
         let msg : SeleniumMsg = message;
+        let node = this;
         let driverError = false;
         msg.driver = WD2Manager.getDriver(conf);
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
@@ -48,8 +49,8 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
             await msg.driver.get(conf.webURL);
         } catch (e) {
             msg.driver = null;
-            this.error("Can't open an instance of " + conf.browser);
-            this.status({ fill : "red", shape : "ring", text : "launch error"});
+            node.error("Can't open an instance of " + conf.browser);
+            node.status({ fill : "red", shape : "ring", text : "launch error"});
             driverError = true;
             msg.driver = null;
             done(e);
@@ -63,12 +64,13 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
                         else
                             await msg.driver.manage().window().maximize();
                 send(msg);
+                console.log((await msg.driver.getSession()).toJSON());
                 this.status({ fill : "green", shape : "dot", text : "success"});
                 done();
             }
         } catch (e) {
-            this.error("Can't resize the instance of " + conf.browser);
-            this.status({ fill : "red", shape : "ring", text : "resize error"});
+            node.error("Can't resize the instance of " + conf.browser);
+            node.status({ fill : "red", shape : "ring", text : "resize error"});
             driverError = true;
             done(e);            
         }

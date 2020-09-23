@@ -1,5 +1,6 @@
 import { Node, NodeDef, nodes } from "node-red"
 import { By, until, WebDriver } from "selenium-webdriver";
+import { checkIfCritical } from "../utils";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, waitForElement } from "./node";
 
@@ -34,12 +35,17 @@ export function NodeClickOnConstructor (this : NodeClickOn, conf : NodeClickOnDe
                     send([msg, null]);
                     done();
                 } catch(err) {
-                    msg.error = {
-                        value : "Can't click on the the element : " + err.message
-                    };
-                    node.status({ fill : "yellow", shape : "dot", text : "click error"})
-                    send([null, msg]);
-                    done();
+                    if (checkIfCritical(err)) {
+                        node.status({ fill : "red", shape : "dot", text : "critical error"});
+                        done(err);
+                    } else {
+                        msg.error = {
+                            value : "Can't click on the the element : " + err.message
+                        };
+                        node.status({ fill : "yellow", shape : "dot", text : "click error"})
+                        send([null, msg]);
+                        done();
+                    }
                 }
             } else {
                 waitForElement(conf, msg).subscribe ({
@@ -67,12 +73,17 @@ export function NodeClickOnConstructor (this : NodeClickOn, conf : NodeClickOnDe
                                 send([msg, null]);
                                 done();
                             } catch(err) {
-                                msg.error = {
-                                    value : "Can't click on the the element : " + err.message
-                                };
-                                node.status({ fill : "yellow", shape : "dot", text : "click error"})
-                                send([null, msg]);
-                                done();
+                                if (checkIfCritical(err)) {
+                                    node.status({ fill : "red", shape : "dot", text : "critical error"});
+                                    done(err);
+                                } else {
+                                    msg.error = {
+                                        value : "Can't click on the the element : " + err.message
+                                    };
+                                    node.status({ fill : "yellow", shape : "dot", text : "click error"})
+                                    send([null, msg]);
+                                    done();
+                                }
                             }
                         } else { // If we have to wait for the user click and we save the msg
                             node.status({ fill : "blue", shape : "dot", text : "waiting for user click"});
