@@ -8,6 +8,7 @@ export * from "./find-element";
 export * from "./selenium-server";
 export * from "./get-title";
 export * from "./click-on";
+export * from "./send-keys";
 
 export interface SeleniumNode {
     selector : string;
@@ -26,6 +27,8 @@ export interface SeleniumMsg extends NodeMessageInFlow {
     element? : WebElement;
     webTitle? : string;
     click? : boolean;
+    clearVal? : boolean;
+    value? : string;
 }
 
 /**
@@ -36,10 +39,10 @@ export interface SeleniumMsg extends NodeMessageInFlow {
  */
 export function waitForElement(conf : SeleniumNode, msg : SeleniumMsg) : Observable<string | WebElement>{
     return new Observable<string | WebElement> ((subscriber) => {
-        let waitFor : number = msg.waitFor || conf.waitFor;
-        let timeout : number = msg.timeout || conf.timeout;
-        let target : string = msg.target || conf.target;
-        let selector : string = msg.selector || conf.selector;
+        let waitFor : number = msg.waitFor ?? conf.waitFor;
+        let timeout : number = msg.timeout ?? conf.timeout;
+        let target : string = msg.target ?? conf.target;
+        let selector : string = msg.selector ?? conf.selector;
         let element : WebElement;
         subscriber.next("waiting for " + (waitFor / 1000).toFixed(1) + " s");
         setTimeout (async () => {
