@@ -1,4 +1,4 @@
-<script type="text/x-red" data-template-name="open-web">
+<script type="text/html" data-template-name="open-web">
 	<div class="form-row">
 		<label for="node-input-serverURL"><i class="fa fa-globe"></i> <span>Server</span></label>
 		<input type="text" id="node-input-serverURL">
@@ -44,7 +44,7 @@
 	</div>
 </script>
 
-<script type="text/x-red" data-help-name="open-web">
+<script type="text/html" data-help-name="open-web">
 	<p>Create an instance of selenium webdriver and connect to the Selenium Server when an event is triggered.</p>
 	<strong>Inputs:</strong>
 	<p><ul>
@@ -123,7 +123,7 @@
 	}); 
 </script>
 
-<script type="text/x-red" data-template-name="close-web">
+<script type="text/html" data-template-name="close-web">
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
 		<input type="text" id="node-input-name">
@@ -134,7 +134,7 @@
 	</div>
 </script>
 
-<script type="text/x-red" data-help-name="close-web">
+<script type="text/html" data-help-name="close-web">
 	<p>Close the web browser which is openned by the open-web node and finalize the selenium session.</p>
 	<strong>Outputs:</strong>
 	<ul>
@@ -171,7 +171,7 @@
 	}); 
 </script>
 
-<script type="text/x-red" data-template-name="wd2-server">
+<script type="text/html" data-template-name="wd2-server">
 	<div class="form-row">
 		<ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-wd2-server-tabs"></ul>
 	</div>
@@ -216,7 +216,7 @@
 	}); 
 </script>
 
-<script type="text/x-red" data-template-name="find-element">
+<script type="text/html" data-template-name="find-element">
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-search"></i> <span>Name</span></label>
 		<input type="text" id="node-input-name">
@@ -224,6 +224,7 @@
 	<div class="form-row">
 		<label for="node-input-selector"><i class="fa fa-empire"></i> <span>By</span></label>
 		<select id="node-input-selector" style="width:125px !important">
+			<option value=""></option>
 			<option value="id">id</option>
 			<option value="name">name</option>
 			<option value="link">link</option>
@@ -248,14 +249,14 @@
 	</div>
 </script>
 
-<script type="text/x-red" data-help-name="find-element">
+<script type="text/html" data-help-name="find-element">
 	<p>Find an object or element by using selenium webdriver <code>findElement()</code>.</p>
 	<strong>Inputs:</strong>
 	<p><ul>
 		<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
 		<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
 		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-		<li><a>Wait For</a>: specify the time to wait before looing up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
 	</ul></p>
 	<strong>Outputs:</strong>
 	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
@@ -300,7 +301,7 @@
 	}); 
 </script>
 
-<script type="text/x-red" data-template-name="get-title">
+<script type="text/html" data-template-name="get-title">
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-search"></i> <span>Name</span></label>
 		<input type="text" id="node-input-name">
@@ -319,13 +320,13 @@
 	</div>
 </script>
 
-<script type="text/x-red" data-help-name="get-title">
+<script type="text/html" data-help-name="get-title">
 	<p>Get windows Title by using selenium webdriver <code>getTitle()</code>.</p>
 	<strong>Inputs:</strong>
 	<p><ul>
 		<li><a>Web Title</a>: specify the expected title to compare if set. Otherwise this node will bypass the sanity check operation.</li>The <code> msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
 		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-		<li><a>Wait For</a>: specify the time to wait before looing up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
 	</ul></p>
 	<strong>Outputs:</strong>
 	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
@@ -366,7 +367,7 @@
 	}); 
 </script>
 
-<script type="text/x-red" data-template-name="click-on">
+<script type="text/html" data-template-name="click-on">
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
 		<input type="text" id="node-input-name">
@@ -374,6 +375,7 @@
 	<div class="form-row">
 		<label for="node-input-selector"><i class="fa fa-empire"></i> <span>By</span></label>
 		<select id="node-input-selector" style="width:125px !important">
+			<option value=""></option>
 			<option value="id">id</option>
 			<option value="name">name</option>
 			<option value="link">link</option>
@@ -402,14 +404,14 @@
 	</div>
 </script>
 
-<script type="text/x-red" data-help-name="click-on">
+<script type="text/html" data-help-name="click-on">
 	<p>Click on the <code>msg.element</code> which is passed by previous node or after waiting for the expected element is located.</p>
 	<strong>Inputs:</strong>
 	<p><ul>
 		<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
 		<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
 		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-		<li><a>Wait For</a>: specify the time to wait before looing up. The <code>msg.waitfor</code> will override the <code>Wait For</code> field if set.</li>
+		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitfor</code> will override the <code>Wait For</code> field if set.</li>
 		<li><a>Click On</a>: specify to wait until user click action on the node. The <code>msg.clickOn</code> will override the <code>Click On</code> field if set.</li>
 	</ul></p>	
 	<strong>Outputs:</strong>
@@ -475,5 +477,103 @@
                 });
             }
         }
+	}); 
+</script>
+
+<script type="text/html" data-template-name="send-keys">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
+	</div>
+	<div class="form-row">
+		<label for="node-input-value"><i class="fa fa-empire"></i> <span>Value</span></label>
+		<input type="text" id="node-input-value">
+	</div>
+	<div class="form-row">
+		<label for="node-input-selector"><i class="fa fa-empire"></i> <span>By</span></label>
+		<select id="node-input-selector" style="width:125px !important">
+			<option value=""></option>
+			<option value="id">id</option>
+			<option value="name">name</option>
+			<option value="link">link</option>
+			<option value="xpath">xpath</option>
+			<option value="tagName">tagName</option>
+			<option value="className">className</option>
+			<option value="linkText">linkText</option>
+			<option value="cssSelector">cssSelector</option>
+		</select>
+	</div>
+	<div class="form-row">
+		<label for="node-input-target"><i class="fa fa-empire"></i> <span>Target</span></label>
+		<input type="text" id="node-input-target">
+	</div>
+	<div class="form-row">
+		<label for="node-input-timeout"><i class="fa fa-empire"></i> <span>Timeout</span></label>
+		<input type="text" id="node-input-timeout" value="1000">
+	</div>
+	<div class="form-row">
+		<label for="node-input-waitFor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
+		<input type="text" id="node-input-waitFor" value="00">
+	</div>
+	<div class="form-row">		
+		<input type="checkbox" id="node-input-clearVal" value="false" style="display: inline-block; width: auto; vertical-align: top;">
+		<label for="node-input-clearVal" style="width: 70%"> <span>Clear the element value before sending the keys.</span></label>
+	</div>
+</script>
+
+<script type="text/html" data-help-name="send-keys">
+	<p>Send keyboard keys to the <code>msg.element</code> from previous node or after waiting for the expected element is located.</p>
+	<strong>Inputs:</strong>
+	<p><ul>
+		<li><a>Value</a>: specify the value to get. The <code>msg.value</code> will override the <code>Value</code> field if set.</li>
+		<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
+		<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
+		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
+		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+		<li><a>Clear Value</a>: clear the element value if checked. The <code>msg.clearVal</code> will override the <code>Clear Value</code> field if set.</li>
+	</ul></p>	
+	<strong>Outputs:</strong>
+	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
+	<p><code>msg.element</code> If the element is found, it will be passed though the msg object to the next node.</p>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('send-keys', {
+		category : 'wd2',
+		defaults : {
+			name : {
+				value : ""
+			},
+			value : {
+				value : ""
+			},
+			selector : {
+				value : ""
+			},
+			target : {
+				value : ""
+			},
+			timeout : {
+				value : 1000,
+				validate : RED.validators.number()
+			},
+			waitFor : {
+				value : 500,
+				validate : RED.validators.number()
+			},
+			clearval : {
+				value : false
+			}
+		},
+		color : "#47B6EE",
+		inputs : 1,
+		outputs : 2,
+		icon : "font-awesome/fa-font",
+		label : function() {
+			return this.name || "Send Keys";
+		},
+		labelStyle : function() {
+			return this.name ? "node_label_italic" : "";
+		}
 	}); 
 </script>
