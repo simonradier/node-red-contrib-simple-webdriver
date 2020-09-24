@@ -1,12 +1,11 @@
-import { Node, NodeDef } from "node-red"
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumNode } from "./node";
+import { SeleniumNode, SeleniumNodeDef } from "./node";
 
-export interface NodeSeleniumServerDef extends NodeDef, SeleniumNode {
+export interface NodeSeleniumServerDef extends SeleniumNodeDef {
     server : string;
 }
 
-export interface NodeSeleniumServer extends Node<any> {
+export interface NodeSeleniumServer extends SeleniumNode {
 
 }
 

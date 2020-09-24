@@ -1,9 +1,7 @@
-import { Node, NodeDef, nodes } from "node-red"
-import { until, WebDriver } from "selenium-webdriver";
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumMsg, SeleniumNode } from "./node";
+import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
-export interface NodeOpenWebDef extends NodeDef, SeleniumNode {
+export interface NodeOpenWebDef extends SeleniumNodeDef {
     serverURL : string;
     name : string;
     browser : string;
@@ -14,7 +12,7 @@ export interface NodeOpenWebDef extends NodeDef, SeleniumNode {
     headless : boolean; 
 }
 
-export interface NodeOpenWeb extends Node<any> {
+export interface NodeOpenWeb extends SeleniumNode {
 
 }
 
@@ -64,7 +62,6 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
                         else
                             await msg.driver.manage().window().maximize();
                 send(msg);
-                console.log((await msg.driver.getSession()).toJSON());
                 this.status({ fill : "green", shape : "dot", text : "success"});
                 done();
             }

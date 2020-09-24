@@ -1,6 +1,8 @@
 import { NodeMessageInFlow } from "node-red__registry";
+import { Node, NodeDef, NodeMessage } from "node-red";
 import { Observable } from "rxjs";
 import { By, until, WebDriver, WebElement } from "selenium-webdriver";
+
 
 export * from "./open-web";
 export * from "./close-web";
@@ -11,11 +13,21 @@ export * from "./click-on";
 export * from "./send-keys";
 export * from "./get-value";
 
-export interface SeleniumNode {
+export interface SeleniumNodeDef extends NodeDef {
     selector : string;
     target : string;
     timeout : number;
     waitFor : number;
+}
+
+export interface SeleniumNode extends Node<any> {
+
+}
+
+export interface SeleniumAction {
+    done : (err? : Error) => void;
+    send : (msg: NodeMessage | NodeMessage[]) => void;
+    msg : SeleniumMsg;
 }
 
 export interface SeleniumMsg extends NodeMessageInFlow {
@@ -39,7 +51,7 @@ export interface SeleniumMsg extends NodeMessageInFlow {
  * @param conf A configuration of a node
  * @param msg  A node message
  */
-export function waitForElement(conf : SeleniumNode, msg : SeleniumMsg) : Observable<string | WebElement>{
+export function waitForElement(conf : SeleniumNodeDef, msg : SeleniumMsg) : Observable<string | WebElement>{
     return new Observable<string | WebElement> ((subscriber) => {
         let waitFor : number = msg.waitFor ?? conf.waitFor;
         let timeout : number = msg.timeout ?? conf.timeout;
@@ -72,3 +84,4 @@ export function waitForElement(conf : SeleniumNode, msg : SeleniumMsg) : Observa
         }, waitFor);
     });
 }
+

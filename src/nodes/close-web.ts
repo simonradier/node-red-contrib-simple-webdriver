@@ -1,14 +1,13 @@
-import { Node, NodeDef, nodes } from "node-red"
-import { WebDriver } from "selenium-webdriver";
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumMsg, SeleniumNode } from "./node";
+import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
-export interface NodeCloseWebDef extends NodeDef, SeleniumNode {
+export interface NodeCloseWebDef extends SeleniumNodeDef {
  
 }
 
-export interface NodeCloseWeb extends Node<any> {
+export interface NodeCloseWeb extends SeleniumNode {
 }
+
 
 export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWebDef) {
     WD2Manager.RED.nodes.createNode(this, conf);

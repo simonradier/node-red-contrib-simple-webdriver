@@ -1,14 +1,12 @@
-import { Node, NodeDef, nodes } from "node-red"
 import { until } from "selenium-webdriver";
-import { checkIfCritical } from "../utils";
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumMsg, SeleniumNode } from "./node";
+import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
-export interface NodeGetTitleDef extends NodeDef, SeleniumNode {
+export interface NodeGetTitleDef extends SeleniumNodeDef {
     webTitle : string;
 }
 
-export interface NodeGetTitle extends Node<any> {
+export interface NodeGetTitle extends SeleniumNode {
 }
 
 export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitleDef) {
@@ -36,7 +34,7 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                         node.status({ fill : "green", shape : "dot", text : "success"});
                         done();
                     } catch (e) {
-                        if (checkIfCritical(e)) {
+                        if (WD2Manager.checkIfCritical(e)) {
                             node.status({ fill : "red", shape : "dot", text : "critical error"});
                             done(e);
                         } else {
