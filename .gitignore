@@ -1,6 +1,5 @@
 node_modules/
 package-lock.json
-build/*
-!build/selenium-wd2.html
-!build/icons
+build
+dist
 .vscode/
