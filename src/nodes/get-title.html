@@ -1,0 +1,65 @@
+<script type="text/html" data-template-name="get-title">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-search"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
+	</div>
+	<div class="form-row">
+		<label for="node-input-webTitle"><i class="fa fa-empire"></i> <span>Web Title</span></label>
+		<input type="text" id="node-input-webTitle">
+	</div>
+	<div class="form-row">
+		<label for="node-input-timeout"><i class="fa fa-empire"></i> <span>Timeout</span></label>
+		<input type="text" id="node-input-timeout" value="1000">
+	</div>
+	<div class="form-row">
+		<label for="node-input-waitFor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
+		<input type="text" id="node-input-waitFor" value="00">
+	</div>
+</script>
+
+<script type="text/html" data-help-name="get-title">
+	<p>Get windows Title by using selenium webdriver <code>getTitle()</code>.</p>
+	<strong>Inputs:</strong>
+	<p><ul>
+		<li><a>Web Title</a>: specify the expected title to compare if set. Otherwise this node will bypass the sanity check operation.</li>The <code> msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
+		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
+		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+	</ul></p>
+	<strong>Outputs:</strong>
+	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
+	<p><code>msg.webTitle</code> The retreived title of the browser's window</p>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('get-title', {
+		category : 'wd2',
+		defaults : {
+			name : {
+				value : ""
+			},
+			webTitle : {
+				value : "",
+				required : true
+			},
+			timeout : {
+				value : 3000,
+				required : true,
+				validate : RED.validators.number()
+			}, 
+			waitFor : {
+				value : 500,
+				validate : RED.validators.number()
+			}
+		},
+		color : "#47B6EE",
+		inputs : 1,
+		outputs : 2,
+		icon : "font-awesome/fa-header",
+		label : function() {
+			return this.name || "Get Title";
+		},
+		labelStyle : function() {
+			return this.name ? "node_label_italic" : "";
+		}
+	}); 
+</script>

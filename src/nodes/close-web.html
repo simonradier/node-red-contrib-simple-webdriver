@@ -1,0 +1,48 @@
+
+<script type="text/html" data-template-name="close-web">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
+	</div>
+	<div class="form-row">
+		<label for="node-input-waitFor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
+		<input type="text" id="node-input-waitFor" value="00">
+	</div>
+</script>
+
+<script type="text/html" data-help-name="close-web">
+	<p>Close the web browser which is openned by the open-web node and finalize the selenium session.</p>
+	<strong>Outputs:</strong>
+	<ul>
+	<li><u>First output : </u> this ouput is used in case of success of exit.</li>
+	<li><u>Second output : </u> this ouput is used in case of failure of exit.<li>
+	<ul>
+	<strong>MSG:</strong>
+	<p><code>msg.error</code> In caise of failure, this node generates the error with detailled information</p>
+	<p><code>msg.driver</code> should be null in case of success</p>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('close-web', {
+		category : 'wd2',
+		defaults : {
+			name : {
+				value : ""
+			}, 
+			waitFor : {
+				value : 500,
+				validate : RED.validators.number()
+			}
+		},
+		color : "#47B6EE",
+		inputs : 1,
+		outputs : 2,
+		icon : "font-awesome/fa-window-close-o",
+		label : function() {
+			return this.name || "Close";
+		},
+		labelStyle : function() {
+			return this.name ? "node_label_italic" : "";
+		}
+	}); 
+</script>

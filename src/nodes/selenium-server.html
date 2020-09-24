@@ -1,0 +1,44 @@
+<script type="text/html" data-template-name="wd2-server">
+	<div class="form-row">
+		<ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-wd2-server-tabs"></ul>
+	</div>
+		<div id="node-config-wd2-server-tabs-content" style="min-height: 170px;">
+			<div id="wd2-server-tab-connection" style="display:none">
+			<div class="form-row node-input-remoteurl">
+				<label for="node-config-input-remoteurl"><i class="fa fa-globe"></i> <span>Remote Url</span></label>
+				<input class="input-append-left" type="text" id="node-config-input-remoteurl" placeholder="http://localhost:4444/wd/hub" style="width: 40%;" >
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('no', {
+		category : 'config',
+		defaults : {
+			remoteurl : {
+				value : "http://localhost:4444/wd/hub",
+				required : true
+			}
+		},
+		label : function() {
+			return (this.remoteurl ? this.remoteurl : "localhost@4444");
+		},
+		oneditprepare : function() {
+			var tabs = RED.tabs.create({
+				id : "node-config-wd2-server-tabs",
+				onchange : function(tab) {
+					$("#node-config-wd2-server-tabs-content").children().hide();
+					$("#" + tab.id).show();
+				}
+			});
+			tabs.addTab({
+				id : "wd2-server-tab-connection",
+				label : "Selenium Server"
+			});
+			setTimeout(function() {
+				tabs.resize();
+			}, 0);
+		}
+	}); 
+</script>
