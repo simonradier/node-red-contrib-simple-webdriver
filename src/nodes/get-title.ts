@@ -2,32 +2,34 @@ import { until } from "selenium-webdriver";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeGetTitleDef extends SeleniumNodeDef {
     webTitle : string;
 }
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeGetTitle extends SeleniumNode {
 }
 
 export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitleDef) {
     WD2Manager.RED.nodes.createNode(this, conf);
-    this.status({});    
-    
+    this.status({});
+
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        let msg : SeleniumMsg = message;
-        let node = this;
-        node.status({});    
+        const msg : SeleniumMsg = message;
+        const node = this;
+        node.status({});
         if (msg.driver == null) {
-            let error = new Error("Open URL must be call before any other action. For node : " + conf.name);
+            const error = new Error("Open URL must be call before any other action. For node : " + conf.name);
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
-        } else { 
-            let webTitle = msg.webTitle ?? conf.webTitle;
-            let waitFor = msg.waitFor ?? conf.waitFor;
-            let timeout = msg.timeout ?? conf.timeout;
+        } else {
+            const webTitle = msg.webTitle ?? conf.webTitle;
+            const waitFor = msg.waitFor ?? conf.waitFor;
+            const timeout = msg.timeout ?? conf.timeout;
             setTimeout (async () => {
-                if (webTitle && webTitle != "") {
+                if (webTitle && webTitle !== "") {
                     try {
                         await msg.driver.wait(until.titleIs(webTitle), timeout);
                         send([msg, null]);
@@ -38,14 +40,12 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                             node.status({ fill : "red", shape : "dot", text : "critical error"});
                             done(e);
                         } else {
-                            let test = e;
-                            console.log(test);
                             try {
                                 msg.webTitle = await msg.driver.getTitle();
                             } catch (sube) {
                                 msg.webTitle = "[Unknown]";
                             }
-                            let error = { message : "Browser windows title does not have the expected value", expected : webTitle, found : msg.webTitle}
+                            const error = { message : "Browser windows title does not have the expected value", expected : webTitle, found : msg.webTitle}
                             node.warn(error.message);
                             msg.error = error;
                             node.status({ fill : "yellow", shape : "dot", text : "wrong title"});
@@ -61,13 +61,13 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                         send([msg, null]);
                         done();
                     } catch (e) {
-                        msg.webTitle == null;
+                        msg.webTitle = null;
                         node.status({ fill : "red", shape : "dot", text : "error"});
                         node.error("Can't get title of the browser window. Check msg.error for more information");
                         done (e);
                     }
                 }
-            }, waitFor);    
+            }, waitFor);
         }
     });
 }

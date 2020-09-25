@@ -1,28 +1,30 @@
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeCloseWebDef extends SeleniumNodeDef {
- 
+
 }
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeCloseWeb extends SeleniumNode {
 }
 
 
 export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWebDef) {
     WD2Manager.RED.nodes.createNode(this, conf);
-    this.status({});    
-    
+    this.status({});
+
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        let msg : SeleniumMsg = message;
+        const msg : SeleniumMsg = message;
 
         if (null === msg.driver) {
-            let error = new Error("Can't use this node without a working open-web node first");
+            const error = new Error("Can't use this node without a working open-web node first");
             this.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
-            let waitFor = conf.waitFor || msg.waitFor;
+            const waitFor = conf.waitFor || msg.waitFor;
             this.status({ fill : "blue", shape : "ring", text : "waiting for " + (waitFor / 1000).toFixed(1) + " s"});
             setTimeout(async () => {
                 try {
@@ -40,6 +42,6 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
                     done();
                 }
             }, waitFor);
-        }    
+        }
     });
 }

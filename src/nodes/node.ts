@@ -12,6 +12,8 @@ export * from "./get-title";
 export * from "./click-on";
 export * from "./send-keys";
 export * from "./get-value";
+export * from "./set-value";
+
 
 export interface SeleniumNodeDef extends NodeDef {
     selector : string;

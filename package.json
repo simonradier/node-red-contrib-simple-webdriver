@@ -3,8 +3,9 @@
 	"version": "0.0.1",
 	"description": "A selenium-webdriver nodes for Node-RED based on node-red-contrib-selenium-webdriver",
 	"dependencies": {
+		"rxjs": ">=6.6.3",
 		"selenium-webdriver": ">=4.0.0-alpha.7",
-		"rxjs": ">=6.6.3"
+		"typescript-tslint-plugin": "^0.5.5"
 	},
 	"devDependencies": {
 		"@types/node-red": ">=1.1.0",
@@ -31,10 +32,9 @@
 		"node": ">= 14.0.0"
 	},
 	"scripts": {
-		"prepublish" : "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
-		"clean" : "rm -rf dist"
+		"prepublishOnly": "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
+		"clean": "rm -rf dist"
 	},
-
 	"author": {
 		"name": "Simon Radier"
 	}

@@ -1,6 +1,7 @@
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeOpenWebDef extends SeleniumNodeDef {
     serverURL : string;
     name : string;
@@ -9,19 +10,20 @@ export interface NodeOpenWebDef extends SeleniumNodeDef {
     width : number;
     heigth : number;
     maximized : boolean;
-    headless : boolean; 
+    headless : boolean;
 }
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeOpenWeb extends SeleniumNode {
 
 }
 
 export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDef) {
     WD2Manager.RED.nodes.createNode(this, conf);
-   
+
     if (!conf.serverURL) {
         this.log("Selenium server URL is undefined");
-        this.status({ fill : "red", shape : "ring", text : "no server defined"});      
+        this.status({ fill : "red", shape : "ring", text : "no server defined"});
     } else {
         WD2Manager.setServerConfig(conf.serverURL).then ((result) => {
             if (result) {
@@ -32,14 +34,13 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
                 this.status({ fill : "red", shape : "ring", text : conf.serverURL + ": unreachable"});
             }
         }).catch ((error) => {
-            this.log("error");
-            console.log(error);
+            this.log(error);
         });
     }
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        let msg : SeleniumMsg = message;
-        let node = this;
+        const msg : SeleniumMsg = message;
+        const node = this;
         let driverError = false;
         msg.driver = WD2Manager.getDriver(conf);
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
@@ -69,7 +70,7 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
             node.error("Can't resize the instance of " + conf.browser);
             node.status({ fill : "red", shape : "ring", text : "resize error"});
             driverError = true;
-            done(e);            
+            done(e);
         }
     });
 }

@@ -1,5 +1,5 @@
 import { NodeAPI, NodeAPISettingsWithData} from "node-red";
-import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeSeleniumServerConstructor, NodeSendKeysConstructor } from "./nodes/node";
+import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeSeleniumServerConstructor, NodeSendKeysConstructor, NodeSetValueConstructor } from "./nodes/node";
 import { WD2Manager } from "./wd2-manager";
 
 
@@ -14,4 +14,6 @@ export = (RED : NodeAPI<NodeAPISettingsWithData>) => {
     RED.nodes.registerType("click-on", NodeClickOnConstructor);
     RED.nodes.registerType("send-keys", NodeSendKeysConstructor);
     RED.nodes.registerType("get-value", NodeGetValueConstructor);
+    RED.nodes.registerType("set-value", NodeSetValueConstructor);
+
 }

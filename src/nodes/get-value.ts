@@ -2,19 +2,21 @@ import { WD2Manager } from "../wd2-manager";
 import { SeleniumAction, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeGetValueDef extends SeleniumNodeDef {
     expected : string;
 }
 
+// tslint:disable-next-line: no-empty-interface
 export interface NodeGetValue extends SeleniumNode {
 
 }
 
 async function inputAction (node : NodeGetValue, conf : NodeGetValueDef, action : SeleniumAction) : Promise<void> {
     return new Promise<void> (async (resolve, reject) => {
-        let msg = action.msg;
-        let expected = msg.expected ?? conf.expected;
-        let step = "";
+        const msg = action.msg;
+        const expected = msg.expected ?? conf.expected;
+        const step = "";
         try {
             msg.payload = await msg.element.getAttribute("value");
             if (expected && expected !== msg.payload) {
@@ -23,7 +25,7 @@ async function inputAction (node : NodeGetValue, conf : NodeGetValueDef, action 
                 };
                 node.status({ fill : "yellow", shape : "dot", text : step + "error"})
                 action.send([null, msg]);
-                action.done();    
+                action.done();
             } else {
                 node.status({ fill : "green", shape : "dot", text : "success"})
                 if (msg.error) { delete msg.error; }
@@ -43,10 +45,10 @@ async function inputAction (node : NodeGetValue, conf : NodeGetValueDef, action 
                 action.done();
             }
         }
-        resolve();                       
+        resolve();
     });
 }
 
-let NodeGetValueConstructor = GenericSeleniumConstructor(null, inputAction);
+const NodeGetValueConstructor = GenericSeleniumConstructor(null, inputAction);
 
 export { NodeGetValueConstructor as NodeGetValueConstructor}
