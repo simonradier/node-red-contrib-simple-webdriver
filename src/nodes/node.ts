@@ -14,6 +14,7 @@ export * from "./send-keys";
 export * from "./get-value";
 export * from "./set-value";
 export * from "./get-attribute";
+export * from "./get-text";
 
 
 export interface SeleniumNodeDef extends NodeDef {
