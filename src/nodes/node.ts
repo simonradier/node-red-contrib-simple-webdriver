@@ -13,6 +13,7 @@ export * from "./click-on";
 export * from "./send-keys";
 export * from "./get-value";
 export * from "./set-value";
+export * from "./get-attribute";
 
 
 export interface SeleniumNodeDef extends NodeDef {
@@ -45,6 +46,7 @@ export interface SeleniumMsg extends NodeMessageInFlow {
     clearVal? : boolean;
     value? : string;
     expected? : string;
+    attribute? : string;
 }
 
 /**
