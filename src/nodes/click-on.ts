@@ -35,6 +35,13 @@ async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, ac
             }
             resolve(false); // We don't want to execute the full node
         }
+        if (msg.click && !node.__msg) {
+            node.status({ fill : "yellow", shape : "ring", text : "ignored"});
+            setTimeout(() => {
+                node.status({});
+            }, 3000);
+            resolve(false);
+        }
         resolve(true);
     });
 }
