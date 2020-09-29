@@ -1,5 +1,5 @@
 import { NodeAPI, NodeAPISettingsWithData} from "node-red";
-import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetAttributeConstructor, NodeGetTextConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeSeleniumServerConstructor, NodeSendKeysConstructor, NodeSetValueConstructor } from "./nodes/node";
+import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetAttributeConstructor, NodeGetTextConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeRunScriptConstructor, NodeSeleniumServerConstructor, NodeSendKeysConstructor, NodeSetValueConstructor } from "./nodes/node";
 import { WD2Manager } from "./wd2-manager";
 
 
@@ -17,4 +17,5 @@ export = (RED : NodeAPI<NodeAPISettingsWithData>) => {
     RED.nodes.registerType("set-value", NodeSetValueConstructor);
     RED.nodes.registerType("get-attribute", NodeGetAttributeConstructor);
     RED.nodes.registerType("get-text", NodeGetTextConstructor);
+    RED.nodes.registerType("run-script", NodeRunScriptConstructor);
 }
