@@ -49,6 +49,8 @@ export interface SeleniumMsg extends NodeMessageInFlow {
     expected? : string;
     attribute? : string;
     script? : string;
+    url? : string;
+    navType? : string;
 }
 
 /**

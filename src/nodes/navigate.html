@@ -1,0 +1,90 @@
+<script type="text/html" data-template-name="navigate">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
+	</div>
+    <div class="form-row">
+		<label for="node-input-navType"><i class="fa fa-empire"></i> <span>By</span></label>
+		<select id="node-input-navType" style="width:125px !important">
+			<option value="to">to</option>
+			<option value="back">back</option>
+			<option value="forward">forward</option>
+			<option value="refresh">refresh</option>
+		</select>
+    </div>
+	<div class="form-row" id="row-input-url">
+		<label for="node-input-url"><i class="fa fa-globe"></i> <span>URL</span></label>
+		<input type="text" id="node-input-url">
+	</div>
+    <div class="form-row">
+		<label for="node-input-waitFor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
+		<input type="text" id="node-input-waitFor" value="00">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="navigate">
+	<p>Using Selenium WebDriver to schedules a command to navigate to a new URL.</p>
+	<strong>Inputs:</strong>
+	<p><ul>		
+		<li><a>URL</a>: specify the url to navigate to.</li>		
+		<li><a>Wait For</a>: specify the delay before executing this operation.</li>
+	</ul></p>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('navigate', {
+		category : 'wd2',
+		defaults : {
+			name : {
+				value : ""
+			},
+			url : {
+				value : "",
+				validate : function () {
+					node = this;
+					if (node.navType === "to")
+						if (!node.url || node.url == "")
+							return false;
+					return true;
+				}
+            },
+            navType : {
+                value : "to",
+                required : true
+            },
+			waitFor : {
+				value : 500,
+				validate : RED.validators.number()
+			}
+		},
+		color : "#47B6EE",
+		inputs : 1,
+		outputs : 2,
+		icon : function () {
+            switch (this.navType) {
+				case "back":
+					return "font-awesome/fa-arrow-left"
+				case "forward":
+					return "font-awesome/fa-arrow-right"
+				case "refresh":
+					return "font-awesome/fa-refresh"
+            }
+            return "font-awesome/fa-location-arrow"
+        },
+		label : function() {
+			return this.name || "Navigate";
+		},
+		labelStyle : function() {
+			return this.name ? "node_label_italic" : "";
+		},
+		oneditprepare : function() {
+			let node = this;
+			$("#node-input-navType").on("change", (event) => {
+				if ($("#node-input-navType").val() !== "to")
+					$("#row-input-url").hide();
+				else
+					$("#row-input-url").show();
+			});
+		},
+	}); 
+</script>
