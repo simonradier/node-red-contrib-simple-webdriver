@@ -1,11 +1,11 @@
 <script type="text/html" data-template-name="open-web">
 	<div class="form-row">
-		<label for="node-input-serverURL"><i class="fa fa-globe"></i> <span>Server</span></label>
-		<input type="text" id="node-input-serverURL">
+		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
 	</div>
 	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
+		<label for="node-input-serverURL"><i class="fa fa-globe"></i> <span>Server</span></label>
+		<input type="text" id="node-input-serverURL">
 	</div>
 	<div class="form-row">
         <label for="node-input-browser"><i class="fa fa-empire"></i> <span>Browser</span></label>
@@ -31,10 +31,6 @@
 		<input type="text" id="node-input-height" value="768">
 	</div>
 	<div class="form-row">
-		<label for="node-input-timeout"><i class="fa fa-empire"></i> <span>Timeout</span></label>
-		<input type="text" id="node-input-timeout" value="1000">
-	</div>
-	<div class="form-row">
 		<input type="checkbox" id="node-input-maximized" checked style="display: inline-block; width: auto; vertical-align: top;">
 		<label for="node-input-maximized" style="width: auto;">Maximize window</label>
 	</div>
@@ -45,25 +41,41 @@
 </script>
 
 <script type="text/html" data-help-name="open-web">
-	<p>Create an instance of selenium webdriver and connect to the Selenium Server when an event is triggered.</p>
-	<strong>Inputs:</strong>
-	<p><ul>
-		<li><a>Server</a>: specify the selenium server configuration. It could be localhost or remote Selenium Server.</li>
-	    <li><a>Browser</a>: specify the selenium node which support the web browser you wan tot test such as [Chrome, Firefox etc.,]</li>
-		<li><a>Web URL</a>: specify the web page to start browsing the targeted application for your test.</li>
-		<li><a>Web Title</a>: specify the expected title to compare if set. Otherwise this node will bypass the sanity check operation.</li>
-		<li><a>Timeout</a>: specify the timeout during lookup for the title operation.</li>
-	</ul></p>
-	<strong>Outputs:</strong>
-	<ul>
-	<li><u>First output : </u> this ouput is used in case of success of the Selenium action.</li>
-	<li><u>Second output : </u> this ouput is used in case of failure of the Selenium action.<li>
-	<ul>
-	<strong>MSG:</strong>
-	<p><code>msg.error</code> When the title is unexpected or cannot find element, this node generates the error with detail information</p>
-	<p><code>msg.driver</code> Always pass webdriver object to the next node for ad-hoc function code.</p>
-	<p><code>msg.element</code> If the element is found, it will be passed though the msg object to the next node.</p>
-	<p><code>msg.payload</code> contains the title of the opened web page. This payload value will be used to compare with the expected Web Title value if that value is set.</p>
+		<p>Create an instance of a Selenium Webdriver and connect it to a Selenium Server (Server)</p>
+		
+		<h3>Inputs</h3>
+			<p>No specific input are required to launch this node.</p>
+		
+		 <h3>Outputs</h3>
+			 <ol class="node-ports">
+				 <li>Standard output
+					 <dl class="message-properties">
+						 <dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+						 <dd>the WebDriver object required to execute Selenium actions.</dd>
+					 </dl>
+				 </li>
+				 <li>Critical error
+					<dl class="message-properties">
+						<dt>error<span class="property-type">Error</span></dt>
+						<dd>the error which describe the issue encoutered.</dd>
+					</dl>
+				</li>
+			 </ol>
+		
+		<h3>Details</h3>
+			<p> This node is used to generate a Webdriver which is a prerequisite to all the other WD2 nodes.</p>
+			<p><ul>
+				<li><a>Server</a>: specify the selenium server url. It could be localhost or remote Selenium Server.</li>
+				<li><a>Browser</a>: specify the the web browser you want to use such as [Chrome, Firefox etc.,]</li>
+				<li><a>Web URL</a>: specify the web page to start which will be loaded at the launch of the browser.</li>
+				<li><a>Maximize</a>: launch a maximized browser.</li>
+				<li><a>Headless</a>: launch a headless browser.</li>
+			</ul>
+			</p>
+		<h3>References</h3>
+			<ul>
+				<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+			</ul>
 </script>
 
 <script type="text/javascript">
@@ -103,7 +115,6 @@
 				required : true
 			},
 			serverURL : {
-				type : "selenium-server",
 				required : true
 			}
 		},
@@ -119,6 +130,6 @@
 		},
 		labelStyle : function() {
 			return this.name ? "node_label_italic" : "";
-		}
+		},
 	}); 
 </script>
