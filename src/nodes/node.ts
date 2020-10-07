@@ -19,8 +19,9 @@ export * from "./run-script"
 export interface SeleniumNodeDef extends NodeDef {
     selector : string;
     target : string;
-    timeout : number;
-    waitFor : number;
+    // Node-red only push string from properties if modified by user
+    timeout : string;
+    waitFor : string;
 }
 
 export interface SeleniumNode extends Node<any> {
@@ -36,9 +37,10 @@ export interface SeleniumAction {
 export interface SeleniumMsg extends NodeMessageInFlow {
     driver : WebDriver | null;
     selector? : string;
+    // Node-red only push string from properties if modified by user
     target? : string;
-    timeout? : number;
-    waitFor? : number;
+    timeout? : string;
+    waitFor? : string;
     error? : any;
     element? : WebElement;
     webTitle? : string;
@@ -61,8 +63,8 @@ export interface SeleniumMsg extends NodeMessageInFlow {
  */
 export function waitForElement(conf : SeleniumNodeDef, msg : SeleniumMsg) : Observable<string | WebElement>{
     return new Observable<string | WebElement> ((subscriber) => {
-        const waitFor : number = msg.waitFor ?? conf.waitFor;
-        const timeout : number = msg.timeout ?? conf.timeout;
+        const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
+        const timeout : number = parseInt(msg.timeout ?? conf.timeout, 10);
         const target : string = msg.target ?? conf.target;
         const selector : string = msg.selector ?? conf.selector;
         let element : WebElement;

@@ -29,7 +29,7 @@ export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigat
             const webTitle = msg.url ?? conf.url;
             const type = msg.navType ?? conf.navType;
             const url = msg.url ?? conf.url;
-            const waitFor = msg.waitFor ?? conf.waitFor;
+            const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
             setTimeout (async () => {
                 try {
                     node.status({ fill : "blue", shape : "ring", text : "loading"});

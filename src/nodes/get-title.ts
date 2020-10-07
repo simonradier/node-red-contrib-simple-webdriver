@@ -26,8 +26,8 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
             done(error);
         } else {
             const expected = msg.expected ?? conf.expected;
-            const waitFor = msg.waitFor ?? conf.waitFor;
-            const timeout = msg.timeout ?? conf.timeout;
+            const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
+            const timeout : number = parseInt(msg.timeout ?? conf.timeout, 10);
             setTimeout (async () => {
                 if (expected && expected !== "") {
                     try {
@@ -45,7 +45,7 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                             } catch (sube) {
                                 msg.payload = "[Unknown]";
                             }
-                            const error = { message : "Browser windows title does not have the expected value", expected : expected, found : msg.webTitle}
+                            const error = { message : "Browser windows title does not have the expected value", expected, found : msg.webTitle}
                             node.warn(error.message);
                             msg.error = error;
                             node.status({ fill : "yellow", shape : "dot", text : "wrong title"});
