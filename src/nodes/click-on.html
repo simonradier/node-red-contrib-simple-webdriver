@@ -3,6 +3,12 @@
 		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
 		<input type="text" id="node-input-name">
 	</div>
+	<div class="form-row">	
+		<label for="node-input-clickOn"><i class="fa fa-mouse-pointer"></i> <span>Clik On</span></label>	
+		<input type="checkbox" id="node-input-clickOn" style="display: inline-block; width: auto; vertical-align: top;">
+		<label for="node-input-appendNewline" style="width: 70%;"><span>Require manual approval on click to continue</span></label>
+	</div>
+	<hr align="middle">
 	<div class="form-row">
 		<label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
 		<select id="node-input-selector" style="width:125px !important">
@@ -25,14 +31,10 @@
 		<label for="node-input-timeout"><i class="fa fa-clock-o"></i> <span>Timeout</span></label>
 		<input type="text" id="node-input-timeout" value="1000">
 	</div>
+	<hr align="middle">
 	<div class="form-row">
 		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
 		<input type="text" id="node-input-waitFor" value="500">
-	</div>
-	<div class="form-row">	
-		<label for="node-input-clickOn"><i class="fa fa-mouse-pointer"></i> <span>Clik On</span></label>	
-		<input type="checkbox" id="node-input-clickOn" style="display: inline-block; width: auto; vertical-align: top;">
-		<label for="node-input-appendNewline" style="width: 70%;"><span>Require manual approval on click to continue</span></label>
 	</div>
 </script>
 
@@ -85,14 +87,14 @@
 		</ol>
 	
 	<h3>Details</h3>
-		<p> This node is used to find an element in the web page which can be later used to launch action on it.</p>
+		<p> This node is used to simulate a click on an element in the web page.</p>
 		<p>
 			<ul>
-				<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
+				<li><a>Click On</a>: pause the node until a user click on the node button. The <code>msg.clickOn</code> will override the <code>Click On</code> field if set.</li>
+				<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
 				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
 				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
 				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
-				<li><a>Click On</a>: pause the node until a user click on the node button. The <code>msg.clickOn</code> will override the <code>Click On</code> field if set.</li>
 			</ul>
 		</p>
 		<p>In case of find error, the secondary output will be used with an error which detailled the failure case</p>

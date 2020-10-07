@@ -1,12 +1,12 @@
 
 <script type="text/html" data-template-name="close-web">
 	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
+		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
 		<input type="text" id="node-input-name">
 	</div>
 	<div class="form-row">
-		<label for="node-input-waitFor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
-		<input type="text" id="node-input-waitFor" value="00">
+		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
+		<input type="text" id="node-input-waitFor" value="500">
 	</div>
 </script>
 
@@ -36,7 +36,7 @@
 		</ol>
 	
 	<h3>Details</h3>
-		<p> This node is used to find an element in the web page which can be later used to launch action on it.</p>
+		<p> This node is used to close gracefully the browser and stop the selenium connection.</p>
 		<p>	
 			<ul>
 				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
