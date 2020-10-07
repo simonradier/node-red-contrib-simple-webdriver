@@ -7,7 +7,6 @@ import { By, until, WebDriver, WebElement } from "selenium-webdriver";
 export * from "./open-web";
 export * from "./close-web";
 export * from "./find-element";
-export * from "./selenium-server";
 export * from "./get-title";
 export * from "./click-on";
 export * from "./send-keys";
@@ -45,6 +44,7 @@ export interface SeleniumMsg extends NodeMessageInFlow {
     webTitle? : string;
     click? : boolean;
     clearVal? : boolean;
+    keys? : string;
     value? : string;
     expected? : string;
     attribute? : string;
