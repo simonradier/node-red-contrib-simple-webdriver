@@ -29,17 +29,17 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
             setTimeout(async () => {
                 try {
                     this.status({ fill : "blue", shape : "ring", text : "closing"});
-                    await msg.driver?.quit();
+                    await msg.driver.quit();
                     msg.driver = null;
                     this.status({ fill : "green", shape : "dot", text : "closed"});
-                    send([msg, null]);
+                    send(msg);
                     done();
                 } catch (e) {
-                    this.warn("Can't close the browser, check msg.error for more information")
+                    this.warn("Can't close the browser, check msg.error for more information");
+                    msg.driver = null;
                     msg.error = e;
-                    this.status({ fill : "red", shape : "dot", text : "error"});
-                    send([null, msg]);
-                    done();
+                    this.status({ fill : "red", shape : "dot", text : "critical error"});
+                    done(e);
                 }
             }, waitFor);
         }

@@ -11,15 +11,42 @@
 </script>
 
 <script type="text/html" data-help-name="close-web">
-	<p>Close the web browser which is openned by the open-web node and finalize the selenium session.</p>
-	<strong>Outputs:</strong>
-	<ul>
-	<li><u>First output : </u> this ouput is used in case of success of exit.</li>
-	<li><u>Second output : </u> this ouput is used in case of failure of exit.<li>
-	<ul>
-	<strong>MSG:</strong>
-	<p><code>msg.error</code> In caise of failure, this node generates the error with detailled information</p>
-	<p><code>msg.driver</code> should be null in case of success</p>
+	<p>Close the web browser which is openned by the open-web node and finalize the selenium session.</p>		
+	<h3>Inputs</h3>
+		<dl class="message-properties">
+			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+			<dd> the pause time before launching the close request.</dd>
+		</dl>
+	<h3>Outputs</h3>
+		<ol class="node-ports">
+			<li>Primary output
+				<dl class="message-properties">
+					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+					<dd>the value is set to null in case of success.</dd>
+				</dl>
+			</li>
+			<li>Error
+				<dl class="message-properties">
+					<dt>error<span class="property-type">Error</span></dt>
+					<dd>the critical error which describe the issue encoutered.</dd>
+				</dl>
+			</li>
+		</ol>
+	
+	<h3>Details</h3>
+		<p> This node is used to find an element in the web page which can be later used to launch action on it.</p>
+		<p>	
+			<ul>
+				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+			</ul>
+		</p>
+		<p>In case of a an error , the node will raise an error and put it in msg.error, msg.driver is cleaned and unset.</p>
+	<h3>References</h3>
+		<ul>
+			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+		</ul>
 </script>
 
 <script type="text/javascript">
@@ -36,7 +63,7 @@
 		},
 		color : "#47B6EE",
 		inputs : 1,
-		outputs : 2,
+		outputs : 1,
 		icon : "font-awesome/fa-window-close-o",
 		label : function() {
 			return this.name || "Close";
