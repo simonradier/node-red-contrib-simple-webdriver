@@ -32,17 +32,67 @@
 </script>
 
 <script type="text/html" data-help-name="find-element">
-	<p>Find an object or element by using selenium webdriver <code>findElement()</code>.</p>
-	<strong>Inputs:</strong>
-	<p><ul>
-		<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
-		<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
-		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
-	</ul></p>
-	<strong>Outputs:</strong>
-	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
-	<p><code>msg.element</code> If the element is found, it will be passed though the msg object to the next node.</p>
+	<p>Find an object or element by using selenium webdriver <code>findElement()</code>.</p>		
+	<h3>Inputs</h3>
+		<dl class="message-properties">
+			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt class="optional">selector<span class="property-type">string</span></dt>
+			<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, cssSelector).</dd>
+			<dt class="optional">target<span class="property-type">string</span></dt>
+			<dd> the name of the target to find.</dd>
+			<dt class="optional">timeout (msec)<span class="property-type">Number</span></dt>
+			<dd> the timeout value of the find request.</dd>
+			<dt class="optional">waitFor (msec)<span class="property-type">Number</span></dt>
+			<dd> the pause time before launching the find request.</dd>
+		</dl>
+	
+	<h3>Outputs</h3>
+		<ol class="node-ports">
+			<li>Success output (Primary)
+				<dl class="message-properties">
+					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+					<dd>the WebDriver object required to execute Selenium actions.</dd>
+				</dl>
+				<dl class="message-properties">
+				<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+				<dd>the WebElement object required to execute Selenium actions.</dd>
+			</dl>
+			</li>
+			<li>Failure output (Secondary)
+			<dl class="message-properties">
+				<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+				<dd>the WebDriver object required to execute Selenium actions.</dd>
+			</dl>
+			<dl class="message-properties">
+				<dt>error<span class="property-type">Error</span></dt>
+				<dd>the selenium error which describe the failure cause.</dd>
+			</dl>
+		</li>
+			<li>Critical error
+			<dl class="message-properties">
+				<dt>error<span class="property-type">Error</span></dt>
+				<dd>the critical error which describe the issue encoutered.</dd>
+			</dl>
+		</li>
+		</ol>
+	
+	<h3>Details</h3>
+		<p> This node is used to find an element in the web page which can be later used to launch action on it.</p>
+		<p>
+			<ul>
+				<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
+				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
+				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
+				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+			</ul>
+		</p>
+		<p>In case of find error, the secondary output will be used with an error which detailled the failure case</p>
+		<p>In case of a critical error (meaning the driver connection is lost), the node will raise an error and put it in msg.error, msg.driver is cleaned as well and unset.</p>
+	<h3>References</h3>
+		<ul>
+			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+		</ul>
 </script>
 
 <script type="text/javascript">
@@ -73,6 +123,7 @@
 		color : "#47B6EE",
 		inputs : 1,
 		outputs : 2,
+		outputLabels: ["success", "failure"],
 		icon : "font-awesome/fa-search",
 		label : function() {
 			return this.name || "Find Element";
