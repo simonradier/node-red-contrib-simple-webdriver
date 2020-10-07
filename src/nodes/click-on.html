@@ -123,11 +123,11 @@
 			},
 			timeout : {
 				value : 1000,
-				validate : RED.validators.number()
+				validate : RED.validators.number(),
 			}, 
 			waitFor : {
 				value : 500,
-				validate : RED.validators.number()
+				validate : RED.validators.number(),
 			},
 			clickOn : {
 				value : false
@@ -174,13 +174,12 @@
         },
 		oneditprepare : function() {
 			let node = this;
-			console.log("hello");
 			$("#node-input-selector").on("change", (event) => {
 				if ($("#node-input-selector").val() === "")
 					$("#row-input-target").hide();
 				else
 					$("#row-input-target").show();
 			});
-		},
+		}
 	}); 
 </script>
