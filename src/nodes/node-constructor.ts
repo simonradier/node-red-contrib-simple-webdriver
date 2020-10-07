@@ -46,6 +46,7 @@ export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef ext
                                 } catch (e) {
                                     node.status({ fill : "red", shape : "dot", text : "critical error"});
                                     node.error(e.toString());
+                                    delete msg.driver;
                                     done(e);
                                 }
                             }
@@ -55,6 +56,7 @@ export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef ext
             } catch (e) {
                 node.status({ fill : "red", shape : "dot", text : "critical error"});
                 node.error(e.toString());
+                delete msg.driver;
                 done(e);
             }
         });  
