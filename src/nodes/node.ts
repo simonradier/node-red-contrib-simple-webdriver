@@ -70,7 +70,7 @@ export function waitForElement(conf : SeleniumNodeDef, msg : SeleniumMsg) : Obse
         setTimeout (async () => {
             try {
                 subscriber.next("locating");
-                if (target !== "" && selector !== "") {
+                if (selector !== "") {
                     // @ts-ignore
                     element = await msg.driver.wait(until.elementLocated(By[selector](target)), timeout);
                 } else {
