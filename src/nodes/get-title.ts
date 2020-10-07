@@ -4,7 +4,7 @@ import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeGetTitleDef extends SeleniumNodeDef {
-    webTitle : string;
+    expected : string;
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -25,13 +25,13 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
-            const webTitle = msg.webTitle ?? conf.webTitle;
+            const expected = msg.expected ?? conf.expected;
             const waitFor = msg.waitFor ?? conf.waitFor;
             const timeout = msg.timeout ?? conf.timeout;
             setTimeout (async () => {
-                if (webTitle && webTitle !== "") {
+                if (expected && expected !== "") {
                     try {
-                        await msg.driver.wait(until.titleIs(webTitle), timeout);
+                        await msg.driver.wait(until.titleIs(expected), timeout);
                         send([msg, null]);
                         node.status({ fill : "green", shape : "dot", text : "success"});
                         done();
@@ -41,11 +41,11 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                             done(e);
                         } else {
                             try {
-                                msg.webTitle = await msg.driver.getTitle();
+                                msg.payload = await msg.driver.getTitle();
                             } catch (sube) {
-                                msg.webTitle = "[Unknown]";
+                                msg.payload = "[Unknown]";
                             }
-                            const error = { message : "Browser windows title does not have the expected value", expected : webTitle, found : msg.webTitle}
+                            const error = { message : "Browser windows title does not have the expected value", expected : expected, found : msg.webTitle}
                             node.warn(error.message);
                             msg.error = error;
                             node.status({ fill : "yellow", shape : "dot", text : "wrong title"});
@@ -55,13 +55,12 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                     }
                 } else {
                     try {
-                        msg.webTitle = await msg.driver.getTitle();
+                        msg.payload = await msg.driver.getTitle();
                         node.status({ fill : "green", shape : "dot", text : "success"});
                         if (msg.error) { delete msg.error; }
                         send([msg, null]);
                         done();
                     } catch (e) {
-                        msg.webTitle = null;
                         node.status({ fill : "red", shape : "dot", text : "error"});
                         node.error("Can't get title of the browser window. Check msg.error for more information");
                         done (e);

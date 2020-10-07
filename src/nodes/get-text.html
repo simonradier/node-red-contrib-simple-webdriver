@@ -1,9 +1,5 @@
 <script type="text/html" data-template-name="get-text">
 	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
-	</div>
-	<div class="form-row">
 		<label for="node-input-expected"><i class="fa fa-check"></i> <span>Expected</span></label>
 		<input type="text" id="node-input-expected">
 	</div>
@@ -33,7 +29,12 @@
 	<hr align="middle">
 	<div class="form-row">
 		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
-		<input type="text" id="node-input-waitFor" value="00">
+		<input type="text" id="node-input-waitFor" value="500">
+	</div>
+	<hr align="middle">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
 	</div>
 </script>
 
@@ -43,6 +44,8 @@
 		<dl class="message-properties">
 			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
 			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt class="optional">element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+			<dd>the WebElement object required to execute Selenium actions.</dd>
 			<dt class="optional">expected<span class="property-type">string</span></dt>
 			<dd> the expected value of the text.</dd>
 			<dt class="optional">selector<span class="property-type">string</span></dt>

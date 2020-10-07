@@ -1,11 +1,17 @@
 <script type="text/html" data-template-name="run-script">
-	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-globe"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
+	<div class="form-row" style="margin-bottom: 0px;">
+		<label for="node-input-script"><i class="fa fa-wrench"></i> <span>Function</span></label>
+		<input type="hidden" id="node-input-script" autofocus="autofocus">
+		<input type="hidden" id="node-input-noerr">
 	</div>
+	<div class="form-row node-text-editor-row">
+		<div style="height: 250px;" class="node-text-editor" id="node-input-script-editor" ></div>
+	</div>
+	<hr align="middle">
 	<div class="form-row">
-		<label for="node-input-selector"><i class="fa fa-empire"></i> <span>By</span></label>
+		<label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
 		<select id="node-input-selector" style="width:125px !important">
+			<option value=""></option>
 			<option value="id">id</option>
 			<option value="name">name</option>
 			<option value="link">link</option>
@@ -16,35 +22,94 @@
 			<option value="cssSelector">cssSelector</option>
 		</select>
 	</div>
-	<div class="form-row">
-		<label for="node-input-target"><i class="fa fa-empire"></i> <span>Target</span></label>
+	<div class="form-row" id="row-input-target">
+		<label for="node-input-target"><i class="fa fa-dot-circle-o"></i> <span>Target</span></label>
 		<input type="text" id="node-input-target">
 	</div>
 	<div class="form-row">
-		<label for="node-input-timeout"><i class="fa fa-empire"></i> <span>Timeout</span></label>
+		<label for="node-input-timeout"><i class="fa fa-clock-o"></i> <span>Timeout</span></label>
 		<input type="text" id="node-input-timeout" value="1000">
 	</div>
+	<hr align="middle">
 	<div class="form-row">
-		<label for="node-input-waitfor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
-		<input type="text" id="node-input-waitfor" value="00">
+		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
+		<input type="text" id="node-input-waitFor" value="00">
 	</div>
-	<div class="form-row" style="margin-bottom: 0px;">
-		<label for="node-input-script"><i class="fa fa-wrench"></i> <span>Function</span></label>
-		<input type="hidden" id="node-input-script" autofocus="autofocus">
-		<input type="hidden" id="node-input-noerr">
-	</div>
-	<div class="form-row node-text-editor-row">
-	<div style="height: 250px;" class="node-text-editor" id="node-input-script-editor" ></div>
+	<hr align="middle">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
 	</div>
 </script>
 
 <script type="text/html" data-help-name="run-script">
 	<p>A function block where you can write code to run in the browser context of an existing element.</p>
-	<p>The parameters is passed in as a JavaScript object called <code>msg.driver</code> and <code>msg.element</code>.</p>
-	<strong>Outputs:</strong>
-	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
-	<p><code>msg.element</code> If the element is found, it will be passed though the msg object to the next node.</p>	
-	<strong>Logging and Error Handling</strong>
+		
+	<h3>Inputs</h3>
+		<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+		<dd>the WebDriver object required to execute Selenium actions.</dd>
+		<dt class="optional">element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+		<dd>the WebElement object required to execute Selenium actions.</dd>
+		<dt class="optional">script<span class="property-type">string</span></dt>
+		<dd> the script which must be executed by the browser.</dd>
+		<dt class="optional">selector<span class="property-type">string</span></dt>
+		<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, cssSelector).</dd>
+		<dt class="optional">target<span class="property-type">string</span></dt>
+		<dd> the name of the target to find.</dd>
+		<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
+		<dd> the timeout value of the find request.</dd>
+		<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+		<dd> the pause time before launching the node action.</dd>
+
+	<h3>Outputs</h3>
+		<ol class="node-ports">
+			<li>Success output (Primary)
+				<dl class="message-properties">
+					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+					<dd>the WebDriver object required to execute Selenium actions.</dd>
+				</dl>
+				<dl class="message-properties">
+					<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+					<dd>the WebElement object required to execute Selenium actions (if Selector & Target are set)</dd>
+				</dl>
+			</li>
+			<li>Failure output (Secondary)
+				<dl class="message-properties">
+					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+					<dd>the WebDriver object required to execute Selenium actions.</dd>
+				</dl>
+				<dl class="message-properties">
+					<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+					<dd>the WebElement object required to execute Selenium actions (if Selector & Target are set)</dd>
+				</dl>
+				<dl class="message-properties">
+					<dt>error<span class="property-type">Error</span></dt>
+					<dd>the selenium error which describe the failure cause.</dd>
+				</dl>
+			</li>
+			<li>Critical error
+				<dl class="message-properties">
+					<dt>error<span class="property-type">Error</span></dt>
+					<dd>the critical error which describe the issue encoutered.</dd>
+				</dl>
+			</li>
+		</ol>
+
+	<h3>Details</h3>
+		<p>This node is used to run a javascript code in the browser and attached to the element context.</p>
+		<p>
+			<ul>
+				<li><a>Script</a>: specify the javascript code which must be executed by the browser. The <code>msg.script</code> will override the <code>Script</code> field if set.</li>
+				<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
+				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
+				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
+				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+			</ul>
+		</p>
+	<h3>References</h3>
+		<ul>
+			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+		</ul>
 </script>
 
 <script type="text/javascript">
@@ -75,6 +140,7 @@
 		color : "#47B6EE",
 		inputs : 1,
 		outputs : 2,
+		outputLabels: ["success", "failure"],
 		icon : "debug.png",
 		label : function() {
 			return this.name || "Run Script";
@@ -84,6 +150,14 @@
 		},
 		oneditprepare : function() {
 			var that = this;
+			
+			$("#node-input-navType").on("change", (event) => {
+				if ($("#node-input-navType").val() !== "to")
+					$("#row-input-url").hide();
+				else
+					$("#row-input-url").show();
+			});
+			
 			function functionDialogResize() {
 				var rows = $("#dialog-form>div:not(.node-text-editor-row)");
 				var height = $("#dialog-form").height();

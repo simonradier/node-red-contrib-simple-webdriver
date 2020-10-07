@@ -1,12 +1,8 @@
 <script type="text/html" data-template-name="click-on">
-	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
-	</div>
 	<div class="form-row">	
 		<label for="node-input-clickOn"><i class="fa fa-mouse-pointer"></i> <span>Clik On</span></label>	
 		<input type="checkbox" id="node-input-clickOn" style="display: inline-block; width: auto; vertical-align: top;">
-		<label for="node-input-appendNewline" style="width: 70%;"><span>Require manual approval on click to continue</span></label>
+		<label for="node-input-clickOn" style="width: 70%;"><span>Require manual approval on click to continue</span></label>
 	</div>
 	<hr align="middle">
 	<div class="form-row">
@@ -36,6 +32,11 @@
 		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
 		<input type="text" id="node-input-waitFor" value="500">
 	</div>
+	<hr align="middle">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
+	</div>
 </script>
 
 <script type="text/html" data-help-name="click-on">
@@ -44,6 +45,8 @@
 		<dl class="message-properties">
 			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
 			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt class="optional">element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+			<dd>the WebElement object required to execute Selenium actions.</dd>
 			<dt class="optional">selector<span class="property-type">string</span></dt>
 			<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, cssSelector).</dd>
 			<dt class="optional">target<span class="property-type">string</span></dt>
@@ -64,9 +67,9 @@
 					<dd>the WebDriver object required to execute Selenium actions.</dd>
 				</dl>
 				<dl class="message-properties">
-				<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
-				<dd>the WebElement object required to execute Selenium actions.</dd>
-			</dl>
+					<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+					<dd>the WebElement object required to execute Selenium actions.</dd>
+				</dl>
 			</li>
 			<li>Failure output (Secondary)
 			<dl class="message-properties">

@@ -1,33 +1,88 @@
 <script type="text/html" data-template-name="get-title">
 	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-search"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
+		<label for="node-input-expected"><i class="fa fa-check"></i> <span>Expected</span></label>
+		<input type="text" id="node-input-expected">
 	</div>
 	<div class="form-row">
-		<label for="node-input-webTitle"><i class="fa fa-empire"></i> <span>Web Title</span></label>
-		<input type="text" id="node-input-webTitle">
-	</div>
-	<div class="form-row">
-		<label for="node-input-timeout"><i class="fa fa-empire"></i> <span>Timeout</span></label>
+		<label for="node-input-timeout"><i class="fa fa-clock-o"></i> <span>Timeout</span></label>
 		<input type="text" id="node-input-timeout" value="1000">
 	</div>
 	<div class="form-row">
-		<label for="node-input-waitFor"><i class="fa fa-empire"></i> <span>Wait For</span></label>
+		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
 		<input type="text" id="node-input-waitFor" value="00">
+	</div>
+	<hr align="middle">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+		<input type="text" id="node-input-name">
 	</div>
 </script>
 
 <script type="text/html" data-help-name="get-title">
 	<p>Get windows Title by using selenium webdriver <code>getTitle()</code>.</p>
-	<strong>Inputs:</strong>
-	<p><ul>
-		<li><a>Web Title</a>: specify the expected title to compare if set. Otherwise this node will bypass the sanity check operation.</li>The <code> msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
-	</ul></p>
-	<strong>Outputs:</strong>
-	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
-	<p><code>msg.webTitle</code> The retreived title of the browser's window</p>
+	<h3>Inputs</h3>
+		<dl class="message-properties">
+			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt class="optional">expected<span class="property-type">string</span></dt>
+			<dd> the expected value of the title.</dd>
+			<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
+			<dd> the timeout value of the find request.</dd>
+			<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+			<dd> the pause time before launching the node action.</dd>
+		</dl>
+	
+	<h3>Outputs</h3>
+		<ol class="node-ports">
+			<li>Success output (Primary)
+				<dl class="message-properties">
+					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+					<dd>the WebDriver object required to execute Selenium actions.</dd>
+				</dl>
+				<dl class="message-properties">
+					<dt>payload <span class="property-type">string</span></dt>
+					<dd>the title value.</dd>
+				</dl>
+			</li>
+			<li>Failure output (Secondary)
+				<dl class="message-properties">
+					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+					<dd>the WebDriver object required to execute Selenium actions.</dd>
+				</dl>
+				<dl class="message-properties">
+					<dt>payload <span class="property-type">string</span></dt>
+					<dd>the title value.</dd>
+				</dl>
+				<dl class="message-properties">
+					<dt>error<span class="property-type">Error</span></dt>
+					<dd>the selenium error which describe the failure cause.</dd>
+				</dl>
+			</li>
+			<li>Critical error
+				<dl class="message-properties">
+					<dt>error<span class="property-type">Error</span></dt>
+					<dd>the critical error which describe the issue encoutered.</dd>
+				</dl>
+			</li>
+		</ol>
+	
+	<h3>Details</h3>
+		<p> This node is used to retreive the current title of the web page.</p>
+		<p>
+			<ul>
+				<li><a>Expected</a>: (if set) specify the expected value of the attribute to retrieve and go to failure output in case of disalignment. The <code>msg.expected</code> will override the <code>Attribute</code> field if set.</li>
+				<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
+				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
+				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
+				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+			</ul>
+		</p>
+		<p>In case of find error, the secondary output will be used with an error which detailled the failure case</p>
+		<p>In case of a critical error (meaning the driver connection is lost), the node will raise an error and put it in msg.error, msg.driver is cleaned as well and unset.</p>
+	<h3>References</h3>
+		<ul>
+			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+		</ul>	
 </script>
 
 <script type="text/javascript">
@@ -37,9 +92,8 @@
 			name : {
 				value : ""
 			},
-			webTitle : {
+			expected : {
 				value : "",
-				required : true
 			},
 			timeout : {
 				value : 3000,
@@ -54,12 +108,23 @@
 		color : "#47B6EE",
 		inputs : 1,
 		outputs : 2,
+		outputLabels: ["success", "failure"],		
 		icon : "font-awesome/fa-header",
 		label : function() {
 			return this.name || "Get Title";
 		},
 		labelStyle : function() {
 			return this.name ? "node_label_italic" : "";
+		},
+		oneditprepare : function() {
+			let node = this;
+			console.log("hello");
+			$("#node-input-selector").on("change", (event) => {
+				if ($("#node-input-selector").val() === "")
+					$("#row-input-target").hide();
+				else
+					$("#row-input-target").show();
+			});
 		}
 	}); 
 </script>

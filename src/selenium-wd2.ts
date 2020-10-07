@@ -1,12 +1,11 @@
 import { NodeAPI, NodeAPISettingsWithData} from "node-red";
 import { NodeNavigateConstructor } from "./nodes/navigate";
-import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetAttributeConstructor, NodeGetTextConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeRunScriptConstructor, NodeSeleniumServerConstructor, NodeSendKeysConstructor, NodeSetValueConstructor } from "./nodes/node";
+import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetAttributeConstructor, NodeGetTextConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeRunScriptConstructor, NodeSendKeysConstructor, NodeSetValueConstructor } from "./nodes/node";
 import { WD2Manager } from "./wd2-manager";
 
 
 export = (RED : NodeAPI<NodeAPISettingsWithData>) => {
     WD2Manager.init(RED);
-    RED.nodes.registerType("selenium-server", NodeSeleniumServerConstructor);
     RED.nodes.registerType("open-web", NodeOpenWebConstructor);
     RED.nodes.registerType("close-web", NodeCloseWebConstructor);
     RED.nodes.registerType("get-title", NodeGetTitleConstructor);

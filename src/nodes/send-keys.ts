@@ -4,7 +4,7 @@ import { SeleniumAction, SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./no
 import { GenericSeleniumConstructor } from "./node-constructor";
 
 export interface NodeSendKeysDef extends SeleniumNodeDef {
-    value : string;
+    keys : string;
     clearVal : string;
 }
 
@@ -16,7 +16,7 @@ async function inputAction (node : NodeSendKeys, conf : NodeSendKeysDef, action 
     return new Promise<void> (async (resolve, reject) => {
         const msg = action.msg;
         const clearVal = msg.clearVal ?? conf.clearVal;
-        const value = msg.value ?? conf.value;
+        const keys = msg.keys ?? conf.keys;
         let step = "";
         try {
             if (clearVal){
@@ -25,7 +25,7 @@ async function inputAction (node : NodeSendKeys, conf : NodeSendKeysDef, action 
                 await msg.element.clear();
             }
             step = "send keys";
-            await msg.element.sendKeys(value);
+            await msg.element.sendKeys(keys);
             node.status({ fill : "green", shape : "dot", text : "success"})
             if (msg.error) { delete msg.error; }
             action.send([msg, null]);
