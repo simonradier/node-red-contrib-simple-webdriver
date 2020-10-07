@@ -17,7 +17,7 @@
 			<option value="cssSelector">cssSelector</option>
 		</select>
 	</div>
-	<div class="form-row">
+	<div class="form-row" id="row-input-target">
 		<label for="node-input-target"><i class="fa fa-empire"></i> <span>Target</span></label>
 		<input type="text" id="node-input-target">
 	</div>
@@ -31,23 +31,75 @@
 	</div>
 	<div class="form-row">		
 		<input type="checkbox" id="node-input-clickOn" style="display: inline-block; width: auto; vertical-align: top;">
-		<label for="node-input-clickOn" style="width: 70%"> <span>Require manual approval on click to continue</span></label>
+		<label for="node-input-clickOn" style="width: 70%"> <span>Clik On : Require manual approval on click to continue</span></label>
 	</div>
 </script>
 
 <script type="text/html" data-help-name="click-on">
-	<p>Click on the <code>msg.element</code> which is passed by previous node or after waiting for the expected element is located.</p>
-	<strong>Inputs:</strong>
-	<p><ul>
-		<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
-		<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
-		<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-		<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitfor</code> will override the <code>Wait For</code> field if set.</li>
-		<li><a>Click On</a>: specify to wait until user click action on the node. The <code>msg.clickOn</code> will override the <code>Click On</code> field if set.</li>
-	</ul></p>	
-	<strong>Outputs:</strong>
-	<p><code>msg.error</code> When the object is unexpected or cannot find element, this node generates the error with detail information</p>
-	<p><code>msg.element</code> If the element is found, it will be passed though the msg object to the next node.</p>
+	<p>Click on the WebElement which is passed by previous node or after the expected element is located.</p>
+	<h3>Inputs</h3>
+		<dl class="message-properties">
+			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt class="optional">selector<span class="property-type">string</span></dt>
+			<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, cssSelector).</dd>
+			<dt class="optional">target<span class="property-type">string</span></dt>
+			<dd> the name of the target to find.</dd>
+			<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
+			<dd> the timeout value of the find request.</dd>
+			<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+			<dd> the pause time before launching the node action.</dd>
+			<dt class="optional">clickOn<span class="property-type">boolean</span></dt>
+			<dd> the behavior of the click </dd>
+		</dl>
+	
+	<h3>Outputs</h3>
+		<ol class="node-ports">
+			<li>Success output (Primary)
+				<dl class="message-properties">
+					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+					<dd>the WebDriver object required to execute Selenium actions.</dd>
+				</dl>
+				<dl class="message-properties">
+				<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
+				<dd>the WebElement object required to execute Selenium actions.</dd>
+			</dl>
+			</li>
+			<li>Failure output (Secondary)
+			<dl class="message-properties">
+				<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
+				<dd>the WebDriver object required to execute Selenium actions.</dd>
+			</dl>
+			<dl class="message-properties">
+				<dt>error<span class="property-type">Error</span></dt>
+				<dd>the selenium error which describe the failure cause.</dd>
+			</dl>
+		</li>
+			<li>Critical error
+			<dl class="message-properties">
+				<dt>error<span class="property-type">Error</span></dt>
+				<dd>the critical error which describe the issue encoutered.</dd>
+			</dl>
+		</li>
+		</ol>
+	
+	<h3>Details</h3>
+		<p> This node is used to find an element in the web page which can be later used to launch action on it.</p>
+		<p>
+			<ul>
+				<li><a>By</a>: specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
+				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
+				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
+				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+				<li><a>Click On</a>: pause the node until a user click on the node button. The <code>msg.clickOn</code> will override the <code>Click On</code> field if set.</li>
+			</ul>
+		</p>
+		<p>In case of find error, the secondary output will be used with an error which detailled the failure case</p>
+		<p>In case of a critical error (meaning the driver connection is lost), the node will raise an error and put it in msg.error, msg.driver is cleaned as well and unset.</p>
+	<h3>References</h3>
+		<ul>
+			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+		</ul>
 </script>
 
 <script type="text/javascript">
@@ -112,6 +164,16 @@
                     }
                 });
             }
-        }
+        },
+		oneditprepare : function() {
+			let node = this;
+			console.log("hello");
+			$("#node-input-selector").on("change", (event) => {
+				if ($("#node-input-selector").val() === "")
+					$("#row-input-target").hide();
+				else
+					$("#row-input-target").show();
+			});
+		},
 	}); 
 </script>
