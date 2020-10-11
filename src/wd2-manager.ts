@@ -41,11 +41,11 @@ export class WD2Manager {
             switch (conf.browser) {
                 case 'firefox' :
                     builder = builder.setFirefoxOptions(
-                        new firefox.Options().headless().windowSize({width, height}));
+                        new firefox.Options().headless());
                 break;
                 case 'chrome' :
                     builder = builder.setChromeOptions(
-                        new chrome.Options().headless().windowSize({width, height}));
+                        new chrome.Options().headless());
                 break;
                 default :
                     WD2Manager._RED.log.warn("unsupported headless configuration for" + conf.browser);
