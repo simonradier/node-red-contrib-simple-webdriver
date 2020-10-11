@@ -1,6 +1,7 @@
 import { NodeAPI, NodeAPISettingsWithData} from "node-red";
 import { NodeNavigateConstructor } from "./nodes/navigate";
 import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetAttributeConstructor, NodeGetTextConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeRunScriptConstructor, NodeSendKeysConstructor, NodeSetValueConstructor } from "./nodes/node";
+import { NodeScreenshotConstructor } from "./nodes/screenshot";
 import { WD2Manager } from "./wd2-manager";
 
 
@@ -19,5 +20,7 @@ export = (RED : NodeAPI<NodeAPISettingsWithData>) => {
     RED.nodes.registerType("get-text", NodeGetTextConstructor);
     RED.nodes.registerType("run-script", NodeRunScriptConstructor);
     RED.nodes.registerType("navigate", NodeNavigateConstructor);
+    RED.nodes.registerType("screenshot", NodeScreenshotConstructor);
+
 
 }
