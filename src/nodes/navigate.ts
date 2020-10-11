@@ -57,7 +57,7 @@ export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigat
                         const error = { message : "Can't navigate " + type + (type === "to") ? " : " + url : ""}
                         node.warn(error.message);
                         msg.error = error;
-                        node.status({ fill : "yellow", shape : "dot", text : "wrong title"});
+                        node.status({ fill : "yellow", shape : "dot", text : "navigate error"});
                         send([null, msg]);
                         done();
                     }
