@@ -19,14 +19,14 @@
 			<option value="tagName">tagName</option>
 			<option value="className">className</option>
 			<option value="linkText">linkText</option>
-			<option value="cssSelector">cssSelector</option>
+			<option value="css">cssSelector</option>
 		</select>
 	</div>
 	<div class="form-row" id="row-input-target">
 		<label for="node-input-target"><i class="fa fa-dot-circle-o"></i> <span>Target</span></label>
 		<input type="text" id="node-input-target">
 	</div>
-	<div class="form-row">
+	<div class="form-row" id="row-input-timeout">
 		<label for="node-input-timeout"><i class="fa fa-clock-o"></i> <span>Timeout</span></label>
 		<input type="text" id="node-input-timeout" value="1000">
 	</div>
@@ -55,7 +55,7 @@
 			<dt class="optional">expected<span class="property-type">string</span></dt>
 			<dd> the expected value of the attribute.</dd>
 			<dt class="optional">selector<span class="property-type">string</span></dt>
-			<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, cssSelector).</dd>
+			<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
 			<dt class="optional">target<span class="property-type">string</span></dt>
 			<dd> the name of the target to find.</dd>
 			<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
@@ -171,10 +171,14 @@
 		oneditprepare : function() {
 			let node = this;
 			$("#node-input-selector").on("change", (event) => {
-				if ($("#node-input-selector").val() === "")
+				if ($("#node-input-selector").val() === "") {
 					$("#row-input-target").hide();
-				else
+					$("#row-input-timeout").hide();
+				}
+				else {
 					$("#row-input-target").show();
+					$("#row-input-timeout").show();
+				}
 			});
 		},
 	}); 

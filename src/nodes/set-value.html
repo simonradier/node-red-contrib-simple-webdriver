@@ -1,7 +1,7 @@
 <script type="text/html" data-template-name="set-value">
 	<div class="form-row">
-		<label for="node-input-text"><i class="fa fa-empire"></i> <span>Value</span></label>
-		<input type="text" id="node-input-text">
+		<label for="node-input-value"><i class="fa fa-empire"></i> <span>Value</span></label>
+		<input type="text" id="node-input-value">
 	</div>
 	<hr align="middle">
 	<div class="form-row">
@@ -15,7 +15,7 @@
 			<option value="tagName">tagName</option>
 			<option value="className">className</option>
 			<option value="linkText">linkText</option>
-			<option value="cssSelector">cssSelector</option>
+			<option value="css">cssSelector</option>
 		</select>
 	</div>
 	<div class="form-row" id="row-input-target">
@@ -48,7 +48,7 @@
 		<dt class="optional">value<span class="property-type">string</span></dt>
 		<dd> the keys which must be sent to the browser element.</dd>
 		<dt class="optional">selector<span class="property-type">string</span></dt>
-		<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, cssSelector).</dd>
+		<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
 		<dt class="optional">target<span class="property-type">string</span></dt>
 		<dd> the name of the target to find.</dd>
 		<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
@@ -114,7 +114,7 @@
 			name : {
 				value : ""
 			},
-			text : {
+			value : {
 				value : ""
 			},
 			selector : {
@@ -144,11 +144,15 @@
 		},
 		oneditprepare : function() {
 			let node = this;
-			$("#node-input-navType").on("change", (event) => {
-				if ($("#node-input-navType").val() !== "to")
-					$("#row-input-url").hide();
-				else
-					$("#row-input-url").show();
+			$("#node-input-selector").on("change", (event) => {
+				if ($("#node-input-selector").val() === "") {
+					$("#row-input-target").hide();
+					$("#row-input-timeout").hide();
+				}
+				else {
+					$("#row-input-target").show();
+					$("#row-input-timeout").show();
+				}
 			});
 		},
 	}); 
