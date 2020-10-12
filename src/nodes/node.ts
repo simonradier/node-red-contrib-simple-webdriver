@@ -14,7 +14,9 @@ export * from "./get-value";
 export * from "./set-value";
 export * from "./get-attribute";
 export * from "./get-text";
-export * from "./run-script"
+export * from "./run-script";
+export * from "./screenshot";
+export * from "./set-attribute";
 
 export interface SeleniumNodeDef extends NodeDef {
     selector : string;
