@@ -1,1 +1,6 @@
-Version 0.1.0 : First official release of selenium-wd2 node-red plugin
+Version 0.1.2 : 
+- Update of the package Json to correct a type
+Version 0.1.1 : 
+- Update of README file
+Version 0.1.0 : 
+- First official release of selenium-wd2 node-red plugin
