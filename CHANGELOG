@@ -1,3 +1,5 @@
+Version 0.1.4 : 
+- Added a system of postinstall to patch selenium-webdriver http client behavior (temporary)
 Version 0.1.2 : 
 - Update of the package Json to correct a type
 Version 0.1.1 : 
