@@ -1,7 +1,7 @@
 import { until } from "selenium-webdriver";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
-import * as fs from "fs/promises";
+import * as fs from "fs";
 
 
 // tslint:disable-next-line: no-empty-interface
@@ -33,7 +33,7 @@ export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScr
                 try {
                     const sc = await msg.driver.takeScreenshot();
                     if (filePath)
-                        await fs.writeFile(filePath, sc, "base64");
+                        await fs.promises.writeFile(filePath, sc, "base64");
                     msg.payload = sc;
                     send([msg, null]);
                     node.status({ fill : "green", shape : "dot", text : "success"});

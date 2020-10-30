@@ -1,6 +1,6 @@
 {
 	"name": "node-red-contrib-selenium-wd2",
-	"version": "0.1.4",
+	"version": "0.1.4-3",
 	"description": "Selenium-webdriver nodes for Node-RED based on node-red-contrib-selenium-webdriver",
 	"dependencies": {
 		"rxjs": "~6.6.3",
@@ -36,7 +36,7 @@
 	"scripts": {
 		"prepublishOnly": "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
 		"clean": "rm -rf dist",
-		"postinstall": "cp ./patch/http.js ./node_modules/selenium-webdriver/lib/"
+		"postinstall": "cp ./patch/http.js ./../selenium-webdriver/lib/"
 	},
 	"author": {
 		"name": "Simon Radier"
