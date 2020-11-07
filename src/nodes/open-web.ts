@@ -1,4 +1,5 @@
 import { WD2Manager } from "../wd2-manager";
+import { SimpleDriver } from "../webdriver/simple-driver";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -42,7 +43,7 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
         const msg : SeleniumMsg = message;
         const node = this;
         let driverError = false;
-        msg.driver = WD2Manager.getDriver(conf);
+        msg.driver = new SimpleDriver(conf.serverURL, conf.browser);
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {
             await msg.driver.get(conf.webURL);
@@ -56,12 +57,12 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
         }
         try {
             if (msg.driver) {
-                if (!driverError)
+                /*if (!driverError)
                     if (!conf.headless)
                         if (!conf.maximized)
                             await msg.driver.manage().window().setSize(conf.width, conf.heigth);
                         else
-                            await msg.driver.manage().window().maximize();
+                            await msg.driver.manage().window().maximize();*/
                 send(msg);
                 this.status({ fill : "green", shape : "dot", text : "success"});
                 done();

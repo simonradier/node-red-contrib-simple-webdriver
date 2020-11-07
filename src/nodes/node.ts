@@ -2,6 +2,7 @@ import { NodeMessageInFlow } from "node-red__registry";
 import { Node, NodeDef, NodeMessage } from "node-red";
 import { Observable } from "rxjs";
 import { By, until, WebDriver, WebElement } from "selenium-webdriver";
+import { SimpleDriver } from "../webdriver/simple-driver";
 
 
 export * from "./open-web";
@@ -37,7 +38,7 @@ export interface SeleniumAction {
 }
 
 export interface SeleniumMsg extends NodeMessageInFlow {
-    driver : WebDriver | null;
+    driver : any;
     selector? : string;
     // Node-red only push string from properties if modified by user
     target? : string;
