@@ -8,8 +8,8 @@ export interface NodeOpenWebDef extends SeleniumNodeDef {
     name : string;
     browser : string;
     webURL : string;
-    width : number;
-    heigth : number;
+    width : string;
+    height : string;
     maximized : boolean;
     headless : boolean;
 }
@@ -44,6 +44,7 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
         const node = this;
         let driverError = false;
         msg.driver = new SimpleDriver(conf.serverURL, conf.browser);
+        msg.driver.capabilities.headless = conf.headless;
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {
             await msg.driver.get(conf.webURL);
@@ -52,17 +53,16 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
             node.error("Can't open an instance of " + conf.browser);
             node.status({ fill : "red", shape : "ring", text : "launch error"});
             driverError = true;
-            msg.driver = null;
             done(e);
         }
         try {
             if (msg.driver) {
-                /*if (!driverError)
+                if (!driverError)
                     if (!conf.headless)
                         if (!conf.maximized)
-                            await msg.driver.manage().window().setSize(conf.width, conf.heigth);
+                            await msg.driver.setSize(parseInt(conf.width, 10), parseInt(conf.height, 10));
                         else
-                            await msg.driver.manage().window().maximize();*/
+                            await msg.driver.maximize();
                 send(msg);
                 this.status({ fill : "green", shape : "dot", text : "success"});
                 done();

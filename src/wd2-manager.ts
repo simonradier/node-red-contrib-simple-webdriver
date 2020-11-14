@@ -37,7 +37,7 @@ export class WD2Manager {
         let builder = new Builder().forBrowser(conf.browser).usingServer(conf.serverURL);
         if (conf.headless) {
             const width = conf.width;
-            const height = conf.heigth;
+            const height = conf.height;
             switch (conf.browser) {
                 case 'firefox' :
                     builder = builder.setFirefoxOptions(
