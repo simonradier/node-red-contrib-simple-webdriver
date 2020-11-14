@@ -10,16 +10,17 @@ export class HttpResponse<T> {
 }
 
 
-export async function call<T>(url : string, httpOptions : http.RequestOptions | https.RequestOptions, data : any = null) : Promise<HttpResponse<T>> {
+export async function call<T>(url : string, httpOptions : http.RequestOptions | https.RequestOptions, body : any = null) : Promise<HttpResponse<T>> {
     return new Promise<HttpResponse<any>> ((resolve, reject) => {
         let req : http.ClientRequest;
+        let sBody = JSON.stringify(body);
+        if (body)
+            httpOptions.headers['Content-Length'] = sBody.length;
         if (url.startsWith("https://")) {
                 req = https.request(url, httpOptions);
         } else {
                 req = http.request(url, httpOptions);
         }
-        if (data)
-            req.write(JSON.stringify(data));
         req.on('response', (res) => {
             let data = '';
             res.on("data", (chunk) => {
@@ -32,7 +33,7 @@ export async function call<T>(url : string, httpOptions : http.RequestOptions | 
                 response.statusMessage = res.statusMessage
                 response.url = url;
                 resolve(response);
-            });
+            });  
             res.on('error', (err) => {
                 reject(err);
             });
@@ -40,6 +41,9 @@ export async function call<T>(url : string, httpOptions : http.RequestOptions | 
         req.on('error', (err) => {
             reject(err);
         });
+        if (body) {
+            req.write(sBody);
+        }
         req.end();
     });
 }

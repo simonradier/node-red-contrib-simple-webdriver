@@ -52,4 +52,3 @@ export async function portCheck(host : string, port : number) : Promise<boolean>
         socket.connect(port, host);
     });
 }
-
