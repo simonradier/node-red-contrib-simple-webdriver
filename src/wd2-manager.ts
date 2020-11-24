@@ -1,14 +1,10 @@
 import { NodeAPI, NodeAPISettingsWithData } from "node-red";
-import { Builder, WebDriver } from "selenium-webdriver";
-import * as chrome from "selenium-webdriver/chrome";
-import * as firefox from "selenium-webdriver/firefox";
 import { NodeOpenWebDef } from "./nodes/node";
 import { portCheck } from "./utils";
 
 export class WD2Manager {
     private static _RED : NodeAPI<NodeAPISettingsWithData>;
     private static _serverURL : string = "";
-    private static _driverList : WebDriver[] = new Array<WebDriver>();
 
     public static get RED () {
         return WD2Manager._RED;
@@ -31,31 +27,6 @@ export class WD2Manager {
         const host = server.split(":")[0];
         const port = server.split(":")[1] || "80";
         return portCheck(host, parseInt(port, 10));
-    }
-
-    public static getDriver(conf : NodeOpenWebDef) : WebDriver {
-        let builder = new Builder().forBrowser(conf.browser).usingServer(conf.serverURL);
-        if (conf.headless) {
-            const width = conf.width;
-            const height = conf.height;
-            switch (conf.browser) {
-                case 'firefox' :
-                    builder = builder.setFirefoxOptions(
-                        new firefox.Options().headless());
-                break;
-                case 'chrome' :
-                    builder = builder.setChromeOptions(
-                        new chrome.Options().headless());
-                break;
-                default :
-                    WD2Manager._RED.log.warn("unsupported headless configuration for" + conf.browser);
-                break;
-            }
-        }
-        const driver = builder.build();
-        WD2Manager._driverList.push(driver);
-
-        return driver;
     }
 
     public static checkIfCritical(error : Error) : boolean {

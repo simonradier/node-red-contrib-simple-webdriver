@@ -1,4 +1,3 @@
-import { until } from "selenium-webdriver";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 

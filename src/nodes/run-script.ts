@@ -16,7 +16,7 @@ async function inputAction (node : NodeRunScript, conf : NodeRunScriptDef, actio
         const msg = action.msg;
         const script = msg.script ?? conf.script;
         try {
-            msg.payload = await msg.driver.executeScript(script, msg.element);
+            msg.payload = await msg.driver.executeSync(script, msg.element);
             node.status({ fill : "green", shape : "dot", text : "success"})
             if (msg.error) { delete msg.error; }
             action.send([msg, null]);

@@ -1,4 +1,3 @@
-import { until } from "selenium-webdriver";
 import { WD2Manager } from "../wd2-manager";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
 
@@ -31,7 +30,8 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
             setTimeout (async () => {
                 if (expected && expected !== "") {
                     try {
-                        await msg.driver.wait(until.titleIs(expected), timeout);
+                        //await msg.driver.wait(until.titleIs(expected), timeout);
+                        await msg.driver.wait(expected, timeout);
                         send([msg, null]);
                         node.status({ fill : "green", shape : "dot", text : "success"});
                         done();

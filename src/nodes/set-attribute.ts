@@ -20,7 +20,7 @@ async function inputAction (node : NodeSetAttribute, conf : NodeSetAttributeDef,
         const value = msg.value ?? conf.value;
         const step = "";
         try {
-			await msg.driver.executeScript("arguments[0].setAttribute(" + "'" + attribute + "', '" + value + "')", msg.element);
+			await msg.driver.executeSync("arguments[0].setAttribute(" + "'" + attribute + "', '" + value + "')", msg.element);
             node.status({ fill : "green", shape : "dot", text : "success"})
             if (msg.error) { delete msg.error; }
             action.send([msg, null]);
