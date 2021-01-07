@@ -11,9 +11,6 @@ export enum LogLevel {
 let Configuration = { logLevel : LogLevel.Debug };
 
 export class Logger {
-    constructor () {
-
-    }
 
     private static _getDateString() : string {
         return new Date().toISOString();
@@ -41,34 +38,70 @@ export class Logger {
         return methodname + "|" + fileLineNumber;
     }
 
-    public static trace(msg : string) {
-        if (Configuration.logLevel <= LogLevel.Trace)
-            console.log("[TRACE]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+    public static trace(msg : any) {
+        if (Configuration.logLevel <= LogLevel.Trace) {
+            if (typeof msg === "object" && msg != null) {
+                console.log("[TRACE]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
+                console.log(msg);
+            }
+            else
+                console.log("[TRACE]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        }
     }
 
-    public static debug(msg : string) {
-        if (Configuration.logLevel <= LogLevel.Debug)
-            console.log("[DEBUG]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+    public static debug(msg : any) {
+        if (Configuration.logLevel <= LogLevel.Debug) {
+            if (typeof msg === "object" && msg != null) {
+                console.log("[DEBUG]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
+                console.log(msg);
+            }
+            else
+                console.log("[DEBUG]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        }
     }
 
     public static info (msg : string) {
-        if (Configuration.logLevel <= LogLevel.Information)
-            console.log("[INFO]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        if (Configuration.logLevel <= LogLevel.Information) {
+            if (typeof msg === "object" && msg != null) {
+                console.log("[INFO]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
+                console.log(msg);
+            }
+            else
+                console.log("[INFO]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        }
     }
 
-    public static warn (msg : string) {        
-        if (Configuration.logLevel <= LogLevel.Warning)
-            console.log("[WARNING]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+    public static warn (msg : string) {
+        if (Configuration.logLevel <= LogLevel.Warning) {
+            if (typeof msg === "object" && msg != null) {
+                console.log("[WARNING]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
+                console.log(msg);
+            }
+            else
+                console.log("[WARNING]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        }
     }
 
     public static error (msg : string) {
-        if (Configuration.logLevel <= LogLevel.Error)
-            console.log("[ERROR]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        if (Configuration.logLevel <= LogLevel.Error) {
+            if (typeof msg === "object" && msg != null) {
+                console.log("[ERROR]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
+                console.log(msg);
+            }
+            else
+                console.log("[ERROR]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        }
     }
 
     public static critical (msg : string) {
-        if (Configuration.logLevel <= LogLevel.Critical)
-            console.log("[CRITICAL]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        if (Configuration.logLevel <= LogLevel.Critical) {
+            if (typeof msg === "object" && msg != null) {
+                console.log("[CRITICAL]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
+                console.log(msg);
+            }
+            else
+                console.log("[CRITICAL]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] " + msg);
+        }
     }
 
 }
