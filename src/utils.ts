@@ -11,6 +11,9 @@ function getValueFromPropertyNameRec(obj : any, listProp : string[])
     return res;
 }
 
+export function replaceMustache(str : string, obj : any) {
+    let mustache = str.match(/\{\{(.*)\}\}/g)
+}
 
 export function replaceVar (str :string, msg : any) {
     if (typeof str !== "string")
