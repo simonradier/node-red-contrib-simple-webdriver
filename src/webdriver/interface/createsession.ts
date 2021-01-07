@@ -1,35 +1,27 @@
-import { WebDriverResponse } from "./webdriver-response";
+import { ResponseDef } from "./response";
 
-export interface Session {
-    acceptInsecureCerts: boolean,
-    acceptSslCerts: boolean,
-    applicationCacheEnabled: boolean,
-    browserConnectionEnabled: boolean,
-    browserName: string,
-    cssSelectorsEnabled: boolean,
-    databaseEnabled: boolean,
-    handlesAlerts: boolean,
-    hasTouchScreen: boolean,
-    javascriptEnabled: boolean,
-    locationContextEnabled: boolean,
-    mobileEmulationEnabled: boolean,
-    nativeEvents: boolean,
-    networkConnectionEnabled: boolean,
-    pageLoadStrategy: string,
-    platform: string,
-    proxy: {},
-    rotatable: boolean,
-    setWindowRect: boolean,
-    strictFileInteractability: boolean,
-    takesHeapSnapshot: boolean,
-    takesScreenshot: boolean,
-    timeouts: {
-      implicit: number,
-      pageLoad: number,
-      script: number
-    },
-    unexpectedAlertBehaviour: string,
-    version : string,
-    webStorageEnabled: boolean,
-    "webauthn:virtualAuthenticators" : boolean
+export interface SessionDef {
+    sessionId : string;
+    capabilities: {
+      acceptInsecureCerts: boolean,
+      browserName: string,
+      browserVersion: string,
+      chrome: {
+          chromedriverVersion: string,
+          userDataDir: string
+      },
+      networkConnectionEnabled: boolean,
+      pageLoadStrategy: string,
+      platformName: string,
+      proxy: {},
+      setWindowRect: true,
+      strictFileInteractability: false,
+      timeouts: {
+          implicit: number,
+          pageLoad: number,
+          script: number
+      },
+      unhandledPromptBehavior: string,
+      "webauthn:virtualAuthenticators": true
+  }
 }
