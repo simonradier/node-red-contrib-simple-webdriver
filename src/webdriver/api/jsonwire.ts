@@ -1,4 +1,4 @@
-import { WDAPIDef, RequestDef } from "../interface/interface";
+import { WDAPIDef, RequestDef } from "../interface";
 
 export class JSONWire implements WDAPIDef {
     SESSION_START(browser: string, headless: boolean): RequestDef {

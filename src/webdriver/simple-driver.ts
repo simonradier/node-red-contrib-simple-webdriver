@@ -1,16 +1,11 @@
 import { WebElement } from "./webdriver";
 import { HttpResponse } from "./utils/http-client";
-import { WindowRect, ElementDef, SessionDef, RequestDef, WDAPIDef, ResponseDef, CookieDef} from "./interface/interface"
+import { WindowRect, ElementDef, SessionDef, TimeoutsDef, WDAPIDef, ResponseDef, CookieDef} from "./interface"
 import * as wdapi from "./api";
 import { LocationError } from "./errors";
-
-class Capabilities {
-    public headless : boolean = false;
-    public args : Array<string> = new Array<string>();
-    public addArguments (arg : string) {
-        this.args.push(arg);
-    }
-}
+import { Capabilities } from "./capabilities";
+import { RequestDef } from "./interface/request";
+import { Logger } from "./utils/logger";
 
 export enum Using {
     id = "id",
@@ -22,13 +17,6 @@ export enum Using {
     tag = "tag name",
     xpath = "xpath"
 }
-
-interface iTimeouts {
-    implicit : number;
-    pageLoad : number;
-    script : number;
-}
-
 enum Protocol {
     W3C = "W3C",
     JSONWire = "JSONWire"
@@ -45,7 +33,7 @@ export class SimpleDriver {
     public get session() {
         return this._session;
     }
-    
+
     private _serverURL : string;
     public get serverURL() {
         return this._serverURL;
@@ -53,9 +41,9 @@ export class SimpleDriver {
 
     public capabilities = new Capabilities();
 
-    private _timeouts : iTimeouts;
+    private _timeouts : TimeoutsDef;
 
-    public get timeouts() : iTimeouts {
+    public get timeouts() : TimeoutsDef {
         return this._timeouts;
     }
 
@@ -301,7 +289,7 @@ export class SimpleDriver {
             try {
                 let resp : HttpResponse<ResponseDef<ElementDef>>;
                 let script = "";
-                let request : WebDriverRequest;
+                let request : RequestDef;
                 switch (using) {
                     case Using.id :
                         script = "return document.getElementById(arguments[0]);"
@@ -319,12 +307,11 @@ export class SimpleDriver {
                         resp = await wdapi.call<ElementDef>(this.serverURL, request);
                     } catch (err) {
                         resp = err.httpResponse;
-                        console.log(resp);
+                        Logger.trace(resp);
                     }
-                } while ((resp.body.value == null || resp.statusCode != 200 ) && timer)
-                if (resp.statusCode == 200 && resp.body.value) {
-                    // @ts-ignore : We want to retrieve the first property of the value
-                    let element = new WebElement(this, resp.body.value[Object.keys(resp.body.value)[0]])
+                } while ((resp.body.value === null || resp.statusCode !== 200 ) && timer)
+                if (resp.statusCode === 200 && resp.body.value) {
+                    const element = new WebElement(this, resp.body.value[Object.keys(resp.body.value)[0]])
                     resolve(element);
                 } else {
                     reject (new LocationError(using, value, timeout));
@@ -335,7 +322,7 @@ export class SimpleDriver {
         });
     }
 
-    public async executeSync(script : string | Function, ...args: any[]) : Promise<any> {
+  public async executeSync(script : string | Function, ...args: any[]) : Promise<any> {
         return new Promise<any> (async (resolve, reject) => {
             if (typeof script !== "string")
                 script = 'return (' + script + ').apply(null, arguments);'
@@ -347,7 +334,7 @@ export class SimpleDriver {
         });
     }
 
-
+    // eslint-disable-next-line
     public async executeAsync(script : string | Function, ...args : any[]) {
         return new Promise<any> (async (resolve, reject) => {
             if (typeof script !== "string")
@@ -367,7 +354,7 @@ export class SimpleDriver {
     protected async _startSession() : Promise<boolean> {
         return new Promise<boolean> (async (resolve, reject) => {
             try {
-                let resp = await wdapi.call<SessionDef>(this.serverURL, this._api.SESSION_START(this._browserName, this.capabilities.headless));
+                const resp = await wdapi.call<SessionDef>(this.serverURL, this._api.SESSION_START(this._browserName, this.capabilities.headless));
                 this._session = resp.body.value.sessionId;
                 this._timeouts = resp.body.value.capabilities.timeouts;
                 resolve(true);
@@ -384,6 +371,6 @@ export class SimpleDriver {
             }).catch(err => {
                 reject(err);
             });
-        });  
+        });
     }
 }

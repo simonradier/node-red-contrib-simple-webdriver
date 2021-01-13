@@ -1,9 +1,10 @@
 import { RequestOptions } from "http";
 import * as httpclient from "./utils/http-client";
-import { ResponseDef, RequestDef } from "./interface/interface"
+import { ResponseDef, RequestDef } from "./interface"
 import { ErrorDef } from "./interface/error";
 import { WebElement } from "./webelement";
 import { Logger } from "./utils/logger";
+import { WebDriverResponseError } from "./errors";
 
 export class WebDriverRequest implements RequestDef {
     public requestOptions : RequestOptions;
@@ -16,7 +17,7 @@ export async function call<T>(url : string, request : RequestDef) {
         Logger.trace("Calling :" + url + request.path);
         const resp = await httpclient.call<ResponseDef<T>>(url + request.path, request.requestOptions, request.data);
         if (resp.statusCode !== 200 || (resp.body.status && resp.body.status !== 0)) {
-            reject(new WebDriverHttpError(resp));
+            reject(new WebDriverResponseError(resp));
             Logger.debug(request);
             Logger.debug(resp);
         } else {

@@ -1,5 +1,5 @@
 import { RequestOptions } from "http";
-import { WDAPIDef, RequestDef } from "../interface/interface";
+import { WDAPIDef, RequestDef } from "../interface";
 import { WebDriverRequest, WebElement } from "../webdriver";
 
 export class W3C implements WDAPIDef {

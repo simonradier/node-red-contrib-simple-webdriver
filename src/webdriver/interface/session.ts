@@ -1,4 +1,5 @@
 import { ResponseDef } from "./response";
+import { TimeoutsDef } from "./timeouts";
 
 export interface SessionDef {
     sessionId : string;
@@ -16,11 +17,7 @@ export interface SessionDef {
       proxy: {},
       setWindowRect: true,
       strictFileInteractability: false,
-      timeouts: {
-          implicit: number,
-          pageLoad: number,
-          script: number
-      },
+      timeouts: TimeoutsDef,
       unhandledPromptBehavior: string,
       "webauthn:virtualAuthenticators": true
   }

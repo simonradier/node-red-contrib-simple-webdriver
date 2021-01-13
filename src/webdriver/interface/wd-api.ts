@@ -1,12 +1,4 @@
-import { RequestDef } from "./request"
-
-export * from "./createsession"
-export * from "./element"
-export * from "./response"
-export * from "./window-rect"
-export * from "./error"
-export * from "./request"
-export * from "./cookie"
+import { RequestDef } from "./request";
 
 export interface WDAPIDef {
     SESSION_START(browser: string, headless: boolean): RequestDef;
