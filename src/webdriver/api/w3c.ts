@@ -5,30 +5,33 @@ import { WebDriverRequest, WebElement } from "../webdriver";
 export class W3C implements WDAPIDef {
 
 
-    private static _initHttpOptions(request : RequestDef) {
+    private static _initHttpOptions(request: RequestDef) {
+        request.requestOptions = {};
         request.requestOptions.headers = {
-            "Content-Type" : "application/json;charset=utf-8",
-            "Cache-Control" : "no-cache"
+            "Content-Type": "application/json;charset=utf-8",
+            "Cache-Control": "no-cache"
         }
     }
 
     SESSION_START(browser: string, headless: boolean): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.data = { capabilities : {
-            browserName : browser
-        } };
+        result.data = {
+            capabilities: {
+                browserName: browser
+            }
+        };
         let browerOptions = "browserOptions";
         switch (browser) {
-            case "chrome" : 
+            case "chrome":
                 browerOptions = "goog:chromeOptions";
         }
-        result.data.capabilities[browerOptions] = { args : new Array()};
+        result.data.capabilities[browerOptions] = { args: new Array() };
         if (headless)
             result.data.capabilities[browerOptions].args.push("--headless");
         result.data.capabilities[browerOptions].w3c = true;
         result.path = "/session";
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         return result;
     }
 
@@ -36,7 +39,7 @@ export class W3C implements WDAPIDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}`;
-        result.requestOptions = { method : "DELETE" }
+        result.requestOptions.method = "DELETE"
         return result;
     }
 
@@ -44,7 +47,7 @@ export class W3C implements WDAPIDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/url`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = {}
         result.data = { url }
         return result;
@@ -55,7 +58,7 @@ export class W3C implements WDAPIDef {
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/refresh`;
         result.data = {}
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         return result;
     }
 
@@ -64,7 +67,7 @@ export class W3C implements WDAPIDef {
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/back`;
         result.data = {}
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         return result;
     }
 
@@ -73,7 +76,7 @@ export class W3C implements WDAPIDef {
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/back`;
         result.data = {}
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         return result;
     }
 
@@ -81,51 +84,51 @@ export class W3C implements WDAPIDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/title`;
-        result.requestOptions = { method : "GET" }
+        result.requestOptions.method = "GET"
         return result;
     }
-    
+
     WINDOW_GETHANDLE(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/window`;
-        result.requestOptions = { method : "GET" }
-        return result;  
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     WINDOW_GETHANDLES(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/windows`;
-        result.requestOptions = { method : "GET" }
-        return result;      
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     WINDOW_SETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/window/rect`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = {
-                width, 
-                height
+            width,
+            height
         }
-        return result;         
+        return result;
     }
 
     WINDOW_GETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/window/rect`;
-        result.requestOptions = { method : "GET" }
-        return result;         
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     WINDOW_MAXIMIZE(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/window/maximize`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = {}
         return result;
     }
@@ -134,7 +137,7 @@ export class W3C implements WDAPIDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/window/minimize`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = {}
         return result;
     }
@@ -143,146 +146,203 @@ export class W3C implements WDAPIDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/window/fullscreen`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = {}
         return result;
     }
 
     WINDOW_CLOSE(sessionId: string, handle: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/window`;
+        result.requestOptions.method = "DELETE"
+        result.data = { handle }
+        return result;
     }
 
     WINDOW_SWITCH(sessionId: string, handle: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/window`;
+        result.requestOptions.method = "POST"
+        result.data = { handle }
+        return result;
     }
 
     WINDOW_SCREENSHOT(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/screenshot`;
-        result.requestOptions = { method : "GET" }
+        result.requestOptions.method = "GET"
         return result;
     }
 
     FRAME_SWITCH(sessionId: string, frameId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/frame`;
+        result.requestOptions.method = "POST"
+        result.data = { id: frameId }
+        return result;
     }
 
     FRAME_TOPARENT(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/frame/parent`;
+        result.requestOptions.method = "POST"
+        result.data = {}
+        return result;
     }
 
     FINDELEMENT(sessionId: string, using: string, value: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = { using, value }
-        return result;  
+        return result;
     }
 
     FINDELEMENTS(sessionId: string, using: string, value: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = { using, value }
-        return result;  
+        return result;
     }
 
     GETACTIVEELEMENT(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/active`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     ELEMENT_FINDELEMENT(sessionId: string, element: string, using: string, value: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${element}/element`;
+        result.requestOptions.method = "POST"
+        result.data = { using, value }
+        return result;
     }
 
     ELEMENT_FINDELEMENTS(sessionId: string, element: string, using: string, value: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${element}/elements`;
+        result.requestOptions.method = "POST"
+        result.data = { using, value }
+        return result;
     }
 
     ELEMENT_GETATTRIBUTE(sessionId: string, elementId: string, attribute: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element/${elementId}/attribute/${attribute}`;
-        result.requestOptions = { method : "GET" };
-        result.data = { value : attribute }
-        return result;  
+        result.requestOptions.method = "GET";
+        return result;
     }
 
     ELEMENT_GETPROPERTY(sessionId: string, elementId: string, property: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${elementId}/property/${property}`;
+        result.requestOptions.method = "GET";
+        return result;
     }
 
     ELEMENT_GETCSS(sessionId: string, elementId: string, cssProperty: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${elementId}/css/${cssProperty}`;
+        result.requestOptions.method = "GET";
+        return result;
     }
 
     ELEMENT_GETTEXT(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element/${elementId}/text`;
-        result.requestOptions = { method : "GET" }
-        return result;  
+        result.requestOptions.method = "GET"
+        return result;
     }
 
-    ELEMENT_GETNAME(sessionId: string, elementId: string): RequestDef {
-        throw new Error("Method not implemented.");
+    ELEMENT_GETTAGNAME(sessionId: string, elementId: string): RequestDef {
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${elementId}/name`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     ELEMENT_GETRECT(sessionId: string, elementId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${elementId}/rect`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     ELEMENT_SCREENSHOT(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element/${elementId}/screenshot`;
-        result.requestOptions = { method : "GET" }
-        return result;  
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     ELEMENT_CLICK(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element/${elementId}/click`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = {}
-        return result;  
+        return result;
     }
 
     ELEMENT_CLEAR(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element/${elementId}/clear`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = {}
-        return result;  
+        return result;
     }
 
     ELEMENT_ISENABLED(sessionId: string, elementId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${elementId}/enabled`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     ELEMENT_ISSELECTED(sessionId: string, elementId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/element/${elementId}/selected`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     ELEMENT_SENDKEYS(sessionId: string, elementId: string, keys: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/element/${elementId}/value`;
-        result.requestOptions = { method : "POST" }
-        result.data = { text : keys }
-        return result; 
+        result.requestOptions.method = "POST"
+        result.data = { text: keys }
+        return result;
     }
 
     EXECUTE_SYNC(sessionId: string, script: string, args: any[]): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/execute/sync`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = { script, args }
         return result;
     }
@@ -291,7 +351,7 @@ export class W3C implements WDAPIDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `/session/${sessionId}/execute/qsync`;
-        result.requestOptions = { method : "POST" }
+        result.requestOptions.method = "POST"
         result.data = { script, args }
         return result;
     }

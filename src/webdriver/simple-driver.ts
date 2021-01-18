@@ -183,7 +183,7 @@ export class SimpleDriver {
         }
     }
 
-    public element(element : WebElement) {
+    public element(element : WebElement = null) {
         let elementId = element.toString();
         return {
             click : () => {
@@ -215,7 +215,11 @@ export class SimpleDriver {
             },
             getValue : () => {
                 return new Promise<string> ((resolve, reject) => {
-
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, "value")).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 });
             },
             getText : () => {
@@ -238,22 +242,38 @@ export class SimpleDriver {
             },
             getProperty : (name : string) => {
                 return new Promise<string> ((resolve, reject) => {
-
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETPROPERTY(this.session, elementId, name)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 });
             },
-            getTagName : (name : string) => {
+            getTagName : () => {
                 return new Promise<string> ((resolve, reject) => {
-
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETTAGNAME(this.session, elementId)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 });
             },
             isSelected : () => {
                 return new Promise<boolean> ((resolve, reject) => {
-
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_ISSELECTED(this.session, elementId)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 });
             },
             isEnabled : () => {
                 return new Promise<boolean> ((resolve, reject) => {
-
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_ISENABLED(this.session, elementId)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 });
             }
         }

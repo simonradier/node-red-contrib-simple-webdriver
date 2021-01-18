@@ -85,7 +85,7 @@ export class JSONWire implements WDAPIDef {
     ELEMENT_GETTEXT(sessionId: string, element: string): RequestDef {
         throw new Error("Method not implemented.");
     }
-    ELEMENT_GETNAME(sessionId: string, element: string): RequestDef {
+    ELEMENT_GETTAGNAME(sessionId: string, element: string): RequestDef {
         throw new Error("Method not implemented.");
     }
     ELEMENT_GETRECT(sessionId: string, element: string): RequestDef {

@@ -29,7 +29,7 @@ export interface WDAPIDef {
     ELEMENT_GETPROPERTY(sessionId: string, element: string, property: string): RequestDef;
     ELEMENT_GETCSS(sessionId: string, element: string, cssProperty: string): RequestDef;
     ELEMENT_GETTEXT(sessionId: string, element: string): RequestDef;
-    ELEMENT_GETNAME(sessionId: string, element: string): RequestDef;
+    ELEMENT_GETTAGNAME(sessionId: string, element: string): RequestDef;
     ELEMENT_GETRECT(sessionId: string, element: string): RequestDef;
     ELEMENT_SCREENSHOT(sessionId: string, element: string): RequestDef;
     ELEMENT_CLICK(sessionId: string, element: string): RequestDef;
