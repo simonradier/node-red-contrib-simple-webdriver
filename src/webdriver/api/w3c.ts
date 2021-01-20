@@ -18,18 +18,37 @@ export class W3C implements WDAPIDef {
         W3C._initHttpOptions(result);
         result.data = {
             capabilities: {
-                browserName: browser
+                alwaysMatch : {
+                    browserName: browser
+                }
             }
         };
         let browerOptions = "browserOptions";
         switch (browser) {
             case "chrome":
                 browerOptions = "goog:chromeOptions";
+            break
+            case "chromium":
+                browerOptions = "goog:chromeOptions";
+            break
+            case "firefox" :
+                browerOptions = "moz:firefoxOptions"
+            break
         }
-        result.data.capabilities[browerOptions] = { args: new Array() };
-        if (headless)
-            result.data.capabilities[browerOptions].args.push("--headless");
-        result.data.capabilities[browerOptions].w3c = true;
+        result.data.capabilities.alwaysMatch[browerOptions] = { args: new Array() };
+        if (headless) {
+            switch (browser) {
+                case "edge" :
+                case "chrome" :
+                case "chromium":
+                    result.data.capabilities.alwaysMatch[browerOptions].args.push("headless");
+                break
+                case "firefox" :
+                    result.data.capabilities.alwaysMatch[browerOptions].args.push("-headless");
+                break
+            }
+        }
+        result.data.capabilities.alwaysMatch[browerOptions].w3c = true;
         result.path = "/session";
         result.requestOptions.method = "POST"
         return result;
