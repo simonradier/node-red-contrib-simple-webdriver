@@ -58,11 +58,10 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
         try {
             if (msg.driver) {
                 if (!driverError)
-                    if (!conf.headless)
-                        if (!conf.maximized)
-                            await msg.driver.window(null).setSize(parseInt(conf.width, 10), parseInt(conf.height, 10));
-                        else
-                            await msg.driver.window(null).maximize();
+                    if (!conf.maximized)
+                        await msg.driver.window(null).setSize(parseInt(conf.width, 10), parseInt(conf.height, 10));
+                    else if (!conf.headless)
+                        await msg.driver.window(null).maximize();
                 send(msg);
                 this.status({ fill : "green", shape : "dot", text : "success"});
                 done();
