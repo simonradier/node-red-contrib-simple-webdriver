@@ -33,10 +33,5 @@ jobs:
         run: npm install
 
       # Runs a single command using the runners shell
-      - name: Install node-red
-        run: npm install -g --unsafe-perm node-red
-  
-        # Runs a single command using the runners shell
-      - name: Install node-red
-        run: npm install -g .
-
+      - name: Test ls
+        run: ls
