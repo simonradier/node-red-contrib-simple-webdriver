@@ -35,3 +35,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Test ls
         run: ls
+  
+        # Runs a single command using the runners shell
+      - name: Test pwd
+        run: pwd
