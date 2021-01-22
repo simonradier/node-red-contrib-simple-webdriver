@@ -41,6 +41,9 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
+      - name: Build node-red-contrib package
+        run: npm run prepublishOnly
+
       - name: Install node-red
         run: sudo npm install -g --unsafe-perm node-red
           
