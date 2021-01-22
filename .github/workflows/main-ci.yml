@@ -49,16 +49,16 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run node-red
-        run: sudo node-red & 
+        run: node-red > node-red-log.txt &
   
       # Runs a single command using the runners shell
       - name: Run chromedriver
-        run: chromedriver --verbose > chromedriver-log.txt 2>&1 & 
+        run: chromedriver --verbose & 
 
       - name: Wait on
         uses: iFaxity/wait-on-action@v1
         with:
-          http-get: http://localhost:1880  
+          resource: http://localhost:1880  
           
       - name: Echo log
         run: cat node-red-log.txt
