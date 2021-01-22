@@ -15,13 +15,17 @@ export class WebDriverRequest implements RequestDef {
 export async function call<T>(url : string, request : RequestDef) {
     return new Promise<httpclient.HttpResponse<ResponseDef<T>>>(async (resolve, reject) => {
         Logger.trace("Calling :" + url + request.path);
-        const resp = await httpclient.call<ResponseDef<T>>(url + request.path, request.requestOptions, request.data);
-        if (resp.statusCode !== 200 || (resp.body.status && resp.body.status !== 0)) {
-            reject(new WebDriverResponseError(resp));
-            Logger.debug(request);
-            Logger.debug(resp);
-        } else {
-            resolve(resp);
+        try {
+            const resp = await httpclient.call<ResponseDef<T>>(url + request.path, request.requestOptions, request.data).then()
+            if (resp.statusCode !== 200 || (resp.body.status && resp.body.status !== 0)) {
+                reject(new WebDriverResponseError(resp));
+                Logger.debug(request);
+                Logger.debug(resp);
+            } else {
+                resolve(resp);
+            }
+        } catch (e) {
+            reject(e);
         }
     })
 
