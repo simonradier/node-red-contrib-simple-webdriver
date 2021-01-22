@@ -63,10 +63,10 @@ jobs:
           resource: http://localhost:1880/flows  
       
       - name : Publish flows to node-red
-        run: newman run ./test/init.json
+        run: newman run ./test/newman/init.json
 
       - name : Test flows
-        run: newman run ./test/test-suite1.json
+        run: newman run ./test/newman/test-suite1.json
 
           
       - name: Echo log
