@@ -28,11 +28,14 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
 
-      - name: Install chromium
-        run: sudo apt install chromium-browser
+#      - name: Install chromium
+#        run: sudo apt install chromium-browser
 
-      - name: Install chromium
-        run: sudo apt install chromium-chromedriver
+#      - name: Install chromedriver
+#        run: sudo apt install chromium-chromedriver
+
+      - name: Install screen
+        run: sudo apt install screen
 
       # Runs a single command using the runners shell
       - name: Install npm dependencies
@@ -46,7 +49,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run node-red
-        run: node-red > node-red-log.txt 2>&1 & 
+        run: sudo node-red & 
   
       # Runs a single command using the runners shell
       - name: Run chromedriver
