@@ -55,7 +55,7 @@ jobs:
   
       # Runs a single command using the runners shell
       - name: Run chromedriver
-        run: chromedriver --verbose & 
+        run: chromedriver --verbose > chrome-driver-log.txt & 
 
       - name: Wait on
         uses: iFaxity/wait-on-action@v1
@@ -68,7 +68,14 @@ jobs:
       - name : Test flows
         run: newman run ./tests/newman/test-suite1.json
 
-          
-      - name: Echo log
-        run: cat node-red-log.txt
+      - name: Upload artifact > node-red log
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: node-red-log
+          path: ./node-red-log.txt
       
+      - name: Upload artifact > chromedriver log
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: chrome-driver-log
+          path: ./chrome-driver-log.txt
