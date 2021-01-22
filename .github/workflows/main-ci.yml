@@ -55,7 +55,7 @@ jobs:
   
       # Runs a single command using the runners shell
       - name: Run chromedriver
-        run: chromedriver --verbose > chrome-driver-log.txt & 
+        run: chromedriver --verbose > chrome-driver-log.txt 2>&1 & 
 
       - name: Wait on
         uses: iFaxity/wait-on-action@v1
