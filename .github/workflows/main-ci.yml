@@ -28,16 +28,12 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
 
-#      - name: Install chromium
-#        run: sudo apt install chromium-browser
+      - name: Install chromium
+        run: sudo apt install chromium-browser
 
-#      - name: Install chromedriver
-#        run: sudo apt install chromium-chromedriver
+      - name: Install chromedriver
+        run: sudo apt install chromium-chromedriver
 
-      - name: Install screen
-        run: sudo apt install screen
-
-      # Runs a single command using the runners shell
       - name: Install npm dependencies
         run: npm install
 
@@ -46,6 +42,9 @@ jobs:
 
       - name: Install node-red
         run: sudo npm install -g --unsafe-perm node-red
+
+      - name: Install newman
+        run: sudo npm install -g newman
           
       - name: Install package into node-red 
         run: sudo npm install -g .
@@ -61,7 +60,14 @@ jobs:
       - name: Wait on
         uses: iFaxity/wait-on-action@v1
         with:
-          resource: http://localhost:1880  
+          resource: http://localhost:1880/flows  
+      
+      - name : Publish flows to node-red
+        run: newman run ./test/init.json
+
+      - name : Test flows
+        run: newman run ./test/test-suite1.json
+
           
       - name: Echo log
         run: cat node-red-log.txt
