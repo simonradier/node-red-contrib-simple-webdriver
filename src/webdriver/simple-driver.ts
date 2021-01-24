@@ -17,12 +17,30 @@ export enum Using {
     tag = "tag name",
     xpath = "xpath"
 }
+
+export enum Browser {
+    Chrome = "chrome",
+    Chromium = "chromium",
+    Edge = "edge",
+    InternetExplorer = "ie",
+    Firefox = "firefox",
+    Safari = "safari",
+}
+
 enum Protocol {
     W3C = "W3C",
     JSONWire = "JSONWire"
 }
 
 export class SimpleDriver {
+
+    private static _supportedBrowser : string[] = [
+        'chrome',
+        'chromium',
+        //'edge',
+        "firefox",
+        //"safari",
+    ];
 
     private _api : WDAPIDef;
 
@@ -34,7 +52,7 @@ export class SimpleDriver {
         return this._session;
     }
 
-    private _serverURL : string;
+    private _serverURL : URL;
     public get serverURL() {
         return this._serverURL;
     }
@@ -47,14 +65,22 @@ export class SimpleDriver {
         return this._timeouts;
     }
 
-    private _browserName : string;
+    private _browserName : Browser;
     public get browserName() {
         return this._browserName;
     }
 
-    public constructor (serverURL : string, browserName : string) {
-        this._serverURL = serverURL;
-        this._browserName = browserName;
+    public constructor (serverURL : string, browser : Browser) {
+        this._serverURL = new URL(serverURL);
+        if (this.serverURL.protocol !== 'http:' && this.serverURL.protocol !== 'https:') {
+            let err = new TypeError("Invalid Protocol: Webdriver only supports http or https");
+            throw (err);
+        }
+        if (!SimpleDriver._supportedBrowser.find(elem => {return (browser === elem)})) {
+            let err = new TypeError("Invalid Browser: unsupported browser " + browser);
+            throw (err);
+        }
+        this._browserName = browser;
         this._api = new wdapi.W3C();
     }
 
@@ -64,9 +90,9 @@ export class SimpleDriver {
      */
     public async get(url : string) : Promise<void> {
         return new Promise<void> (async (resolve, reject) => {
-            try {
+            try { 
                 if (this._session || await this._startSession()) {
-                        await this.navigate().to(url);
+                        await this.navigate().to(new URL(url).href);
                 }
                 resolve();
             }
@@ -77,7 +103,7 @@ export class SimpleDriver {
     }
 
     /**
-     * 
+     * Allow to access windows capabilities, if no handle is provided, it will modify the current context
      * @param handle 
      */
     public window(handle : string = null) {
@@ -87,7 +113,7 @@ export class SimpleDriver {
              */
             getTitle : async () => {
                 return new Promise<string> (async (resolve, reject) => {
-                    let resp = wdapi.call<string>(this.serverURL, this._api.WINDOW_GETTITLE(this.session, handle)).then( resp => {
+                    let resp = wdapi.call<string>(this.serverURL.href, this._api.WINDOW_GETTITLE(this.session, handle)).then( resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -96,7 +122,7 @@ export class SimpleDriver {
             },
             setSize : async (width : number, height : number) => {
                 return new Promise<WindowRect> (async (resolve, reject) => {
-                    wdapi.call<WindowRect>(this.serverURL, this._api.WINDOW_SETRECT(this.session, handle, width, height)).then(resp => {
+                    wdapi.call<WindowRect>(this.serverURL.href, this._api.WINDOW_SETRECT(this.session, handle, width, height)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -105,7 +131,7 @@ export class SimpleDriver {
             },
             maximize : async () => {
                 return new Promise<WindowRect> (async (resolve, reject) => {
-                    wdapi.call<WindowRect>(this.serverURL, this._api.WINDOW_MAXIMIZE(this.session, handle)).then(resp => {
+                    wdapi.call<WindowRect>(this.serverURL.href, this._api.WINDOW_MAXIMIZE(this.session, handle)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -114,7 +140,7 @@ export class SimpleDriver {
             },
             minimize : async () => {
                 return new Promise<WindowRect> (async (resolve, reject) => {
-                    wdapi.call<WindowRect>(this.serverURL, this._api.WINDOW_MINIMIZE(this.session, handle)).then(resp => {
+                    wdapi.call<WindowRect>(this.serverURL.href, this._api.WINDOW_MINIMIZE(this.session, handle)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -123,7 +149,7 @@ export class SimpleDriver {
             },
             fullscreen : async () => {
                 return new Promise<WindowRect> (async (resolve, reject) => {
-                    wdapi.call<WindowRect>(this.serverURL, this._api.WINDOW_FULLSCREEN(this.session, handle)).then(resp => {
+                    wdapi.call<WindowRect>(this.serverURL.href, this._api.WINDOW_FULLSCREEN(this.session, handle)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -132,7 +158,7 @@ export class SimpleDriver {
             },
             screenshot : async () => {
                 return new Promise<string> (async (resolve, reject) => {
-                    wdapi.call<string>(this.serverURL, this._api.WINDOW_SCREENSHOT(this.session)).then(resp => {
+                    wdapi.call<string>(this.serverURL.href, this._api.WINDOW_SCREENSHOT(this.session)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -146,7 +172,7 @@ export class SimpleDriver {
         return {
             refresh : () => {
                 return new Promise<void> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.NAVIGATE_REFRESH(this.session)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.NAVIGATE_REFRESH(this.session)).then(resp => {
                         resolve();
                     }).catch(err => {
                         reject(err);
@@ -155,7 +181,7 @@ export class SimpleDriver {
             },
             to : (url : string) => {
                 return new Promise<void> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.NAVIGATE_TO(this.session, url)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.NAVIGATE_TO(this.session, url)).then(resp => {
                         resolve();
                     }).catch(err => {
                         reject(err);
@@ -164,7 +190,7 @@ export class SimpleDriver {
             },
             back : () => {
                 return new Promise<void> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.NAVIGATE_BACK(this.session)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.NAVIGATE_BACK(this.session)).then(resp => {
                         resolve();
                     }).catch(err => {
                         reject(err);
@@ -173,7 +199,7 @@ export class SimpleDriver {
             },            
             forward : () => {
                 return new Promise<void> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.NAVIGATE_FORWARD(this.session)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.NAVIGATE_FORWARD(this.session)).then(resp => {
                         resolve();
                     }).catch(err => {
                         reject(err);
@@ -188,7 +214,7 @@ export class SimpleDriver {
         return {
             click : () => {
                 return new Promise<void> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_CLICK(this.session, elementId)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_CLICK(this.session, elementId)).then(resp => {
                         resolve();
                     }).catch(err => {
                         reject(err);
@@ -197,7 +223,7 @@ export class SimpleDriver {
             },
             clear : () => {
                 return new Promise<void> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_CLEAR(this.session, elementId)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_CLEAR(this.session, elementId)).then(resp => {
                         resolve();
                     }).catch(err => {
                         reject(err);
@@ -206,7 +232,7 @@ export class SimpleDriver {
             },
             sendKeys : (keys : string) => {
                 return new Promise<void> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_SENDKEYS(this.session, elementId, keys)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_SENDKEYS(this.session, elementId, keys)).then(resp => {
                         resolve();
                     }).catch(err => {
                         reject(err);
@@ -215,7 +241,7 @@ export class SimpleDriver {
             },
             getValue : () => {
                 return new Promise<string> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, "value")).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, "value")).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -224,7 +250,7 @@ export class SimpleDriver {
             },
             getText : () => {
                 return new Promise<string> (async (resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETTEXT(this.session, elementId)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_GETTEXT(this.session, elementId)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -233,7 +259,7 @@ export class SimpleDriver {
             },
             getAttribute : (name : string) => {
                 return new Promise<string> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, name)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, name)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -242,7 +268,7 @@ export class SimpleDriver {
             },
             getProperty : (name : string) => {
                 return new Promise<string> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETPROPERTY(this.session, elementId, name)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_GETPROPERTY(this.session, elementId, name)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -251,7 +277,7 @@ export class SimpleDriver {
             },
             getTagName : () => {
                 return new Promise<string> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETTAGNAME(this.session, elementId)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_GETTAGNAME(this.session, elementId)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -260,7 +286,7 @@ export class SimpleDriver {
             },
             isSelected : () => {
                 return new Promise<boolean> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_ISSELECTED(this.session, elementId)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_ISSELECTED(this.session, elementId)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -269,7 +295,7 @@ export class SimpleDriver {
             },
             isEnabled : () => {
                 return new Promise<boolean> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_ISENABLED(this.session, elementId)).then(resp => {
+                    wdapi.call<any>(this.serverURL.href, this._api.ELEMENT_ISENABLED(this.session, elementId)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -324,7 +350,7 @@ export class SimpleDriver {
                 }
                 do {
                     try {
-                        resp = await wdapi.call<ElementDef>(this.serverURL, request);
+                        resp = await wdapi.call<ElementDef>(this.serverURL.href, request);
                     } catch (err) {
                         resp = err.httpResponse;
                         Logger.trace(resp);
@@ -346,7 +372,7 @@ export class SimpleDriver {
         return new Promise<any> (async (resolve, reject) => {
             if (typeof script !== "string")
                 script = 'return (' + script + ').apply(null, arguments);'
-            wdapi.call<any>(this.serverURL, this._api.EXECUTE_SYNC(this.session, script, args)).then(resp => {
+            wdapi.call<any>(this.serverURL.href, this._api.EXECUTE_SYNC(this.session, script, args)).then(resp => {
                 resolve(resp.body.value);
             }).catch(err => {
                 reject(err);
@@ -359,7 +385,7 @@ export class SimpleDriver {
         return new Promise<any> (async (resolve, reject) => {
             if (typeof script !== "string")
                 script = 'return (' + script + ').apply(null, arguments);'
-            wdapi.call<any>(this.serverURL, this._api.EXECUTE_ASYNC(this.session, script, args)).then(resp => {
+            wdapi.call<any>(this.serverURL.href, this._api.EXECUTE_ASYNC(this.session, script, args)).then(resp => {
                 resolve(resp.body.value);
             }).catch(err => {
                 reject(err);
@@ -374,7 +400,7 @@ export class SimpleDriver {
     protected async _startSession() : Promise<boolean> {
         return new Promise<boolean> (async (resolve, reject) => {
             try {
-                const resp = await wdapi.call<SessionDef>(this.serverURL, this._api.SESSION_START(this._browserName, this.capabilities.headless));
+                const resp = await wdapi.call<SessionDef>(this.serverURL.href, this._api.SESSION_START(this._browserName, this.capabilities.headless));
                 this._session = resp.body.value.sessionId;
                 this._timeouts = resp.body.value.capabilities.timeouts;
                 resolve(true);
@@ -386,7 +412,7 @@ export class SimpleDriver {
 
     public async quit() : Promise<void> {
         return new Promise<void> (async (resolve, reject) => {
-            wdapi.call<any>(this.serverURL, this._api.SESSION_STOP(this.session)).then(resp => {
+            wdapi.call<any>(this.serverURL.href, this._api.SESSION_STOP(this.session)).then(resp => {
                 resolve();
             }).catch(err => {
                 reject(err);
