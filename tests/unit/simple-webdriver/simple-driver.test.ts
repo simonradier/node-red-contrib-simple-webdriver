@@ -51,7 +51,7 @@ describe('SimpleDriver', function (){
         });
         it('should throw an exception if the server connection is timeouting', async function () { 
             let driver : SimpleWebDriver = new SimpleWebDriver("http://fake-server.local");
-            await expect(driver.start()).to.be.rejectedWith(/ENOTFOUND/);
+            await expect(driver.start()).to.be.rejectedWith(/ENOTFOUND|EAI_AGAIN/);
         });
         it('should throw an exception if the server is not a webdriver server 1/4', async function () { 
             nock("http://test-webdriver.nock").post("/session").reply(200, "Hello world", { "Content-Type" : "application/html"})
