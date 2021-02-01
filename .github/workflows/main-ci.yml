@@ -100,12 +100,14 @@ jobs:
         run: newman run ./test/newman/test-suite1.json
 
       - name: Upload artifact > node-red log
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
           name: node-red-log
           path: ./node-red-log.txt
       
       - name: Upload artifact > chromedriver log
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
           name: chrome-driver-log
