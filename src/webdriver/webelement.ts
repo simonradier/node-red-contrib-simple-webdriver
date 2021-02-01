@@ -1,8 +1,8 @@
-import { SimpleDriver } from "./webdriver"
+import { SimpleWebDriver } from "./webdriver"
 
 export class WebElement {
 
-    public constructor (driver : SimpleDriver, elementID : string) {
+    public constructor (driver : SimpleWebDriver, elementID : string) {
         this.ELEMENT = elementID;
         this["element-6066-11e4-a52e-4f735466cecf"] = elementID;
         this._driver = driver;
@@ -10,7 +10,7 @@ export class WebElement {
 
     public readonly ELEMENT : string;
     public readonly "element-6066-11e4-a52e-4f735466cecf" : string
-    private _driver : SimpleDriver;
+    private _driver : SimpleWebDriver;
 
     public click() : Promise<void> {
         return  this._driver.element(this).click();

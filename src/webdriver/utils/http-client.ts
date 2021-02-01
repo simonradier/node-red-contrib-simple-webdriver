@@ -14,6 +14,7 @@ export async function call<T>(url : string, httpOptions : http.RequestOptions | 
     return new Promise<HttpResponse<any>> ((resolve, reject) => {
         let req : http.ClientRequest;
         let sBody = JSON.stringify(body);
+        httpOptions.timeout = 1000 * 10;
         if (body)
             httpOptions.headers['Content-Length'] = sBody.length;
         if (url.startsWith("https://")) {
@@ -28,11 +29,20 @@ export async function call<T>(url : string, httpOptions : http.RequestOptions | 
             });
             res.on('end', () => {
                 let response = new HttpResponse<T>();
-                response.body = JSON.parse(data);
                 response.statusCode = res.statusCode;
                 response.statusMessage = res.statusMessage
-                response.url = url;
-                resolve(response);
+                if (!res.headers || !(res.headers["content-type"] && res.headers["content-type"].includes("application/json"))) {
+                    let err = new Error("Incorrect HTTP header 'content-type', expected 'application/json'")
+                    reject(err);
+                } else {
+                    try {
+                        response.body = JSON.parse(data);
+                        response.url = url;
+                        resolve(response);
+                    } catch (err) {
+                        reject(err);
+                    }
+                }
             });  
             res.on('error', (err) => {
                 reject(err);
@@ -40,6 +50,9 @@ export async function call<T>(url : string, httpOptions : http.RequestOptions | 
         });
         req.on('error', (err) => {
             reject(err);
+        });
+        req.on('timeout', () => {
+            console.log("toto");
         });
         if (body) {
             req.write(sBody);

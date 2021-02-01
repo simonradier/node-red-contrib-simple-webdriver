@@ -8,7 +8,7 @@ export enum LogLevel {
     None
 }
 
-let Configuration = { logLevel : LogLevel.Debug };
+export let LoggerConfiguration = { logLevel : LogLevel.Debug };
 
 export class Logger {
 
@@ -39,7 +39,7 @@ export class Logger {
     }
 
     public static trace(msg : any) {
-        if (Configuration.logLevel <= LogLevel.Trace) {
+        if (LoggerConfiguration.logLevel <= LogLevel.Trace) {
             if (typeof msg === "object" && msg != null) {
                 console.log("[TRACE]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
                 console.log(msg);
@@ -50,7 +50,7 @@ export class Logger {
     }
 
     public static debug(msg : any) {
-        if (Configuration.logLevel <= LogLevel.Debug) {
+        if (LoggerConfiguration.logLevel <= LogLevel.Debug) {
             if (typeof msg === "object" && msg != null) {
                 console.log("[DEBUG]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
                 console.log(msg);
@@ -61,7 +61,7 @@ export class Logger {
     }
 
     public static info (msg : string) {
-        if (Configuration.logLevel <= LogLevel.Information) {
+        if (LoggerConfiguration.logLevel <= LogLevel.Information) {
             if (typeof msg === "object" && msg != null) {
                 console.log("[INFO]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
                 console.log(msg);
@@ -72,7 +72,7 @@ export class Logger {
     }
 
     public static warn (msg : string) {
-        if (Configuration.logLevel <= LogLevel.Warning) {
+        if (LoggerConfiguration.logLevel <= LogLevel.Warning) {
             if (typeof msg === "object" && msg != null) {
                 console.log("[WARNING]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
                 console.log(msg);
@@ -83,7 +83,7 @@ export class Logger {
     }
 
     public static error (msg : string) {
-        if (Configuration.logLevel <= LogLevel.Error) {
+        if (LoggerConfiguration.logLevel <= LogLevel.Error) {
             if (typeof msg === "object" && msg != null) {
                 console.log("[ERROR]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
                 console.log(msg);
@@ -94,7 +94,7 @@ export class Logger {
     }
 
     public static critical (msg : string) {
-        if (Configuration.logLevel <= LogLevel.Critical) {
+        if (LoggerConfiguration.logLevel <= LogLevel.Critical) {
             if (typeof msg === "object" && msg != null) {
                 console.log("[CRITICAL]" + "[" +this._getDateString() + "][" + this._getCallerInfo() + "] : ");
                 console.log(msg);

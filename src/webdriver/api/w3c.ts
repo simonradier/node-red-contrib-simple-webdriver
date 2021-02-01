@@ -23,32 +23,37 @@ export class W3C implements WDAPIDef {
                 }
             }
         };
-        let browerOptions = "browserOptions";
+        let browserOptions = "browserOptions";
         switch (browser) {
             case "chrome":
-                browerOptions = "goog:chromeOptions";
+                browserOptions = "goog:chromeOptions";
             break
             case "chromium":
-                browerOptions = "goog:chromeOptions";
+                browserOptions = "goog:chromeOptions";
             break
             case "firefox" :
-                browerOptions = "moz:firefoxOptions"
+                browserOptions = "moz:firefoxOptions";
             break
+            case "edge" : 
+                browserOptions = "ms:edgeOptions";
+            break;
+            case "safari":
+                browserOptions = "safari.options";
         }
-        result.data.capabilities.alwaysMatch[browerOptions] = { args: new Array() };
+        result.data.capabilities.alwaysMatch[browserOptions] = { args: new Array() };
         if (headless) {
             switch (browser) {
                 case "edge" :
                 case "chrome" :
                 case "chromium":
-                    result.data.capabilities.alwaysMatch[browerOptions].args.push("headless");
+                    result.data.capabilities.alwaysMatch[browserOptions].args.push("headless");
                 break
                 case "firefox" :
-                    result.data.capabilities.alwaysMatch[browerOptions].args.push("-headless");
+                    result.data.capabilities.alwaysMatch[browserOptions].args.push("-headless");
                 break
             }
         }
-        result.data.capabilities.alwaysMatch[browerOptions].w3c = true;
+        result.data.capabilities.alwaysMatch[browserOptions].w3c = true;
         result.path = "/session";
         result.requestOptions.method = "POST"
         return result;

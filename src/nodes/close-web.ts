@@ -29,7 +29,7 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
             setTimeout(async () => {
                 try {
                     this.status({ fill : "blue", shape : "ring", text : "closing"});
-                    await msg.driver.quit();
+                    await msg.driver.stop();
                     msg.driver = null;
                     this.status({ fill : "green", shape : "dot", text : "closed"});
                     send(msg);

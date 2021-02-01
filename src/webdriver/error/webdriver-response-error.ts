@@ -11,4 +11,5 @@ export class WebDriverResponseError extends Error {
         this.name = "WebDriverResponseError";
         this.httpResponse = httpResponse;
     }
+
 }
