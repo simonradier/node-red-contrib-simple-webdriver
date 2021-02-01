@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Tests
 
 # Controls when the action will run. 
 on:
@@ -16,7 +16,38 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+
+  unit-test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+  env:
+    COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
+    COVERALLS_GIT_BRANCH: "${{ github.ref }}"
+    COVERALLS_SERVICE_NAME: "Github CI"
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build node-red-contrib package
+        run: npm run prepublishOnly
+
+      - name: Launch unit testing
+        run: npm run test 
+
+      - name: Launch coverage update
+        run: npm run coverage
+         
+  
+  e2e-test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
