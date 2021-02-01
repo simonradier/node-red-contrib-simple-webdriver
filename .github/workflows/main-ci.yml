@@ -94,10 +94,10 @@ jobs:
           resource: http://localhost:1880/flows  
       
       - name : Publish flows to node-red
-        run: newman run ./tests/newman/init.json
+        run: newman run ./test/newman/init.json
 
       - name : Test flows
-        run: newman run ./tests/newman/test-suite1.json
+        run: newman run ./test/newman/test-suite1.json
 
       - name: Upload artifact > node-red log
         uses: actions/upload-artifact@v2.2.2

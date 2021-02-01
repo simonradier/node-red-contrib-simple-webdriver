@@ -47,7 +47,7 @@
 	"scripts": {
 		"prepublishOnly": "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
 		"clean": "rm -rf dist",
-		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=html --reporter=text mocha -r ts-node/register 'tests/unit/**/*.ts'",
+		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=html --reporter=text mocha -r ts-node/register 'test/unit/**/*.ts'",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"author": {
