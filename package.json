@@ -7,14 +7,20 @@
 	},
 	"devDependencies": {
 		"@types/chai": "^4.2.14",
+		"@types/chai-as-promised": "^7.1.3",
 		"@types/mocha": "^8.2.0",
+		"@types/nock": "^11.1.0",
 		"@types/node-red": "~1.1.0",
 		"@types/node-red-node-test-helper": "~0.2.1",
 		"@types/sinon": "^9.0.10",
 		"chai": "^4.2.0",
+		"chai-as-promised": "^7.1.1",
+		"coveralls": "^3.1.0",
 		"eslint": "7.17.0",
 		"eslint-config-prettier": "7.1.0",
 		"mocha": "^8.2.1",
+		"nock": "^13.0.7",
+		"nyc": "^15.1.0",
 		"prettier": "~2.1.2",
 		"sinon": "^9.2.4",
 		"ts-node": "^9.1.1",
@@ -41,7 +47,8 @@
 	"scripts": {
 		"prepublishOnly": "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
 		"clean": "rm -rf dist",
-		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/unit/**/*.ts'"
+		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=html --reporter=text mocha -r ts-node/register 'tests/unit/**/*.ts'",
+		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"author": {
 		"name": "Simon Radier"
