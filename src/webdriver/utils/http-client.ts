@@ -51,9 +51,6 @@ export async function call<T>(url : string, httpOptions : http.RequestOptions | 
         req.on('error', (err) => {
             reject(err);
         });
-        req.on('timeout', () => {
-            console.log("toto");
-        });
         if (body) {
             req.write(sBody);
         }
