@@ -7,7 +7,8 @@ export class WebDriverResponseError extends Error {
     constructor(httpResponse : HttpResponse<ResponseDef<any>>) {
         const msg = "";
         super(msg);
-        this.message = httpResponse.body.value.error + " : " + httpResponse.body.value.message;
+        if (httpResponse.body.value && httpResponse.body.value.error)
+            this.message = httpResponse.body.value.error + " : " + httpResponse.body.value.message;
         this.name = "WebDriverResponseError";
         this.httpResponse = httpResponse;
     }
