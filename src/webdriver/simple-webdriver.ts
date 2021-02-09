@@ -6,6 +6,7 @@ import { LocationError, WebDriverResponseError } from "./errors";
 import { Capabilities } from "./capabilities";
 import { RequestDef } from "./interface/request";
 import { Logger } from "./utils/logger";
+import { WebDriverError } from "./error/webdriver-error";
 
 export enum Using {
     id = "id",
@@ -341,6 +342,7 @@ export class SimpleWebDriver {
                 let resp : HttpResponse<ResponseDef<ElementDef>>;
                 let script = "";
                 let request : RequestDef;
+                let error;
                 switch (using) {
                     case Using.id :
                         script = "return document.getElementById(arguments[0]);"
@@ -357,6 +359,7 @@ export class SimpleWebDriver {
                     try {
                         resp = await wdapi.call<ElementDef>(this.serverURL, request);
                     } catch (err) {
+                        error = err;
                         resp = err.httpResponse;
                         Logger.trace(resp);
                     }
@@ -365,7 +368,10 @@ export class SimpleWebDriver {
                     const element = new WebElement(this, resp.body.value[Object.keys(resp.body.value)[0]])
                     resolve(element);
                 } else {
-                    reject (new LocationError(using, value, timeout));
+                    if (resp.statusCode === 404)
+                        reject (new LocationError(using, value, timeout));
+                    else
+                        reject (error);
                 }
             } catch (err) {
                 reject(err);
@@ -405,24 +411,34 @@ export class SimpleWebDriver {
     public async start() : Promise<boolean> {
         return new Promise<boolean> (async (resolve, reject) => {
             try {
-                const resp = await wdapi.call<SessionDef>(this.serverURL, this._api.SESSION_START(this._browserName, this.capabilities.headless));
-                let error : WebDriverResponseError;
-                if (!resp.body.value.sessionId) {
-                    error = new WebDriverResponseError(resp);
-                    error.message = "Missing property sessionId"
-                } else if (!resp.body.value.capabilities) {
-                    error = new WebDriverResponseError(resp);
-                    error.message = "Missing property capabilities"
-                } else if (!resp.body.value.capabilities.timeouts) {
-                    error = new WebDriverResponseError(resp);
-                    error.message = "Missing property timeouts"
+                // If session is already started
+                if (this.session)
+                    reject(new WebDriverError("can't start Webdriver session which is already started"))
+                else {
+                    const resp = await wdapi.call<SessionDef>(this.serverURL, this._api.SESSION_START(this._browserName, this.capabilities.headless));
+                    let error : WebDriverResponseError;
+                    if (!resp.body.value) {
+                        error = new WebDriverResponseError(resp);
+                        error.message = "Response is empty or null"                        
+                    } else {
+                        if (!resp.body.value.sessionId) {
+                            error = new WebDriverResponseError(resp);
+                            error.message = "Missing property sessionId"
+                        } else if (!resp.body.value.capabilities) {
+                            error = new WebDriverResponseError(resp);
+                            error.message = "Missing property capabilities"
+                        } else if (!resp.body.value.capabilities.timeouts) {
+                            error = new WebDriverResponseError(resp);
+                            error.message = "Missing property timeouts"
+                        }
+                    }
+                    if (error) {
+                        reject(error);
+                    }
+                    this._session = resp.body.value.sessionId;
+                    this._timeouts = resp.body.value.capabilities.timeouts;
+                    resolve(true);
                 }
-                if (error) {
-                    reject(error);
-                }
-                this._session = resp.body.value.sessionId;
-                this._timeouts = resp.body.value.capabilities.timeouts;
-                resolve(true);
             } catch (err) {
                 reject(err);
             }
@@ -431,11 +447,16 @@ export class SimpleWebDriver {
 
     public async stop() : Promise<void> {
         return new Promise<void> (async (resolve, reject) => {
-            wdapi.call<any>(this.serverURL, this._api.SESSION_STOP(this.session)).then(resp => {
-                resolve();
-            }).catch(err => {
-                reject(err);
-            });
+            if (!this.session) {
+                reject(new WebDriverError("start must be called first"))
+            } else {
+                wdapi.call<any>(this.serverURL, this._api.SESSION_STOP(this.session)).then(resp => {
+                    this._session = null;
+                    resolve();
+                }).catch(err => {
+                    reject(err);
+                });
+            }
         });
     }
 }
