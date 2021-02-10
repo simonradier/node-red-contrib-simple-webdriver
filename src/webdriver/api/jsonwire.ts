@@ -1,4 +1,5 @@
 import { WDAPIDef, RequestDef } from "../interface";
+import { CookieDef } from "../interface/cookie";
 
 export class JSONWire implements WDAPIDef {
     SESSION_START(browser: string, headless: boolean): RequestDef {
@@ -121,7 +122,7 @@ export class JSONWire implements WDAPIDef {
     COOKIE_GET(sessionId: string, name: string): RequestDef {
         throw new Error("Method not implemented.");
     }
-    COOKIE_ADD(sessionId: string, name: string, value: string, path: string, domain: string): RequestDef {
+    COOKIE_ADD(sessionId: string, cookie : CookieDef): RequestDef {
         throw new Error("Method not implemented.");
     }
     COOKIE_DELETE(sessionId: string, name: string): RequestDef {
@@ -139,7 +140,7 @@ export class JSONWire implements WDAPIDef {
     ALERT_GETTEXT(sessionId: string): RequestDef {
         throw new Error("Method not implemented.");
     }
-    ALERT_SENDTEXT(sessionId: string): RequestDef {
+    ALERT_SENDTEXT(sessionId: string, text : string): RequestDef {
         throw new Error("Method not implemented.");
     }
 }

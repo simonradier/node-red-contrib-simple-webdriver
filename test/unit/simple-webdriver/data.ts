@@ -6,6 +6,8 @@ export let WD_SESSION_ID = "session-test-id-1337"
 
 export let WD_ELEMENT_ID = "element-test-id-1337"
 
+export let WD_HANDLE_ID = "window-test-id-1337"
+
 export let WD_CAPABILITIES = {
     "acceptInsecureCerts": false,
     "browserName": "chrome",
@@ -174,6 +176,17 @@ export let WD_NAVIGATE_TO_RESPONSE = {
         body : {
             //@ts-ignore
             "value" : null
+        },
+        headers : { "Content-Type" : "application/json"}
+    }
+}
+
+export let WD_WINDOW_HANDLE_RESPONSE = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : WD_HANDLE_ID
         },
         headers : { "Content-Type" : "application/json"}
     }

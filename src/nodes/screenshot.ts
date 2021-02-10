@@ -30,7 +30,7 @@ export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScr
             const filePath : string = msg.filePath ?? conf.filePath;
             setTimeout (async () => {
                 try {
-                    const sc = await msg.driver.window().screenshot();
+                    const sc = await msg.driver.window().current().screenshot();
                     if (filePath)
                         await fs.promises.writeFile(filePath, sc, "base64");
                     msg.payload = sc;

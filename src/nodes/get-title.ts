@@ -41,7 +41,7 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                             done(e);
                         } else {
                             try {
-                                msg.payload = await msg.driver.window().getTitle();
+                                msg.payload = await msg.driver.window().current().getTitle();
                             } catch (sube) {
                                 msg.payload = "[Unknown]";
                             }
@@ -55,7 +55,7 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                     }
                 } else {
                     try {
-                        msg.payload = await msg.driver.window().getTitle();
+                        msg.payload = await msg.driver.window().current().getTitle();
                         node.status({ fill : "green", shape : "dot", text : "success"});
                         if (msg.error) { delete msg.error; }
                         send([msg, null]);

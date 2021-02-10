@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import helper from 'node-red-node-test-helper';
 import wd2 from '../../../src/selenium-wd2'
 import { NODE_OPEN_WEB } from './data';
-import { WD_NAVIGATE_TO_RESPONSE, WD_SERVER_URL_HTTP, WD_SESSION_ID, WD_START_SESSION_RESPONSE } from '../simple-webdriver/data';
+import { WD_NAVIGATE_TO_RESPONSE, WD_SERVER_URL_HTTP, WD_SESSION_ID, WD_START_SESSION_RESPONSE, WD_WINDOW_HANDLE_RESPONSE } from '../simple-webdriver/data';
 import nock from 'nock';
 import { LoggerConfiguration, LogLevel } from '../../../src/webdriver/utils/logger';
 chai.use(chaiAsPromised);
@@ -39,9 +39,11 @@ describe('node : open-web', function (){
       this.timeout(30000);
       let resp = WD_START_SESSION_RESPONSE.OK;
       nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);  
-      let resp2 = WD_NAVIGATE_TO_RESPONSE.OK;
-      nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/url`).reply(resp.code, resp.body, resp.headers); 
-      nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/window/rect`).reply(resp.code, resp.body, resp.headers);   
+      let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
+      nock(WD_SERVER_URL_HTTP).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
+      let resp3 = WD_NAVIGATE_TO_RESPONSE.OK;
+      nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/url`).reply(resp3.code, resp3.body, resp3.headers); 
+      nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/window/rect`).reply(resp3.code, resp3.body, resp3.headers);   
         let flow = [
           NODE_OPEN_WEB.OK_CHROME("n1", ["n3"]),
           //@ts-ignore

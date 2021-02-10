@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { Browser, Protocol, SimpleWebDriver, Using } from "../../../src/webdriver/webdriver";
 import { LoggerConfiguration, LogLevel } from "../../../src/webdriver/utils/logger";
 import nock from "nock";
-import { WD_START_SESSION_RESPONSE, WD_SERVER_URL_HTTP, WD_SERVER_URL_HTTPS, WD_SESSION_ID, WD_STOP_SESSION_RESPONSE, WD_EXECUTE_SYNC_RESPONSE, WD_FIND_ELEMENT_RESPONSE } from './data';
+import { WD_START_SESSION_RESPONSE, WD_SERVER_URL_HTTP, WD_SERVER_URL_HTTPS, WD_SESSION_ID, WD_STOP_SESSION_RESPONSE, WD_EXECUTE_SYNC_RESPONSE, WD_FIND_ELEMENT_RESPONSE, WD_WINDOW_HANDLE_RESPONSE } from './data';
 
 chai.use(chaiAsPromised);
 
@@ -99,12 +99,15 @@ describe('SimpleDriver', function (){
         it('should start a session if webdriver response is correct (http)', async function () { 
             let resp = WD_START_SESSION_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);  
+            let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
+            nock(WD_SERVER_URL_HTTP).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await driver.start();
             expect(driver.session).to.be.equal(WD_SESSION_ID);
             expect(driver.timeouts.implicit).to.be.equal(0);
             expect(driver.timeouts.pageLoad).to.be.equal(300000);
             expect(driver.timeouts.script).to.be.equal(30000);
+            expect(nock.isDone(), 'all request were executed');
         });
 
         it('should throw an error if the response is not a JSON object', async function () { 
@@ -125,6 +128,8 @@ describe('SimpleDriver', function (){
         it('should start a session if webdriver response is correct (https)', async function () { 
             let resp = WD_START_SESSION_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTPS).post("/session").reply(resp.code, resp.body, resp.headers);  
+            let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
+            nock(WD_SERVER_URL_HTTPS).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTPS);
             await driver.start();
             expect(driver.session).to.be.equal(WD_SESSION_ID);
@@ -143,6 +148,8 @@ describe('SimpleDriver', function (){
         it('should throw an error if start is called a second time before a stop', async function () { 
             let resp = WD_START_SESSION_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);  
+            let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
+            nock(WD_SERVER_URL_HTTP).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
             await expect(driver.start()).to.be.rejectedWith(/can't start Webdriver session which is already started/);
@@ -155,6 +162,8 @@ describe('SimpleDriver', function (){
             nock.cleanAll();
             let resp = WD_START_SESSION_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);
+            let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
+            nock(WD_SERVER_URL_HTTP).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
         });
 
         it('should stop the webdriver if the session is created', async function () { 
@@ -185,6 +194,8 @@ describe('SimpleDriver', function (){
             nock.cleanAll();
             let resp = WD_START_SESSION_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);
+            let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
+            nock(WD_SERVER_URL_HTTP).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
         });
 
         for (let using in Using) {

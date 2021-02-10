@@ -1,5 +1,6 @@
 import { RequestOptions } from "http";
 import { WDAPIDef, RequestDef } from "../interface";
+import { CookieDef } from "../interface/cookie";
 import { WebDriverRequest, WebElement } from "../webdriver";
 
 export class W3C implements WDAPIDef {
@@ -381,38 +382,78 @@ export class W3C implements WDAPIDef {
     }
 
     COOKIE_GETALL(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/cookie`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
     COOKIE_GET(sessionId: string, name: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/cookie/${name}`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
-    COOKIE_ADD(sessionId: string, name: string, value: string, path: string, domain: string): RequestDef {
-        throw new Error("Method not implemented.");
+    COOKIE_ADD(sessionId: string, cookie : CookieDef): RequestDef {
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/cookie`;
+        result.requestOptions.method = "POST";
+        result.data = cookie;
+        return result;
     }
 
     COOKIE_DELETE(sessionId: string, name: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/cookie/${name}`;
+        result.requestOptions.method = "DELETE"
+        return result;
     }
 
     COOKIE_DELETEALL(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/cookie`;
+        result.requestOptions.method = "DELETE"
+        return result;
     }
 
     ALERT_ACCEPT(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/alert/accept`;
+        result.requestOptions.method = "POST"
+        result.data = {};
+        return result;
     }
 
     ALERT_DISMISS(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/alert/dismiss`;
+        result.requestOptions.method = "POST"
+        result.data = {};
+        return result;
     }
 
     ALERT_GETTEXT(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/alert/text`;
+        result.requestOptions.method = "GET"
+        return result;
     }
 
-    ALERT_SENDTEXT(sessionId: string): RequestDef {
-        throw new Error("Method not implemented.");
+    ALERT_SENDTEXT(sessionId: string, text : string): RequestDef {
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/alert/text`;
+        result.requestOptions.method = "POST";
+        result.data = { text }
+        return result;
     }
 }

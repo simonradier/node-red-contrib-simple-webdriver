@@ -44,7 +44,7 @@ export class SimpleWebDriver {
 
     private _api : WDAPIDef;
 
-    private _session? : string;
+    private _session : string = null;
 
     private _w3c : boolean;
 
@@ -65,7 +65,10 @@ export class SimpleWebDriver {
         return this._timeouts;
     }
 
+    private _currentHandle : string = null;
+
     private _browserName : Browser;
+
     public get browserName() {
         return this._browserName;
     }
@@ -108,15 +111,9 @@ export class SimpleWebDriver {
         });
     }
 
-    /**
-     * Allow to access windows capabilities, if no handle is provided, it will modify the current context
-     * @param handle 
-     */
-    public window(handle : string = null) {
+
+    private _windowActions(handle : string) {
         return {
-            /**
-             * 
-             */
             getTitle : async () => {
                 return new Promise<string> (async (resolve, reject) => {
                     let resp = wdapi.call<string>(this.serverURL, this._api.WINDOW_GETTITLE(this.session, handle)).then( resp => {
@@ -162,6 +159,16 @@ export class SimpleWebDriver {
                     });
                 })                  
             },
+            switch : async () => {
+                return new Promise<string> (async (resolve, reject) => {
+                    wdapi.call<string>(this.serverURL, this._api.WINDOW_SWITCH(this.session, handle)).then(resp => {
+                        this._currentHandle = handle;
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                })       
+            },
             screenshot : async () => {
                 return new Promise<string> (async (resolve, reject) => {
                     wdapi.call<string>(this.serverURL, this._api.WINDOW_SCREENSHOT(this.session)).then(resp => {
@@ -170,6 +177,40 @@ export class SimpleWebDriver {
                         reject(err);
                     });
                 })  
+            }
+        }
+    }
+
+    /**
+     * Allow to access windows capabilities, if no handle is provided, it will modify the current context
+     * @param handle 
+     */
+    public window() {
+        return {
+            getHandle : () => {
+                return new Promise<string> (async (resolve, reject) => {
+                    let resp = wdapi.call<string>(this.serverURL, this._api.WINDOW_GETHANDLE(this.session)).then( resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });    
+            },
+            getAllHandles : () => {
+                return new Promise<string[]> (async (resolve, reject) => {
+                    let resp = wdapi.call<string[]>(this.serverURL, this._api.WINDOW_GETHANDLES(this.session)).then( resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });                     
+            },
+            handle : (handle : string) =>  {
+                return this._windowActions(handle);
+
+            },
+            current : () => { 
+                return this._windowActions(this._currentHandle);
             }
         }
     }
@@ -314,19 +355,49 @@ export class SimpleWebDriver {
     public cookies() {
         return {
             getAll : () => {
-
+                return new Promise<CookieDef[]> ((resolve, reject) => {
+                    wdapi.call<CookieDef[]>(this.serverURL, this._api.COOKIE_GETALL(this.session)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
             },
             get : (name : string) => {
-
+                return new Promise<CookieDef> ((resolve, reject) => {
+                    wdapi.call<CookieDef>(this.serverURL, this._api.COOKIE_GET(this.session, name)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
             },
             add : (cookie : CookieDef) => {
-
+                return new Promise<void> ((resolve, reject) => {
+                    wdapi.call<void>(this.serverURL, this._api.COOKIE_ADD(this.session, cookie)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
             },
             delete : (name : string) => {
-
+                return new Promise<void> ((resolve, reject) => {
+                    wdapi.call<void>(this.serverURL, this._api.COOKIE_DELETE(this.session, name)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
             },
             deleteAll : () => {
-
+                return new Promise<void> ((resolve, reject) => {
+                    wdapi.call<void>(this.serverURL, this._api.COOKIE_DELETEALL(this.session)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
             }
         }
     }
@@ -437,6 +508,11 @@ export class SimpleWebDriver {
                     }
                     this._session = resp.body.value.sessionId;
                     this._timeouts = resp.body.value.capabilities.timeouts;
+                    try {
+                        this._currentHandle = await this.window().getHandle();
+                    } catch (err) {
+                        reject (err);
+                    }
                     resolve(true);
                 }
             } catch (err) {
@@ -452,6 +528,7 @@ export class SimpleWebDriver {
             } else {
                 wdapi.call<any>(this.serverURL, this._api.SESSION_STOP(this.session)).then(resp => {
                     this._session = null;
+                    this._currentHandle = null;
                     resolve();
                 }).catch(err => {
                     reject(err);
