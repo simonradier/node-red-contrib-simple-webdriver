@@ -1,3 +1,4 @@
+import { CookieDef } from "../interface";
 import { RequestDef } from "./request";
 
 export interface WDAPIDef {
@@ -41,11 +42,11 @@ export interface WDAPIDef {
     EXECUTE_ASYNC(sessionId: string, script: string, ...args: any[]): RequestDef;
     COOKIE_GETALL(sessionId: string): RequestDef;
     COOKIE_GET(sessionId: string, name: string): RequestDef;
-    COOKIE_ADD(sessionId: string, name: string, value: string, path: string, domain: string): RequestDef;
+    COOKIE_ADD(sessionId: string, cookie : CookieDef): RequestDef;
     COOKIE_DELETE(sessionId: string, name: string): RequestDef;
     COOKIE_DELETEALL(sessionId: string): RequestDef;
     ALERT_ACCEPT(sessionId: string): RequestDef;
     ALERT_DISMISS(sessionId: string): RequestDef;
     ALERT_GETTEXT(sessionId: string): RequestDef;
-    ALERT_SENDTEXT(sessionId: string): RequestDef;
+    ALERT_SENDTEXT(sessionId: string, text : string): RequestDef;
 }
