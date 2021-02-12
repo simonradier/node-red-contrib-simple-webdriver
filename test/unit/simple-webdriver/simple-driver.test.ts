@@ -54,42 +54,42 @@ describe('SimpleDriver', function (){
             let driver : SimpleWebDriver = new SimpleWebDriver("http://fake-server.local");
             await expect(driver.start()).to.be.rejectedWith(/ENOTFOUND|EAI_AGAIN/);
         });
-        it('should throw an exception if the server is not a webdriver server 1/6', async function () { 
+        it('should throw an exception if the server is not a webdriver server 1/6 | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_HTML;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.rejectedWith(/Incorrect HTTP header/);
         });
 
-        it('should throw an exception if the server is not a webdriver server 2/6', async function () { 
+        it('should throw an exception if the server is not a webdriver server 2/6 | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_EMPTY;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.rejectedWith(/empty or null/);
         });
 
-        it('should throw an exception if the server is not a webdriver server 3/6', async function () { 
+        it('should throw an exception if the server is not a webdriver server 3/6 | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_VALUE_NULL;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers)
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.rejectedWith(/empty or null/);
         });
 
-        it('should throw an exception if the server is not a webdriver server 4/6', async function () { 
+        it('should throw an exception if the server is not a webdriver server 4/6 | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_VALUE_EMPTY;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers)
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.rejectedWith(/Missing.*sessionId/);
         });
 
-        it('should throw an exception if the server is not a webdriver server 5/6', async function () { 
+        it('should throw an exception if the server is not a webdriver server 5/6 | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_VALUE_NO_CAPA;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);            
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.rejectedWith(/Missing.*capabilities/);
         });
 
-        it('should throw an exception if the server is not a webdriver server 6/6', async function () { 
+        it('should throw an exception if the server is not a webdriver server 6/6 | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_VALUE_NO_TIMEOUTS;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);   
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
@@ -102,22 +102,24 @@ describe('SimpleDriver', function (){
             let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
-            await driver.start();
-            expect(driver.session).to.be.equal(WD_SESSION_ID);
-            expect(driver.timeouts.implicit).to.be.equal(0);
-            expect(driver.timeouts.pageLoad).to.be.equal(300000);
-            expect(driver.timeouts.script).to.be.equal(30000);
-            expect(nock.isDone(), 'all request were executed');
+            await expect(driver.start()).to.be.fulfilled;
+            if (nock.isActive()) {
+                expect(driver.session).to.be.equal(WD_SESSION_ID);
+                expect(driver.timeouts.implicit).to.be.equal(0);
+                expect(driver.timeouts.pageLoad).to.be.equal(300000);
+                expect(driver.timeouts.script).to.be.equal(30000);
+                expect(nock.isDone(), 'all request were executed');
+            }
         });
 
-        it('should throw an error if the response is not a JSON object', async function () { 
+        it('should throw an error if the response is not a JSON object | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_NOJSON;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);  
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.rejectedWith(/Unexpected token/);
         });
 
-        it('should throw an error if the server generate an error during response', async function () { 
+        it('should throw an error if the server generate an error during response | Nock Only', async function () { 
             nock(WD_SERVER_URL_HTTP).post("/session").replyWithError({
                 message: 'something awful happened',
                 code: 'AWFUL_ERROR'});
@@ -125,20 +127,23 @@ describe('SimpleDriver', function (){
             await expect(driver.start()).to.be.rejectedWith(/something awful happened/);
         });
     
-        it('should start a session if webdriver response is correct (https)', async function () { 
+        it('should start a session if webdriver response is correct (https) | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTPS).post("/session").reply(resp.code, resp.body, resp.headers);  
             let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTPS).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTPS);
-            await driver.start();
-            expect(driver.session).to.be.equal(WD_SESSION_ID);
-            expect(driver.timeouts.implicit).to.be.equal(0);
-            expect(driver.timeouts.pageLoad).to.be.equal(300000);
-            expect(driver.timeouts.script).to.be.equal(30000);
+            await expect(driver.start()).to.be.fulfilled;
+            if (nock.isActive()) {
+                expect(driver.session).to.be.equal(WD_SESSION_ID);
+                expect(driver.timeouts.implicit).to.be.equal(0);
+                expect(driver.timeouts.pageLoad).to.be.equal(300000);
+                expect(driver.timeouts.script).to.be.equal(30000);
+                expect(nock.isDone(), 'all request were executed');
+            }
         });
 
-        it('should throw an error if webdriver can\'t create a session', async function () { 
+        it('should throw an error if webdriver can\'t create a session | Nock Only', async function () { 
             let resp = WD_START_SESSION_RESPONSE.KO_500;
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);  
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
@@ -180,7 +185,7 @@ describe('SimpleDriver', function (){
             await expect(driver.stop()).to.be.rejectedWith(/start must be called first/);
         });
 
-        it('should throw an error if webdriver call return an error', async function () {
+        it('should throw an error if webdriver call return an error | Nock Only', async function () {
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
             let resp = WD_STOP_SESSION_RESPONSE.KO_ERROR;
@@ -200,7 +205,7 @@ describe('SimpleDriver', function (){
 
         for (let using in Using) {
             if (using === "className" || using === "id" || using === "name") {
-                it('should return a WebElement using the execute_sync API with ' + using + ' search', async function () {
+                it('should return a WebElement using the execute_sync API with ' + using + ' search  | Nock Only', async function () {
                     let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
                     await expect(driver.start()).to.be.fulfilled;
                     let resp = WD_EXECUTE_SYNC_RESPONSE.OK_ELEMENT;
@@ -209,7 +214,7 @@ describe('SimpleDriver', function (){
                     await expect(driver.findElement(Using[using], "test")).to.be.fulfilled;
                 });
             } else {
-                it('should return a WebElement using the element API with ' + using + ' search', async function () {
+                it('should return a WebElement using the element API with ' + using + ' search  | Nock Only', async function () {
                     let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
                     await expect(driver.start()).to.be.fulfilled;
                     let resp = WD_FIND_ELEMENT_RESPONSE.OK;
@@ -220,7 +225,7 @@ describe('SimpleDriver', function (){
             }
         }
 
-        it('should throw an error if the API return an error', async function () {
+        it('should throw an error if the API return an error | Nock Only', async function () {
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
             let resp = WD_FIND_ELEMENT_RESPONSE.KO_ERROR;
@@ -230,7 +235,7 @@ describe('SimpleDriver', function (){
         });
 
 
-        it('should throw an LocationError if element can\'t be found', async function () {
+        it('should throw a LocationError if element can\'t be found', async function () {
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
             let resp = WD_FIND_ELEMENT_RESPONSE.KO_NOT_FOUND;
@@ -245,7 +250,7 @@ describe('SimpleDriver', function (){
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).times(50).reply(resp.code, resp.body, resp.headers);
             let resp2 = WD_FIND_ELEMENT_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).reply(resp2.code, resp2.body, resp2.headers);
-            await expect(driver.findElement(Using.css, "test", 500)).to.be.fulfilled;
+            await expect(driver.findElement(Using.css, ".class_1234", 500)).to.be.fulfilled;
         });
 
         it('should thrown an error if element is not found before the timeout', async function () {
@@ -255,7 +260,7 @@ describe('SimpleDriver', function (){
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).times(100).reply(resp.code, resp.body, resp.headers);
             let resp2 = WD_FIND_ELEMENT_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).reply(resp2.code, resp2.body, resp2.headers);
-            await expect(driver.findElement(Using.css, "test", 50)).to.be.rejectedWith(/Cannot locate : test/);
+            await expect(driver.findElement(Using.css, ".class_dont_exist", 50)).to.be.rejectedWith(/Cannot locate : test/);
         });
 
     });
@@ -270,7 +275,7 @@ describe('SimpleDriver', function (){
         });
     });
 
-    describe('navigate', function () {
+    describe.skip('navigate', function () {
         beforeEach(function () {
             nock.cleanAll();
             let resp = WD_START_SESSION_RESPONSE.OK;
