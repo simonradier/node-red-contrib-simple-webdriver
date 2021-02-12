@@ -2,6 +2,8 @@ export let WD_SERVER_URL_HTTP = "http://localhost:9515"
 
 export let WD_SERVER_URL_HTTPS = "https://localhost:9515"
 
+export let WD_WEBSITE_URL_HTTP =  "https://simonradier.github.io/node-red-contrib-selenium-wd2/test/"
+
 export let WD_SESSION_ID = "session-test-id-1337"
 
 export let WD_ELEMENT_ID = "element-test-id-1337"

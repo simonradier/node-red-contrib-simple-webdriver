@@ -36,7 +36,6 @@ describe('node : open-web', function (){
     });
 
     it('should create a new webdriver session and push it to the msg object ', function (done) {
-      this.timeout(30000);
       let resp = WD_START_SESSION_RESPONSE.OK;
       nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);  
       let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
@@ -56,8 +55,10 @@ describe('node : open-web', function (){
           n3.on("input", function (msg : any) {
             expect(msg.error, 'check error').to.be.undefined;
             expect(msg.driver, 'check driver').to.exist;
-            expect(msg.driver.session, 'check session').to.be.equal(WD_SESSION_ID);
-            expect(msg.payload, 'check pauload').to.be.equal("test");
+            if (nock.isActive()){
+              expect(msg.driver.session, 'check session').to.be.equal(WD_SESSION_ID);
+            }
+            expect(msg.payload, 'check payload').to.be.equal("test");
             done();
           });
           n1.receive({ payload: "test" });

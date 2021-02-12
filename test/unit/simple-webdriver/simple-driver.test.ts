@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { Browser, Protocol, SimpleWebDriver, Using } from "../../../src/webdriver/webdriver";
 import { LoggerConfiguration, LogLevel } from "../../../src/webdriver/utils/logger";
 import nock from "nock";
-import { WD_START_SESSION_RESPONSE, WD_SERVER_URL_HTTP, WD_SERVER_URL_HTTPS, WD_SESSION_ID, WD_STOP_SESSION_RESPONSE, WD_EXECUTE_SYNC_RESPONSE, WD_FIND_ELEMENT_RESPONSE, WD_WINDOW_HANDLE_RESPONSE } from './data';
+import { WD_START_SESSION_RESPONSE, WD_SERVER_URL_HTTP, WD_SERVER_URL_HTTPS, WD_SESSION_ID, WD_STOP_SESSION_RESPONSE, WD_EXECUTE_SYNC_RESPONSE, WD_FIND_ELEMENT_RESPONSE, WD_WINDOW_HANDLE_RESPONSE, WD_NAVIGATE_TO_RESPONSE, WD_WEBSITE_URL_HTTP } from './data';
 
 chai.use(chaiAsPromised);
 
@@ -201,6 +201,8 @@ describe('SimpleDriver', function (){
             nock(WD_SERVER_URL_HTTP).post("/session").reply(resp.code, resp.body, resp.headers);
             let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
+            let resp3 = WD_NAVIGATE_TO_RESPONSE.OK;
+            nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/url`).reply(resp3.code, resp3.body, resp3.headers);  
         });
 
         for (let using in Using) {
@@ -208,6 +210,7 @@ describe('SimpleDriver', function (){
                 it('should return a WebElement using the execute_sync API with ' + using + ' search  | Nock Only', async function () {
                     let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
                     await expect(driver.start()).to.be.fulfilled;
+                    await expect(driver.navigate().to(WD_WEBSITE_URL_HTTP)).to.be.fulfilled;
                     let resp = WD_EXECUTE_SYNC_RESPONSE.OK_ELEMENT;
                     nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/execute/sync`).reply(resp.code, resp.body, resp.headers);
                     //@ts-ignore
@@ -217,6 +220,7 @@ describe('SimpleDriver', function (){
                 it('should return a WebElement using the element API with ' + using + ' search  | Nock Only', async function () {
                     let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
                     await expect(driver.start()).to.be.fulfilled;
+                    await expect(driver.navigate().to(WD_WEBSITE_URL_HTTP)).to.be.fulfilled;
                     let resp = WD_FIND_ELEMENT_RESPONSE.OK;
                     nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).reply(resp.code, resp.body, resp.headers);
                     //@ts-ignore
@@ -228,6 +232,7 @@ describe('SimpleDriver', function (){
         it('should throw an error if the API return an error | Nock Only', async function () {
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
+            await expect(driver.navigate().to(WD_WEBSITE_URL_HTTP)).to.be.fulfilled;
             let resp = WD_FIND_ELEMENT_RESPONSE.KO_ERROR;
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).reply(resp.code, resp.body, resp.headers);
             //@ts-ignore
@@ -238,6 +243,7 @@ describe('SimpleDriver', function (){
         it('should throw a LocationError if element can\'t be found', async function () {
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
+            await expect(driver.navigate().to(WD_WEBSITE_URL_HTTP)).to.be.fulfilled;
             let resp = WD_FIND_ELEMENT_RESPONSE.KO_NOT_FOUND;
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).reply(resp.code, resp.body, resp.headers);
             await expect(driver.findElement(Using.css, "test")).to.be.rejectedWith(/Cannot locate : test/);
@@ -246,6 +252,7 @@ describe('SimpleDriver', function (){
         it('should find an element before the timeout', async function () {
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
+            await expect(driver.navigate().to(WD_WEBSITE_URL_HTTP)).to.be.fulfilled;
             let resp = WD_FIND_ELEMENT_RESPONSE.KO_NOT_FOUND;
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).times(50).reply(resp.code, resp.body, resp.headers);
             let resp2 = WD_FIND_ELEMENT_RESPONSE.OK;
@@ -256,11 +263,12 @@ describe('SimpleDriver', function (){
         it('should thrown an error if element is not found before the timeout', async function () {
             let driver : SimpleWebDriver = new SimpleWebDriver(WD_SERVER_URL_HTTP);
             await expect(driver.start()).to.be.fulfilled;
+            await expect(driver.navigate().to(WD_WEBSITE_URL_HTTP)).to.be.fulfilled;
             let resp = WD_FIND_ELEMENT_RESPONSE.KO_NOT_FOUND;
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).times(100).reply(resp.code, resp.body, resp.headers);
             let resp2 = WD_FIND_ELEMENT_RESPONSE.OK;
             nock(WD_SERVER_URL_HTTP).post(`/session/${WD_SESSION_ID}/element`).reply(resp2.code, resp2.body, resp2.headers);
-            await expect(driver.findElement(Using.css, ".class_dont_exist", 50)).to.be.rejectedWith(/Cannot locate : test/);
+            await expect(driver.findElement(Using.css, ".class_dont_exist", 50)).to.be.rejectedWith(/Cannot locate :/);
         });
 
     });
