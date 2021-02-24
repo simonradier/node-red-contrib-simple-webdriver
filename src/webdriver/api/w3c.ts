@@ -35,16 +35,16 @@ export class W3C implements WDAPIDef {
             case "firefox" :
                 browserOptions = "moz:firefoxOptions";
             break
-            case "edge" : 
+            case "msedge" : 
                 browserOptions = "ms:edgeOptions";
             break;
             case "safari":
-                browserOptions = "safari.options";
+                browserOptions = "safari:options";
         }
         result.data.capabilities.alwaysMatch[browserOptions] = { args: new Array() };
         if (headless) {
             switch (browser) {
-                case "edge" :
+                case "msedge" :
                 case "chrome" :
                 case "chromium":
                     result.data.capabilities.alwaysMatch[browserOptions].args.push("headless");
@@ -54,7 +54,7 @@ export class W3C implements WDAPIDef {
                 break
             }
         }
-        result.data.capabilities.alwaysMatch[browserOptions].w3c = true;
+        //result.data.capabilities.alwaysMatch[browserOptions].w3c = true;
         result.path = "/session";
         result.requestOptions.method = "POST"
         return result;
@@ -99,7 +99,7 @@ export class W3C implements WDAPIDef {
     NAVIGATE_FORWARD(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/back`;
+        result.path = `/session/${sessionId}/forward`;
         result.data = {}
         result.requestOptions.method = "POST"
         return result;
