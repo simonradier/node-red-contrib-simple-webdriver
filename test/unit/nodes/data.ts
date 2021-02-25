@@ -2,7 +2,7 @@ import { WD_SERVER_URL_HTTP } from "../simple-webdriver/data";
 
 
 export let NODE_OPEN_WEB = {
-    OK_CHROME : (id : string, next : string[]) => {
+    Chrome : (id : string, next : string[]) => {
         return {
             "id": id,
             "type": "open-web",
@@ -14,7 +14,7 @@ export let NODE_OPEN_WEB = {
             "timeout": 3000,
             "maximized": false,
             "headless": false,
-            "serverURL": WD_SERVER_URL_HTTP,
+            "serverURL": WD_SERVER_URL_HTTP.Chrome,
             "wires": [
                 ['n2']
             ]

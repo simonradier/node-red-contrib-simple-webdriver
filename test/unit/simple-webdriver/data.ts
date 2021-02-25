@@ -1,8 +1,41 @@
-export let WD_SERVER_URL_HTTP = "http://localhost:9515"
+export enum WD_TESTED_Browser {
+    Chrome = "chrome",
+    //Chromium = "chromium",
+    Edge = "msedge",
+    Firefox = "firefox",
+    Safari = "safari"
+}
 
-export let WD_SERVER_URL_HTTPS = "https://localhost:9515"
+export enum WD_TESTED_Driver {
+    Chrome = "chromedriver",
+    Chromium = "chromedriver",
+    Edge = "msedgedriver",
+    Firefox = "geckodriver",
+    Safari = "safaridriver"
+}
+
+export let WD_SERVER_URL_HTTP = {
+    Chrome : "http://localhost:9515",
+    Firefox : "http://localhost:4444",
+    Chromium : "http://localhost:9515",
+    Edge : "http://localhost:9415",
+    Safari : "http://localhost:9315",
+}
+
+export let WD_SERVER_URL_HTTPS = {
+    Chrome : "https://localhost:9515",
+    Firefox : "https://localhost:4444",
+    Chromium : "https://localhost:9515",
+    Edge : "https://localhost:9415",
+    Safari : "https://localhost:9315",
+}
 
 export let WD_WEBSITE_URL_HTTP =  "https://simonradier.github.io/node-red-contrib-selenium-wd2/test/"
+
+export let WD_WEBSITE_URL_HTTP_1 =  "https://simonradier.github.io/node-red-contrib-selenium-wd2/test/test1.html"
+
+export let WD_WEBSITE_URL_HTTP_2 =  "https://simonradier.github.io/node-red-contrib-selenium-wd2/test/test2.html"
+
 
 export let WD_SESSION_ID = "session-test-id-1337"
 
@@ -179,7 +212,86 @@ export let WD_NAVIGATE_TO_RESPONSE = {
             //@ts-ignore
             "value" : null
         },
-        headers : { "Content-Type" : "application/json"}
+        headers : { "Content-Type" : "application/json" }
+    },
+    KO : {
+        code : 400,
+        body : {
+            "value" : { 
+                "error" : "navigate", 
+                "message" : "no such window",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_NAVIGATE_REFRESH_RESPONSE = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : null
+        },
+        headers : { "Content-Type" : "application/json" }
+    },
+    KO : {
+        code : 400,
+        body : {
+            "value" : { 
+                "error" : "refresh", 
+                "message" : "no such window",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+
+export let WD_NAVIGATE_BACK_RESPONSE = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : null
+        },
+        headers : { "Content-Type" : "application/json" }
+    },
+    KO : {
+        code : 400,
+        body : {
+            "value" : { 
+                "error" : "back", 
+                "message" : "no such window",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+
+export let WD_NAVIGATE_FORWARD_RESPONSE = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : null
+        },
+        headers : { "Content-Type" : "application/json" }
+    },
+    KO : {
+        code : 400,
+        body : {
+            "value" : { 
+                "error" : "forward", 
+                "message" : "no such window",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
     }
 }
 

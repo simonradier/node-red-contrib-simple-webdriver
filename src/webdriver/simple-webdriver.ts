@@ -22,7 +22,7 @@ export enum Using {
 export enum Browser {
     Chrome = "chrome",
     Chromium = "chromium",
-    Edge = "edge",
+    Edge = "msedge",
     Firefox = "firefox",
     Safari = "safari",
 }
@@ -34,10 +34,12 @@ export enum Protocol {
 
 export class SimpleWebDriver {
 
+    private static _onGoingSessions : { [sessionId : string] : { url : URL, api : WDAPIDef} } = {};
+
     private static _supportedBrowser : string[] = [
         'chrome',
         'chromium',
-        'edge',
+        'msedge',
         "firefox",
         "safari",
     ];
@@ -483,24 +485,32 @@ export class SimpleWebDriver {
         return new Promise<boolean> (async (resolve, reject) => {
             try {
                 // If session is already started
-                if (this.session)
-                    reject(new WebDriverError("can't start Webdriver session which is already started"))
-                else {
+                if (this.session){
+                    Logger.error("Webdriver session is already started")
+                    reject(new WebDriverError("Can't start Webdriver session which is already started"))
+                } else {
                     const resp = await wdapi.call<SessionDef>(this.serverURL, this._api.SESSION_START(this._browserName, this.capabilities.headless));
                     let error : WebDriverResponseError;
                     if (!resp.body.value) {
                         error = new WebDriverResponseError(resp);
-                        error.message = "Response is empty or null"                        
+                        error.message = "Response is empty or null"  
+                        Logger.error("Response is empty or null")                      
                     } else {
                         if (!resp.body.value.sessionId) {
                             error = new WebDriverResponseError(resp);
                             error.message = "Missing property sessionId"
+                            Logger.error("Missing property sessionId")
                         } else if (!resp.body.value.capabilities) {
                             error = new WebDriverResponseError(resp);
                             error.message = "Missing property capabilities"
+                            Logger.error("Missing property capabilities")
                         } else if (!resp.body.value.capabilities.timeouts) {
-                            error = new WebDriverResponseError(resp);
-                            error.message = "Missing property timeouts"
+                            Logger.warn("No timeouts provided by Webdriver server")
+                            resp.body.value.capabilities.timeouts = {
+                                implicit : 0,
+                                pageLoad : 3000,
+                                script : 30000
+                            }
                         }
                     }
                     if (error) {
@@ -508,6 +518,7 @@ export class SimpleWebDriver {
                     }
                     this._session = resp.body.value.sessionId;
                     this._timeouts = resp.body.value.capabilities.timeouts;
+                    SimpleWebDriver._onGoingSessions[this._session] = {url : this.serverURL , api : this._api};
                     try {
                         this._currentHandle = await this.window().getHandle();
                     } catch (err) {
@@ -527,6 +538,7 @@ export class SimpleWebDriver {
                 reject(new WebDriverError("start must be called first"))
             } else {
                 wdapi.call<any>(this.serverURL, this._api.SESSION_STOP(this.session)).then(resp => {
+                    delete SimpleWebDriver._onGoingSessions[this._session];
                     this._session = null;
                     this._currentHandle = null;
                     resolve();
@@ -534,6 +546,22 @@ export class SimpleWebDriver {
                     reject(err);
                 });
             }
+        });
+    }
+
+    public static cleanSessions() : Promise<void> {
+        return new Promise<void> (async (resolve, reject) => {
+            for (let sessionId in SimpleWebDriver._onGoingSessions){
+                try {
+                    let inf = SimpleWebDriver._onGoingSessions[sessionId]
+                    await wdapi.call<any>(inf.url, inf.api.SESSION_STOP(sessionId));
+                    Logger.info("Cleaned session : " + sessionId);
+                } catch (e) {
+                    Logger.warn("Can't stop ongoing session : " + sessionId);
+                }
+            }
+            SimpleWebDriver._onGoingSessions = {};
+            resolve();
         });
     }
 }
