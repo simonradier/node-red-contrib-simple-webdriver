@@ -25,7 +25,10 @@
 		"prettier": "~2.1.2",
 		"ts-node": "^9.1.1",
 		"typescript": "~4.0.3",
-		"typescript-tslint-plugin": "~0.5.5"
+		"typescript-tslint-plugin": "~0.5.5",
+		"chromedriver": "88.0.0",
+		"geckodriver": "1.22.1",
+		"msedgedriver": "87.0.13"
 	},
 	"license": "Apache-2.0",
 	"keywords": [
@@ -48,7 +51,11 @@
 		"prepublishOnly": "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
 		"clean": "rm -rf dist",
 		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^(?!.*Nock Only).*' --timeout 10000  -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-full": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^(?!.*Nock Only).*$' --timeout 10000  -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-chrome": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Chrome(?!.*Nock Only).*$' --timeout 10000  -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-safari": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Safari(?!.*Nock Only).*$' --timeout 10000  -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-edge": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Edge(?!.*Nock Only).*$' --timeout 10000  -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-chromium": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Chromium(?!.*Nock Only).*$' --timeout 10000  -r ts-node/register 'test/unit/**/*.ts'",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"author": {
