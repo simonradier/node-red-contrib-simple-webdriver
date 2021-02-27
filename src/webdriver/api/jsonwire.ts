@@ -11,6 +11,9 @@ export class JSONWire implements WDAPIDef {
     NAVIGATE_TO(sessionId: string, url: string): RequestDef {
         throw new Error("Method not implemented.");
     }
+    NAVIGATE_CURRENTURL(sessionId: string): RequestDef {
+        throw new Error("Method not implemented.");
+    }
     NAVIGATE_REFRESH(sessionId: string): RequestDef {
         throw new Error("Method not implemented.");
     }

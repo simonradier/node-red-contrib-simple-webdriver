@@ -5,7 +5,6 @@ import { WebDriverRequest, WebElement } from "../webdriver";
 
 export class W3C implements WDAPIDef {
 
-
     private static _initHttpOptions(request: RequestDef) {
         request.requestOptions = {};
         request.requestOptions.headers = {
@@ -76,6 +75,14 @@ export class W3C implements WDAPIDef {
         result.data = {}
         result.data = { url }
         return result;
+    }
+
+    NAVIGATE_CURRENTURL(sessionId: string): RequestDef {
+        let result = new WebDriverRequest();
+        W3C._initHttpOptions(result);
+        result.path = `/session/${sessionId}/url`;
+        result.requestOptions.method = "GET"
+        return result;    
     }
 
     NAVIGATE_REFRESH(sessionId: string): RequestDef {

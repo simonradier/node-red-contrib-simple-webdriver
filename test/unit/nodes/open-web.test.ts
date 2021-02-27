@@ -33,6 +33,8 @@ describe('node : open-web', function (){
                 SimpleWebDriver.cleanSessions().then(() => {
                   helper.stopServer(done); 
                 });
+            else
+              helper.stopServer(done); 
         });
         
         it('should throw an error if the URL is not correct #1', function (done) { 

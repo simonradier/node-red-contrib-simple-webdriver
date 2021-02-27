@@ -227,6 +227,41 @@ export let WD_NAVIGATE_TO_RESPONSE = {
     }
 }
 
+export let WD_NAVIGATE_CURRENTURL = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : WD_WEBSITE_URL_HTTP
+        },
+        headers : { "Content-Type" : "application/json" }
+    },
+    OK_1 : {
+        code : 200,
+        body : {
+            "value" : WD_WEBSITE_URL_HTTP_1
+        },
+        headers : { "Content-Type" : "application/json" }
+    },
+    OK_2 : {
+        code : 200,
+        body : {
+            "value" : WD_WEBSITE_URL_HTTP_2
+        },
+        headers : { "Content-Type" : "application/json" }
+    },
+    KO : {
+        code : 400,
+        body : {
+            "value" : { 
+                "error" : "geturl", 
+                "message" : "no such window",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
 export let WD_NAVIGATE_REFRESH_RESPONSE = {
     OK : {
         code : 200,

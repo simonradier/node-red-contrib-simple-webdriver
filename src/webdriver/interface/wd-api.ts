@@ -4,6 +4,7 @@ import { RequestDef } from "./request";
 export interface WDAPIDef {
     SESSION_START(browser: string, headless: boolean): RequestDef;
     SESSION_STOP(sessionId: string): RequestDef;
+    NAVIGATE_CURRENTURL(sessionId: string): RequestDef;
     NAVIGATE_TO(sessionId: string, url: string): RequestDef;
     NAVIGATE_REFRESH(sessionId: string): RequestDef;
     NAVIGATE_BACK(sessionId: string,): RequestDef;
