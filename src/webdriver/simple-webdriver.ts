@@ -209,7 +209,6 @@ export class SimpleWebDriver {
             },
             handle : (handle : string) =>  {
                 return this._windowActions(handle);
-
             },
             current : () => { 
                 return this._windowActions(this._currentHandle);
@@ -232,6 +231,15 @@ export class SimpleWebDriver {
                 return new Promise<void> (async (resolve, reject) => {
                     wdapi.call<any>(this.serverURL, this._api.NAVIGATE_TO(this.session, url)).then(resp => {
                         resolve();
+                    }).catch(err => {
+                        reject(err);
+                    });
+                })
+            },
+            getCurrentURL : () => {
+                return new Promise<string> (async (resolve, reject) => {
+                    wdapi.call<string>(this.serverURL, this._api.NAVIGATE_CURRENTURL(this.session)).then(resp => {
+                        resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
                     });
@@ -411,43 +419,39 @@ export class SimpleWebDriver {
             }
             let timer = true;
             setTimeout(() => timer = false, timeout);
-            try {
-                let resp : HttpResponse<ResponseDef<ElementDef>>;
-                let script = "";
-                let request : RequestDef;
-                let error;
-                switch (using) {
-                    case Using.id :
-                        script = "return document.getElementById(arguments[0]);"
-                    case Using.className :
-                    case Using.name  :
-                        script = (script !== "") ? script : "return document.getElementsBy" + using.charAt(0).toUpperCase() + using.slice(1) + "(arguments[0])[0];"
-                        request = this._api.EXECUTE_SYNC(this.session, script, [ value ]);
-                    break;
-                    default:
-                        request = this._api.FINDELEMENT(this.session, using, value);
-                    break;
+            let resp : HttpResponse<ResponseDef<ElementDef>>;
+            let script = "";
+            let request : RequestDef;
+            let error;
+            switch (using) {
+                case Using.id :
+                    script = "return document.getElementById(arguments[0]);"
+                case Using.className :
+                case Using.name  :
+                    script = (script !== "") ? script : "return document.getElementsBy" + using.charAt(0).toUpperCase() + using.slice(1) + "(arguments[0])[0];"
+                    request = this._api.EXECUTE_SYNC(this.session, script, [ value ]);
+                break;
+                default:
+                    request = this._api.FINDELEMENT(this.session, using, value);
+                break;
+            }
+            do {
+                try {
+                    resp = await wdapi.call<ElementDef>(this.serverURL, request);
+                } catch (err) {
+                    error = err;
+                    resp = err.httpResponse;
+                    Logger.trace(resp);
                 }
-                do {
-                    try {
-                        resp = await wdapi.call<ElementDef>(this.serverURL, request);
-                    } catch (err) {
-                        error = err;
-                        resp = err.httpResponse;
-                        Logger.trace(resp);
-                    }
-                } while ((resp.body.value === null || resp.statusCode !== 200 ) && timer)
-                if (resp.statusCode === 200 && resp.body.value) {
-                    const element = new WebElement(this, resp.body.value[Object.keys(resp.body.value)[0]])
-                    resolve(element);
-                } else {
-                    if (resp.statusCode === 404)
-                        reject (new LocationError(using, value, timeout));
-                    else
-                        reject (error);
-                }
-            } catch (err) {
-                reject(err);
+            } while ((resp.body.value === null || resp.statusCode !== 200 ) && timer)
+            if (resp.statusCode === 200 && resp.body.value) {
+                const element = new WebElement(this, resp.body.value[Object.keys(resp.body.value)[0]])
+                resolve(element);
+            } else {
+                if (resp.statusCode === 404)
+                    reject (new LocationError(using, value, timeout));
+                else
+                    reject (error);
             }
         });
     }
