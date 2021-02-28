@@ -41,6 +41,17 @@ export let WD_SESSION_ID = "session-test-id-1337"
 
 export let WD_ELEMENT_ID = "element-test-id-1337"
 
+export let WD_ELEMENT_SEARCH = {
+    id : "id_1234",
+    name : "h1",
+    className : "class_1234",
+    link : "This is a link to test1.html",
+    partialLink : "test2.html",
+    css : "#id_1234",
+    tag : "h1",
+    xpath : "/html/body/span"
+}
+
 export let WD_HANDLE_ID = "window-test-id-1337"
 
 export let WD_CAPABILITIES = {

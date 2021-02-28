@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { Browser, Protocol, SimpleWebDriver, Using } from "../../../src/webdriver/webdriver";
 import { LoggerConfiguration, LogLevel } from "../../../src/webdriver/utils/logger";
 import nock from "nock";
-import { WD_START_SESSION_RESPONSE, WD_SERVER_URL_HTTP, WD_SERVER_URL_HTTPS, WD_SESSION_ID, WD_STOP_SESSION_RESPONSE, WD_EXECUTE_SYNC_RESPONSE, WD_FIND_ELEMENT_RESPONSE, WD_WINDOW_HANDLE_RESPONSE, WD_NAVIGATE_TO_RESPONSE, WD_WEBSITE_URL_HTTP, WD_WEBSITE_URL_HTTP_1, WD_WEBSITE_URL_HTTP_2, WD_NAVIGATE_REFRESH_RESPONSE, WD_TESTED_Browser, WD_TESTED_Driver, WD_NAVIGATE_BACK_RESPONSE, WD_NAVIGATE_FORWARD_RESPONSE, WD_NAVIGATE_CURRENTURL } from './data';
+import { WD_START_SESSION_RESPONSE, WD_SERVER_URL_HTTP, WD_SERVER_URL_HTTPS, WD_SESSION_ID, WD_STOP_SESSION_RESPONSE, WD_EXECUTE_SYNC_RESPONSE, WD_FIND_ELEMENT_RESPONSE, WD_WINDOW_HANDLE_RESPONSE, WD_NAVIGATE_TO_RESPONSE, WD_WEBSITE_URL_HTTP, WD_WEBSITE_URL_HTTP_1, WD_WEBSITE_URL_HTTP_2, WD_NAVIGATE_REFRESH_RESPONSE, WD_TESTED_Browser, WD_TESTED_Driver, WD_NAVIGATE_BACK_RESPONSE, WD_NAVIGATE_FORWARD_RESPONSE, WD_NAVIGATE_CURRENTURL, WD_ELEMENT_SEARCH } from './data';
 
 chai.use(chaiAsPromised);
 
@@ -453,7 +453,7 @@ describe('SimpleDriver', function (){
 
                 for (let using in Using) {
                     if (using === "className" || using === "id" || using === "name") {
-                        it('should return a WebElement using the execute_sync API with ' + using + ' search  | Nock Only', async function () {
+                        it('should return a WebElement using the execute_sync API with ' + using + ' search', async function () {
                             let driver : SimpleWebDriver;
                             driver = new SimpleWebDriver(WD_SERVER_URL_HTTP[browser],Browser[browser]);
                             await expect(driver.start()).to.be.fulfilled;
@@ -461,10 +461,10 @@ describe('SimpleDriver', function (){
                             let resp = WD_EXECUTE_SYNC_RESPONSE.OK_ELEMENT;
                             nock(WD_SERVER_URL_HTTP[browser]).post(`/session/${WD_SESSION_ID}/execute/sync`).reply(resp.code, resp.body, resp.headers);
                             //@ts-ignore
-                            await expect(driver.findElement(Using[using], "test")).to.be.fulfilled;
+                            await expect(driver.findElement(Using[using], WD_ELEMENT_SEARCH[using])).to.be.fulfilled;
                         });
                     } else {
-                        it('should return a WebElement using the element API with ' + using + ' search  | Nock Only', async function () {
+                        it('should return a WebElement using the element API with ' + using + ' search', async function () {
                             let driver : SimpleWebDriver;
                             driver = new SimpleWebDriver(WD_SERVER_URL_HTTP[browser],Browser[browser]);
                             await expect(driver.start()).to.be.fulfilled;
@@ -472,7 +472,7 @@ describe('SimpleDriver', function (){
                             let resp = WD_FIND_ELEMENT_RESPONSE.OK;
                             nock(WD_SERVER_URL_HTTP[browser]).post(`/session/${WD_SESSION_ID}/element`).reply(resp.code, resp.body, resp.headers);
                             //@ts-ignore
-                            await expect(driver.findElement(Using[using], "test")).to.be.fulfilled;
+                            await expect(driver.findElement(Using[using], WD_ELEMENT_SEARCH[using])).to.be.fulfilled;
                         });
                     }
                 }
@@ -489,7 +489,7 @@ describe('SimpleDriver', function (){
                 });
 
 
-                it('should throw a LocationError if element can\'t be found | Nock Only', async function () {
+                it('should throw a LocationError if element can\'t be found', async function () {
                     let driver : SimpleWebDriver;
                     driver = new SimpleWebDriver(WD_SERVER_URL_HTTP[browser],Browser[browser]);
                     await expect(driver.start()).to.be.fulfilled;
