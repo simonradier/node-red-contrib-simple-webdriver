@@ -49,7 +49,7 @@ jobs:
   
   e2e-test:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -65,19 +65,6 @@ jobs:
       - name: Build node-red-contrib package
         run: npm run prepublishOnly
 
-      - name: Install node-red
-        run: sudo npm install -g --unsafe-perm node-red
-
-      - name: Install newman
-        run: sudo npm install -g newman
-          
-      - name: Install package into node-red 
-        run: sudo npm install -g .
-
-      # Runs a single command using the runners shell
-      - name: Run node-red
-        run: node-red > node-red-log.txt &
-  
       # Runs a single command using the runners shell
       - name: Run chromedriver
         run: chromedriver & 
@@ -101,6 +88,16 @@ jobs:
 
       - name: Run test with driver
         run: npm run test-wd-full
+
+      - name: Install node-red
+        run: sudo npm install -g --unsafe-perm node-red
+
+      - name: Install newman
+        run: sudo npm install -g newman
+          
+      # Runs a single command using the runners shell
+      - name: Run node-red
+        run: npx node-red > node-red-log.txt &
       
       - name : Publish flows to node-red
         run: newman run ./test/newman/init.json
