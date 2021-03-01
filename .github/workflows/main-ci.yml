@@ -67,19 +67,19 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run chromedriver
-        run: chromedriver & 
+        run: chromedriver --verbose > chrome-driver-log.txt 2>&1 & 
 
       - name: Run geckodriver
-        run: geckodriver & 
+        run: geckodriver -v > gecko-driver-log.txt 2>&1 &
 
       - name: Run msedgedriver
-        run: msedgedriver --port=9415  & 
+        run: msedgedriver --port=9415 --verbose > edge-driver-log.txt 2>&1 & 
 
       - name: Enable safaridriver
         run: sudo safaridriver --enable
 
       - name: Run safaridriver
-        run: safaridriver --port 9315  & 
+        run: safaridriver --port 9315 --diagnose safari-driver-log.txt 2>&1  & 
 
       - name: Run test with driver
         run: npm run test-wd-full
@@ -111,3 +111,31 @@ jobs:
         with:
           name: node-red-log
           path: ./node-red-log.txt
+
+      - name: Upload artifact > safari-driver-red log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: safari-driver-log
+          path: ./safari-driver-log
+
+      - name: Upload artifact > edge-driver-red log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: edge-driver-log
+          path: ./edge-driver-log
+
+      - name: Upload artifact > chrome-driver-red log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: chrome-driver-log
+          path: ./chrome-driver-log
+
+      - name: Upload artifact > gecko-driver-red log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: gecko-driver-log
+          path: ./gecko-driver-log
