@@ -43,7 +43,7 @@ export let WD_ELEMENT_ID = "element-test-id-1337"
 
 export let WD_ELEMENT_SEARCH = {
     id : "id_1234",
-    name : "h1",
+    name : "input_1234",
     className : "class_1234",
     link : "This is a link to test1.html",
     partialLink : "test2.html",
