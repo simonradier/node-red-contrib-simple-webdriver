@@ -52,17 +52,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-latest, windows-latest]
         browser: [chrome, edge, safari, firefox]
         exclude:
           - os: macos-latest
             browser: edge #because its webdriver is buggy
           - os: windows-latest
             browser: safari
-          - os: ubuntu-latest
-            browser: safari
-          - os: ubuntu-latest
-            browser: edge
+#          - os: ubuntu-latest
+#            browser: safari
+#          - os: ubuntu-latest
+#            browser: edge
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
