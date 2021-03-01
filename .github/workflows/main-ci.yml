@@ -101,23 +101,23 @@ jobs:
       - name: Run test with driver
         run: npm run test-wd-${{ matrix.browser }}
 
-      - name: Install newman
-        run: sudo npm install -g newman
+#      - name: Install newman
+#        run: sudo npm install -g newman
           
       # Runs a single command using the runners shell
-      - name: Run node-red
-        run: npx node-red > ${{ matrix.os }}-node-red-log.txt &
+#      - name: Run node-red
+#        run: npx node-red > ${{ matrix.os }}-node-red-log.txt &
 
-      - name: Wait on
-        uses: iFaxity/wait-on-action@v1
-        with:
-          resource: http://localhost:1880/flows  
+#      - name: Wait on
+#        uses: iFaxity/wait-on-action@v1
+#        with:
+#          resource: http://localhost:1880/flows  
       
-      - name : Publish flows to node-red
-        run: newman run ./test/newman/init.json
+#      - name : Publish flows to node-red
+#        run: newman run ./test/newman/init.json
 
-      - name : Test flows
-        run: newman run ./test/newman/test-suite1.json
+#      - name : Test flows
+#        run: newman run ./test/newman/test-suite1.json
 
       - name: Upload artifact > node-red log
         if: ${{ always() }}
