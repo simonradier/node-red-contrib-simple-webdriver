@@ -79,7 +79,7 @@ jobs:
         run: sudo safaridriver --enable
 
       - name: Run safaridriver
-        run: safaridriver --port=9315  & 
+        run: safaridriver --port 9315  & 
 
       - name: Run test with driver
         run: npm run test-wd-full
