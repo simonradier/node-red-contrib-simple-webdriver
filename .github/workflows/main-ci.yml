@@ -117,25 +117,25 @@ jobs:
         uses: actions/upload-artifact@v2.2.2
         with:
           name: safari-driver-log
-          path: ./safari-driver-log
+          path: ./safari-driver-log.txt
 
       - name: Upload artifact > edge-driver-red log
         if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
           name: edge-driver-log
-          path: ./edge-driver-log
+          path: ./edge-driver-log.txt
 
       - name: Upload artifact > chrome-driver-red log
         if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
           name: chrome-driver-log
-          path: ./chrome-driver-log
+          path: ./chrome-driver-log.txt
 
       - name: Upload artifact > gecko-driver-red log
         if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
           name: gecko-driver-log
-          path: ./gecko-driver-log
+          path: ./gecko-driver-log.txt
