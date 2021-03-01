@@ -19,7 +19,7 @@ jobs:
 
   unit-test:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     env:
       COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
@@ -59,12 +59,6 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
 
-      - name: Install chromium
-        run: sudo apt install chromium-browser
-
-      - name: Install chromedriver
-        run: sudo apt install chromium-chromedriver
-
       - name: Install npm dependencies
         run: npm install
 
@@ -86,12 +80,27 @@ jobs:
   
       # Runs a single command using the runners shell
       - name: Run chromedriver
-        run: chromedriver --verbose > chrome-driver-log.txt 2>&1 & 
+        run: chromedriver & 
+
+      - name: Run geckodriver
+        run: geckodriver & 
+
+      - name: Run msedgedriver
+        run: msedgedriver --port=9415  & 
+
+      - name: Enable safaridriver
+        run: sudo safaridriver --enable
+
+      - name: Run safaridriver
+        run: safaridriver --port=9315  & 
 
       - name: Wait on
         uses: iFaxity/wait-on-action@v1
         with:
           resource: http://localhost:1880/flows  
+
+      - name: Run test with driver
+        run: npm run test-wd-full
       
       - name : Publish flows to node-red
         run: newman run ./test/newman/init.json
@@ -105,10 +114,3 @@ jobs:
         with:
           name: node-red-log
           path: ./node-red-log.txt
-      
-      - name: Upload artifact > chromedriver log
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: chrome-driver-log
-          path: ./chrome-driver-log.txt
