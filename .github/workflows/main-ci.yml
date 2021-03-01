@@ -78,15 +78,15 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run chromedriver
         if: ${{ matrix.browser == 'chrome' }}
-        run: chromedriver --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log-log.txt 2>&1 & 
+        run: chromedriver --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log.txt 2>&1 & 
 
       - name: Run geckodriver
         if: ${{ matrix.browser == 'firefox' }}
-        run: geckodriver -v > ${{ matrix.os }}-${{ matrix.browser }}-log-log.txt 2>&1 &
+        run: geckodriver -v > ${{ matrix.os }}-${{ matrix.browser }}-log.txt 2>&1 &
 
       - name: Run msedgedriver
         if: ${{ matrix.browser == 'edge' }}
-        run: msedgedriver --port=9415 --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log-log.txt 2>&1 & 
+        run: msedgedriver --port=9415 --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log.txt 2>&1 & 
 
       - name: Enable safaridriver
         if: ${{ matrix.browser == 'safari' }}
@@ -124,8 +124,8 @@ jobs:
           name: ${{ matrix.os }}-node-red-log
           path: ./${{ matrix.os }}-node-red-log.txt
 
-      - name: Upload artifact > safari-driver-red log
+      - name: Upload artifact > ${{ matrix.os }}-${{ matrix.browser }}-log
         uses: actions/upload-artifact@v2.2.2
         with:
           name: ${{ matrix.os }}-${{ matrix.browser }}-log
-          path: ./${{ matrix.os }}-${{ matrix.browser }}-log-log.txt
+          path: ./${{ matrix.os }}-${{ matrix.browser }}-log.txt
