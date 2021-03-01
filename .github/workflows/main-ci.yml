@@ -52,7 +52,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
         browser: [chrome, edge, safari, firefox]
         exclude:
           - os: macos-latest
@@ -78,15 +78,15 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run chromedriver
         if: ${{ matrix.browser == 'chrome' }}
-        run: chromedriver --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log.txt 2>&1 & 
+        run: chromedriver & 
 
       - name: Run geckodriver
         if: ${{ matrix.browser == 'firefox' }}
-        run: geckodriver -v > ${{ matrix.os }}-${{ matrix.browser }}-log.txt 2>&1 &
+        run: geckodriver &
 
       - name: Run msedgedriver
         if: ${{ matrix.browser == 'edge' }}
-        run: msedgedriver --port=9415 --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log.txt 2>&1 & 
+        run: msedgedriver --port=9415 & 
 
       - name: Enable safaridriver
         if: ${{ matrix.browser == 'safari' }}
@@ -94,7 +94,7 @@ jobs:
 
       - name: Run safaridriver
         if: ${{ matrix.browser == 'safari' }}
-        run: safaridriver --port 9315 --diagnose safari-driver-log.txt 2>&1  & 
+        run: safaridriver --port 9315 & 
 
       - name: Run test with driver
         run: npm run test-wd-${{ matrix.browser }}
@@ -124,8 +124,8 @@ jobs:
           name: ${{ matrix.os }}-node-red-log
           path: ./${{ matrix.os }}-node-red-log.txt
 
-      - name: Upload artifact > ${{ matrix.os }}-${{ matrix.browser }}-log
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: ${{ matrix.os }}-${{ matrix.browser }}-log
-          path: ./${{ matrix.os }}-${{ matrix.browser }}-log.txt
+#      - name: Upload artifact > ${{ matrix.os }}-${{ matrix.browser }}-log
+#        uses: actions/upload-artifact@v2.2.2
+#        with:
+#          name: ${{ matrix.os }}-${{ matrix.browser }}-log
+#          path: ./${{ matrix.os }}-${{ matrix.browser }}-log.txt
