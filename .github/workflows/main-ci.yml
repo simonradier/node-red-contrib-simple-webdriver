@@ -81,11 +81,6 @@ jobs:
       - name: Run safaridriver
         run: safaridriver --port=9315  & 
 
-      - name: Wait on
-        uses: iFaxity/wait-on-action@v1
-        with:
-          resource: http://localhost:1880/flows  
-
       - name: Run test with driver
         run: npm run test-wd-full
 
@@ -98,6 +93,11 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run node-red
         run: npx node-red > node-red-log.txt &
+
+      - name: Wait on
+        uses: iFaxity/wait-on-action@v1
+        with:
+          resource: http://localhost:1880/flows  
       
       - name : Publish flows to node-red
         run: newman run ./test/newman/init.json
