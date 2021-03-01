@@ -19,7 +19,7 @@ jobs:
 
   unit-test:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     env:
       COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
@@ -49,8 +49,18 @@ jobs:
   
   e2e-test:
     # The type of runner that the job will run on
-    runs-on: macos-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        browser: [chrome, edge, safari, firefox]
+        exclude:
+          - os: macos-latest
+            browser: edge #because its webdriver is buggy
+          - os: windows-latest
+            browser: safari
+          - os: ubuntu-latest
+            browser: safari
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -67,32 +77,34 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run chromedriver
-        run: chromedriver --verbose > chrome-driver-log.txt 2>&1 & 
+        if: ${{ matrix.browser == 'chrome' }}
+        run: chromedriver --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log-log.txt 2>&1 & 
 
       - name: Run geckodriver
-        run: geckodriver -v > gecko-driver-log.txt 2>&1 &
+        if: ${{ matrix.browser == 'firefox' }}
+        run: geckodriver -v > ${{ matrix.os }}-${{ matrix.browser }}-log-log.txt 2>&1 &
 
       - name: Run msedgedriver
-        run: msedgedriver --port=9415 --verbose > edge-driver-log.txt 2>&1 & 
+        if: ${{ matrix.browser == 'edge' }}
+        run: msedgedriver --port=9415 --verbose > ${{ matrix.os }}-${{ matrix.browser }}-log-log.txt 2>&1 & 
 
       - name: Enable safaridriver
+        if: ${{ matrix.browser == 'safari' }}
         run: sudo safaridriver --enable
 
       - name: Run safaridriver
+        if: ${{ matrix.browser == 'safari' }}
         run: safaridriver --port 9315 --diagnose safari-driver-log.txt 2>&1  & 
 
       - name: Run test with driver
-        run: npm run test-wd-full
-
-      - name: Install node-red
-        run: sudo npm install -g --unsafe-perm node-red
+        run: npm run test-wd-${{ matrix.browser }}
 
       - name: Install newman
         run: sudo npm install -g newman
           
       # Runs a single command using the runners shell
       - name: Run node-red
-        run: npx node-red > node-red-log.txt &
+        run: npx node-red > ${{ matrix.os }}-node-red-log.txt &
 
       - name: Wait on
         uses: iFaxity/wait-on-action@v1
@@ -109,33 +121,11 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
-          name: node-red-log
-          path: ./node-red-log.txt
+          name: ${{ matrix.os }}-node-red-log
+          path: ./${{ matrix.os }}-node-red-log.txt
 
       - name: Upload artifact > safari-driver-red log
-        if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
-          name: safari-driver-log
-          path: ./safari-driver-log.txt
-
-      - name: Upload artifact > edge-driver-red log
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: edge-driver-log
-          path: ./edge-driver-log.txt
-
-      - name: Upload artifact > chrome-driver-red log
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: chrome-driver-log
-          path: ./chrome-driver-log.txt
-
-      - name: Upload artifact > gecko-driver-red log
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: gecko-driver-log
-          path: ./gecko-driver-log.txt
+          name: ${{ matrix.os }}-${{ matrix.browser }}-log
+          path: ./${{ matrix.os }}-${{ matrix.browser }}-log-log.txt
