@@ -52,7 +52,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest]
         browser: [chrome, edge, safari, firefox]
         exclude:
           - os: macos-latest
