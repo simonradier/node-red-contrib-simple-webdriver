@@ -44,6 +44,8 @@ export class SimpleWebDriver {
         "safari",
     ];
 
+    public static defaultHeadless = false;
+
     private _api : WDAPIDef;
 
     private _session : string = null;
@@ -91,6 +93,8 @@ export class SimpleWebDriver {
             let err = new TypeError("Invalid Browser: unsupported browser " + browser);
             throw (err);
         }
+        if (SimpleWebDriver.defaultHeadless)
+            this.capabilities.headless = true;
         this._browserName = browser;
         this._api = new wdapi[protocol]();
     }

@@ -16,6 +16,10 @@ describe('SimpleDriver', function (){
 
     for(let browser in WD_TESTED_Browser) {
         describe ('browser : ' + browser, function() {
+            before(function () {
+                if (browser === "Fifefox")
+                    SimpleWebDriver.defaultHeadless = true;
+            });
             afterEach(async function () {
                 if (!nock.isActive()) {
                     if (browser === "Safari") // wait 1 sec for Safari to avoid "Could not create a session error"
