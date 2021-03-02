@@ -81,31 +81,43 @@ jobs:
         if: ${{ matrix.browser == 'chrome' && matrix.os == 'ubuntu-latest' }}
         run: xvfb-run --auto-servernum chromedriver & 
 
-      - name: Run chromedriver (other)
-        if: ${{ matrix.browser == 'chrome' && matrix.os != 'ubuntu-latest' }}
+      - name: Run chromedriver (windows)
+        if: ${{ matrix.browser == 'chrome' && matrix.os == 'windows-latest' }}
+        run: cmd /c "START chromedriver" 
+
+      - name: Run chromedriver (macos)
+        if: ${{ matrix.browser == 'chrome' && matrix.os == 'macos-latest' }}
         run: chromedriver & 
 
       - name: Run geckodriver (ubuntu)
         if: ${{ matrix.browser == 'firefox' && matrix.os == 'ubuntu-latest' }}
         run: xvfb-run --auto-servernum geckodriver &
 
-      - name: Run geckodriver (other)
-        if: ${{ matrix.browser == 'firefox' && matrix.os != 'ubuntu-latest' }}
-        run: geckodriver -v > ubuntu-gecko-log.txt 2>&1 &
+      - name: Run geckodriver (windows)
+        if: ${{ matrix.browser == 'firefox' && matrix.os == 'windows-latest' }}
+        run: cmd /c "START geckodriver"
 
-      - name: Run msedgedriver
-        if: ${{ matrix.browser == 'edge' }}
+      - name: Run geckodriver (macos)
+        if: ${{ matrix.browser == 'firefox' && matrix.os == 'macos-latest' }}
+        run: geckodriver &
+
+      - name: Run msedgedriver (windows)
+        if: ${{ matrix.browser == 'edge' && matrix.os == 'windows-latest'  }}
+        run: cmd /c "START msedgedriver --port=9415" 
+
+      - name: Run msedgedriver (macos)
+        if: ${{ matrix.browser == 'edge' && matrix.os == 'macos-latest'  }}
         run: msedgedriver --port=9415 & 
 
       - name: Enable safaridriver
         if: ${{ matrix.browser == 'safari' }}
         run: sudo safaridriver --enable
 
-      - name: Run safaridriver
+      - name: Run safaridriver (macos)
         if: ${{ matrix.browser == 'safari' }}
         run: safaridriver --port 9315 & 
 
-      - name: Run test with webdriver (others)
+      - name: Run test with webdriver ${{ matrix.os }}-${{ matrix.browser }}
         run: npm run test-wd-${{ matrix.browser }}
 
 #      - name: Install newman
@@ -132,10 +144,3 @@ jobs:
 #        with:
 #          name: ${{ matrix.os }}-node-red-log
 #          path: ./${{ matrix.os }}-node-red-log.txt
-
-      - name: Upload artifact > ubuntu-gecko-log
-        if: ${{ always() && matrix.os == 'ubuntu-latest' && matrix.browser == 'firefox' }}
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: ubuntu-gecko-log
-          path: ./ubuntu-gecko-log.txt
