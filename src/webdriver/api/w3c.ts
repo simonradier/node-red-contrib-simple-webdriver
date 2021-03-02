@@ -54,7 +54,7 @@ export class W3C implements WDAPIDef {
             }
         }
         //result.data.capabilities.alwaysMatch[browserOptions].w3c = true;
-        result.path = "/session";
+        result.path = "session";
         result.requestOptions.method = "POST"
         return result;
     }
@@ -62,7 +62,7 @@ export class W3C implements WDAPIDef {
     SESSION_STOP(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}`;
+        result.path = `session/${sessionId}`;
         result.requestOptions.method = "DELETE"
         return result;
     }
@@ -70,7 +70,7 @@ export class W3C implements WDAPIDef {
     NAVIGATE_TO(sessionId: string, url: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/url`;
+        result.path = `session/${sessionId}/url`;
         result.requestOptions.method = "POST"
         result.data = {}
         result.data = { url }
@@ -80,7 +80,7 @@ export class W3C implements WDAPIDef {
     NAVIGATE_CURRENTURL(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/url`;
+        result.path = `session/${sessionId}/url`;
         result.requestOptions.method = "GET"
         return result;    
     }
@@ -88,7 +88,7 @@ export class W3C implements WDAPIDef {
     NAVIGATE_REFRESH(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/refresh`;
+        result.path = `session/${sessionId}/refresh`;
         result.data = {}
         result.requestOptions.method = "POST"
         return result;
@@ -97,7 +97,7 @@ export class W3C implements WDAPIDef {
     NAVIGATE_BACK(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/back`;
+        result.path = `session/${sessionId}/back`;
         result.data = {}
         result.requestOptions.method = "POST"
         return result;
@@ -106,7 +106,7 @@ export class W3C implements WDAPIDef {
     NAVIGATE_FORWARD(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/forward`;
+        result.path = `session/${sessionId}/forward`;
         result.data = {}
         result.requestOptions.method = "POST"
         return result;
@@ -115,7 +115,7 @@ export class W3C implements WDAPIDef {
     WINDOW_GETTITLE(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/title`;
+        result.path = `session/${sessionId}/title`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -123,7 +123,7 @@ export class W3C implements WDAPIDef {
     WINDOW_GETHANDLE(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window`;
+        result.path = `session/${sessionId}/window`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -131,7 +131,7 @@ export class W3C implements WDAPIDef {
     WINDOW_GETHANDLES(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/windows`;
+        result.path = `session/${sessionId}/windows`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -139,7 +139,7 @@ export class W3C implements WDAPIDef {
     WINDOW_SETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window/rect`;
+        result.path = `session/${sessionId}/window/rect`;
         result.requestOptions.method = "POST"
         result.data = {
             width,
@@ -151,7 +151,7 @@ export class W3C implements WDAPIDef {
     WINDOW_GETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window/rect`;
+        result.path = `session/${sessionId}/window/rect`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -159,7 +159,7 @@ export class W3C implements WDAPIDef {
     WINDOW_MAXIMIZE(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window/maximize`;
+        result.path = `session/${sessionId}/window/maximize`;
         result.requestOptions.method = "POST"
         result.data = {}
         return result;
@@ -168,7 +168,7 @@ export class W3C implements WDAPIDef {
     WINDOW_MINIMIZE(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window/minimize`;
+        result.path = `session/${sessionId}/window/minimize`;
         result.requestOptions.method = "POST"
         result.data = {}
         return result;
@@ -177,7 +177,7 @@ export class W3C implements WDAPIDef {
     WINDOW_FULLSCREEN(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window/fullscreen`;
+        result.path = `session/${sessionId}/window/fullscreen`;
         result.requestOptions.method = "POST"
         result.data = {}
         return result;
@@ -186,7 +186,7 @@ export class W3C implements WDAPIDef {
     WINDOW_CLOSE(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window`;
+        result.path = `session/${sessionId}/window`;
         result.requestOptions.method = "DELETE"
         result.data = { handle }
         return result;
@@ -195,7 +195,7 @@ export class W3C implements WDAPIDef {
     WINDOW_SWITCH(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/window`;
+        result.path = `session/${sessionId}/window`;
         result.requestOptions.method = "POST"
         result.data = { handle }
         return result;
@@ -204,7 +204,7 @@ export class W3C implements WDAPIDef {
     WINDOW_SCREENSHOT(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/screenshot`;
+        result.path = `session/${sessionId}/screenshot`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -212,7 +212,7 @@ export class W3C implements WDAPIDef {
     FRAME_SWITCH(sessionId: string, frameId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/frame`;
+        result.path = `session/${sessionId}/frame`;
         result.requestOptions.method = "POST"
         result.data = { id: frameId }
         return result;
@@ -221,7 +221,7 @@ export class W3C implements WDAPIDef {
     FRAME_TOPARENT(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/frame/parent`;
+        result.path = `session/${sessionId}/frame/parent`;
         result.requestOptions.method = "POST"
         result.data = {}
         return result;
@@ -230,7 +230,7 @@ export class W3C implements WDAPIDef {
     FINDELEMENT(sessionId: string, using: string, value: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element`;
+        result.path = `session/${sessionId}/element`;
         result.requestOptions.method = "POST"
         result.data = { using, value }
         return result;
@@ -239,7 +239,7 @@ export class W3C implements WDAPIDef {
     FINDELEMENTS(sessionId: string, using: string, value: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element`;
+        result.path = `session/${sessionId}/element`;
         result.requestOptions.method = "POST"
         result.data = { using, value }
         return result;
@@ -248,7 +248,7 @@ export class W3C implements WDAPIDef {
     GETACTIVEELEMENT(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/active`;
+        result.path = `session/${sessionId}/element/active`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -256,7 +256,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_FINDELEMENT(sessionId: string, element: string, using: string, value: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${element}/element`;
+        result.path = `session/${sessionId}/element/${element}/element`;
         result.requestOptions.method = "POST"
         result.data = { using, value }
         return result;
@@ -265,7 +265,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_FINDELEMENTS(sessionId: string, element: string, using: string, value: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${element}/elements`;
+        result.path = `session/${sessionId}/element/${element}/elements`;
         result.requestOptions.method = "POST"
         result.data = { using, value }
         return result;
@@ -274,7 +274,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_GETATTRIBUTE(sessionId: string, elementId: string, attribute: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/attribute/${attribute}`;
+        result.path = `session/${sessionId}/element/${elementId}/attribute/${attribute}`;
         result.requestOptions.method = "GET";
         return result;
     }
@@ -282,7 +282,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_GETPROPERTY(sessionId: string, elementId: string, property: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/property/${property}`;
+        result.path = `session/${sessionId}/element/${elementId}/property/${property}`;
         result.requestOptions.method = "GET";
         return result;
     }
@@ -290,7 +290,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_GETCSS(sessionId: string, elementId: string, cssProperty: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/css/${cssProperty}`;
+        result.path = `session/${sessionId}/element/${elementId}/css/${cssProperty}`;
         result.requestOptions.method = "GET";
         return result;
     }
@@ -298,7 +298,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_GETTEXT(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/text`;
+        result.path = `session/${sessionId}/element/${elementId}/text`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -306,7 +306,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_GETTAGNAME(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/name`;
+        result.path = `session/${sessionId}/element/${elementId}/name`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -314,7 +314,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_GETRECT(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/rect`;
+        result.path = `session/${sessionId}/element/${elementId}/rect`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -322,7 +322,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_SCREENSHOT(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/screenshot`;
+        result.path = `session/${sessionId}/element/${elementId}/screenshot`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -330,7 +330,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_CLICK(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/click`;
+        result.path = `session/${sessionId}/element/${elementId}/click`;
         result.requestOptions.method = "POST"
         result.data = {}
         return result;
@@ -339,7 +339,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_CLEAR(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/clear`;
+        result.path = `session/${sessionId}/element/${elementId}/clear`;
         result.requestOptions.method = "POST"
         result.data = {}
         return result;
@@ -348,7 +348,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_ISENABLED(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/enabled`;
+        result.path = `session/${sessionId}/element/${elementId}/enabled`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -356,7 +356,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_ISSELECTED(sessionId: string, elementId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/selected`;
+        result.path = `session/${sessionId}/element/${elementId}/selected`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -364,7 +364,7 @@ export class W3C implements WDAPIDef {
     ELEMENT_SENDKEYS(sessionId: string, elementId: string, keys: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/element/${elementId}/value`;
+        result.path = `session/${sessionId}/element/${elementId}/value`;
         result.requestOptions.method = "POST"
         result.data = { text: keys }
         return result;
@@ -373,7 +373,7 @@ export class W3C implements WDAPIDef {
     EXECUTE_SYNC(sessionId: string, script: string, args: any[]): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/execute/sync`;
+        result.path = `session/${sessionId}/execute/sync`;
         result.requestOptions.method = "POST"
         result.data = { script, args }
         return result;
@@ -382,7 +382,7 @@ export class W3C implements WDAPIDef {
     EXECUTE_ASYNC(sessionId: string, script: string, args: any[]): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/execute/qsync`;
+        result.path = `session/${sessionId}/execute/qsync`;
         result.requestOptions.method = "POST"
         result.data = { script, args }
         return result;
@@ -391,7 +391,7 @@ export class W3C implements WDAPIDef {
     COOKIE_GETALL(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/cookie`;
+        result.path = `session/${sessionId}/cookie`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -399,7 +399,7 @@ export class W3C implements WDAPIDef {
     COOKIE_GET(sessionId: string, name: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/cookie/${name}`;
+        result.path = `session/${sessionId}/cookie/${name}`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -407,7 +407,7 @@ export class W3C implements WDAPIDef {
     COOKIE_ADD(sessionId: string, cookie : CookieDef): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/cookie`;
+        result.path = `session/${sessionId}/cookie`;
         result.requestOptions.method = "POST";
         result.data = cookie;
         return result;
@@ -416,7 +416,7 @@ export class W3C implements WDAPIDef {
     COOKIE_DELETE(sessionId: string, name: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/cookie/${name}`;
+        result.path = `session/${sessionId}/cookie/${name}`;
         result.requestOptions.method = "DELETE"
         return result;
     }
@@ -424,7 +424,7 @@ export class W3C implements WDAPIDef {
     COOKIE_DELETEALL(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/cookie`;
+        result.path = `session/${sessionId}/cookie`;
         result.requestOptions.method = "DELETE"
         return result;
     }
@@ -432,7 +432,7 @@ export class W3C implements WDAPIDef {
     ALERT_ACCEPT(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/alert/accept`;
+        result.path = `session/${sessionId}/alert/accept`;
         result.requestOptions.method = "POST"
         result.data = {};
         return result;
@@ -441,7 +441,7 @@ export class W3C implements WDAPIDef {
     ALERT_DISMISS(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/alert/dismiss`;
+        result.path = `session/${sessionId}/alert/dismiss`;
         result.requestOptions.method = "POST"
         result.data = {};
         return result;
@@ -450,7 +450,7 @@ export class W3C implements WDAPIDef {
     ALERT_GETTEXT(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/alert/text`;
+        result.path = `session/${sessionId}/alert/text`;
         result.requestOptions.method = "GET"
         return result;
     }
@@ -458,7 +458,7 @@ export class W3C implements WDAPIDef {
     ALERT_SENDTEXT(sessionId: string, text : string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `/session/${sessionId}/alert/text`;
+        result.path = `session/${sessionId}/alert/text`;
         result.requestOptions.method = "POST";
         result.data = { text }
         return result;
