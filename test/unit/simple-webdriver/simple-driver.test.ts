@@ -18,7 +18,7 @@ describe('SimpleDriver', function (){
         describe ('browser : ' + browser, function() {
             afterEach(async function () {
                 if (!nock.isActive()) {
-                    if (browser === "Safari") // wait 1 sec for Safari to avoid "Could not create a session error"
+                    if (browser === "Safari" || browser === "Firefox") // wait 1 sec for Safari or Firefox to avoid "Could not create a session error"
                         await (new Promise(resolve => setTimeout(resolve, 1000)))
                     await SimpleWebDriver.cleanSessions();
                 }
