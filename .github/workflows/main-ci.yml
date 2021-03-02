@@ -52,16 +52,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-20.04]
         browser: [chrome, edge, safari, firefox]
         exclude:
           - os: macos-latest
             browser: edge #because its webdriver is buggy
           - os: windows-latest
             browser: safari
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             browser: safari
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             browser: edge
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
