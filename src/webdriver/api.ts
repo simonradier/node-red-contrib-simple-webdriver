@@ -16,11 +16,11 @@ export async function call<T>(url : URL, request : RequestDef) {
     return new Promise<httpclient.HttpResponse<ResponseDef<T>>>(async (resolve, reject) => {
         Logger.trace("Calling :" + url + request.path);
         try {
-            const resp = await httpclient.call<ResponseDef<T>>(new URL(request.path, url.href).href, request.requestOptions, request.data).then()
+            const resp = await httpclient.call<ResponseDef<T>>(new URL(request.path, url.href).href, request.requestOptions, request.data);
+            Logger.debug(request);
+            Logger.debug(resp);
             if (resp.statusCode !== 200 || (resp.body.status && resp.body.status !== 0)) {
                 reject(new WebDriverResponseError(resp));
-                Logger.debug(request);
-                Logger.debug(resp);
             } else {
                 resolve(resp);
             }
