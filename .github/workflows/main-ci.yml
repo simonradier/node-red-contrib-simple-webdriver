@@ -77,12 +77,20 @@ jobs:
       - name: Build node-red-contrib package
         run: npm run prepublishOnly
 
-      - name: Run chromedriver
-        if: ${{ matrix.browser == 'chrome' }}
+      - name: Run chromedriver (ubuntu)
+        if: ${{ matrix.browser == 'chrome' && matrix.os == "ubuntu-latest" }}
+        run: xvfb-run --auto-servernum chromedriver & 
+
+      - name: Run chromedriver (other)
+        if: ${{ matrix.browser == 'chrome' && matrix.os != "ubuntu-latest" }}
         run: chromedriver & 
 
-      - name: Run geckodriver
-        if: ${{ matrix.browser == 'firefox' }}
+      - name: Run geckodriver (ubuntu)
+        if: ${{ matrix.browser == 'firefox' && matrix.os == "ubuntu-latest" }}
+        run: xvfb-run --auto-servernum geckodriver &
+
+      - name: Run geckodriver (other)
+        if: ${{ matrix.browser == 'firefox' && matrix.os != "ubuntu-latest" }}
         run: geckodriver -v > ubuntu-gecko-log.txt 2>&1 &
 
       - name: Run msedgedriver
@@ -97,15 +105,7 @@ jobs:
         if: ${{ matrix.browser == 'safari' }}
         run: safaridriver --port 9315 & 
 
-
-      - name: Run test with webdriver (ubuntu)
-        if: ${{ matrix.os == 'ubuntu-latest'}}
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          run: npm run test-wd-${{ matrix.browser }}
-
       - name: Run test with webdriver (others)
-        if: ${{ matrix.os != 'ubuntu-latest'}}
         run: npm run test-wd-${{ matrix.browser }}
 
 #      - name: Install newman
