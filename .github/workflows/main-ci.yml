@@ -78,19 +78,19 @@ jobs:
         run: npm run prepublishOnly
 
       - name: Run chromedriver (ubuntu)
-        if: ${{ matrix.browser == 'chrome' && matrix.os == "ubuntu-latest" }}
+        if: ${{ matrix.browser == 'chrome' && matrix.os == 'ubuntu-latest' }}
         run: xvfb-run --auto-servernum chromedriver & 
 
       - name: Run chromedriver (other)
-        if: ${{ matrix.browser == 'chrome' && matrix.os != "ubuntu-latest" }}
+        if: ${{ matrix.browser == 'chrome' && matrix.os != 'ubuntu-latest' }}
         run: chromedriver & 
 
       - name: Run geckodriver (ubuntu)
-        if: ${{ matrix.browser == 'firefox' && matrix.os == "ubuntu-latest" }}
+        if: ${{ matrix.browser == 'firefox' && matrix.os == 'ubuntu-latest' }}
         run: xvfb-run --auto-servernum geckodriver &
 
       - name: Run geckodriver (other)
-        if: ${{ matrix.browser == 'firefox' && matrix.os != "ubuntu-latest" }}
+        if: ${{ matrix.browser == 'firefox' && matrix.os != 'ubuntu-latest' }}
         run: geckodriver -v > ubuntu-gecko-log.txt 2>&1 &
 
       - name: Run msedgedriver
