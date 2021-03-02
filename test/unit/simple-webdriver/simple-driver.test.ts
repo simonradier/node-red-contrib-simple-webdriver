@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 describe('SimpleDriver', function (){ 
     before(function () {
         // Deactivate SimpleWebdriver Logs
-        LoggerConfiguration.logLevel = LogLevel.None;
+        LoggerConfiguration.logLevel = LogLevel.Debug;
     });
 
     for(let browser in WD_TESTED_Browser) {
