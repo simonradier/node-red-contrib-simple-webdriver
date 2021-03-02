@@ -19,7 +19,7 @@ describe('node : open-web', function (){
       describe ('browser : ' + browser, function() {
         before(function () {
           // Deactivate SimpleWebdriver Logs
-          LoggerConfiguration.logLevel = LogLevel.None;
+          LoggerConfiguration.logLevel = LogLevel.Debug;
         });
         beforeEach(function (done) {
           this.timeout(4000);
