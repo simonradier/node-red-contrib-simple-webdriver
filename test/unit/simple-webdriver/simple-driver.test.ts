@@ -17,8 +17,11 @@ describe('SimpleDriver', function (){
     for(let browser in WD_TESTED_Browser) {
         describe ('browser : ' + browser, function() {
             afterEach(async function () {
-                if (!nock.isActive())
+                if (!nock.isActive()) {
+                    if (browser === "Safari") // wait 1 sec for Safari to avoid "Could not create a session error"
+                        await (new Promise(resolve => setTimeout(resolve, 1000)))
                     await SimpleWebDriver.cleanSessions();
+                }
             });
             describe('constructor', function (){
                 it('should throw an error if the URL is not correct #1', function (){ 
