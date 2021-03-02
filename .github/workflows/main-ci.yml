@@ -119,40 +119,43 @@ jobs:
         run: npm run test-wd-${{ matrix.browser }}
 
       - name: Install newman, node-red & the wd2 package (windows) 
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-latest' && matrix.browser == "Chrome" }}
         run: |
           npm install -g newman
           npm install -g node-red --unsafe-perm
           npm install -g .
 
       - name: Install newman, node-red & the wd2 package (other) 
-        if: ${{ matrix.os != 'windows-latest' }}
+        if: ${{ matrix.os != 'windows-latest' && matrix.browser == "Chrome" }}
         run: |
           sudo npm install -g newman
           sudo npm install -g node-red --unsafe-perm
           sudo npm install -g .
 
       - name: Run node-red (windows)
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-latest' && matrix.browser == "Chrome" }}
         run: cmd /c "START node-red > ${{ matrix.os }}-node-red-log.txt"
 
       - name: Run node-red (other)
-        if: ${{ matrix.os != 'windows-latest' }}
+        if: ${{ matrix.os != 'windows-latest' && matrix.browser == "Chrome" }}
         run: node-red > ${{ matrix.os }}-node-red-log.txt &
 
       - name: Wait on
+        if: ${{ matrix.browser == "Chrome" }}
         uses: iFaxity/wait-on-action@v1
         with:
           resource: http://localhost:1880/flows  
       
       - name : Publish flows to node-red
+        if: ${{ matrix.browser == "Chrome" }}
         run: newman run ./test/newman/init.json
 
       - name : Test flows
+        if: ${{ matrix.browser == "Chrome" }}
         run: newman run ./test/newman/test-suite1.json
 
       - name: Upload artifact > node-red log
-        if: ${{ always() }}
+        if: ${{ always() && matrix.browser == "Chrome" }}
         uses: actions/upload-artifact@v2.2.2
         with:
           name: ${{ matrix.os }}-node-red-log
