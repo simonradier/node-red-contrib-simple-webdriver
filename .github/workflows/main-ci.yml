@@ -84,7 +84,7 @@ jobs:
 
       - name: Run geckodriver
         if: ${{ matrix.browser == 'firefox' }}
-        run: geckodriver -v &
+        run: geckodriver -v > ubuntu-gecko-log.txt 2>&1 &
 
       - name: Run msedgedriver
         if: ${{ matrix.browser == 'edge' }}
@@ -126,8 +126,9 @@ jobs:
 #          name: ${{ matrix.os }}-node-red-log
 #          path: ./${{ matrix.os }}-node-red-log.txt
 
-#      - name: Upload artifact > ${{ matrix.os }}-${{ matrix.browser }}-log
-#        uses: actions/upload-artifact@v2.2.2
-#        with:
-#          name: ${{ matrix.os }}-${{ matrix.browser }}-log
-#          path: ./${{ matrix.os }}-${{ matrix.browser }}-log.txt
+      - name: Upload artifact > ubuntu-gecko-log
+        if: ${{ always() && matrix.os == 'ubuntu-latest' && matrix.browser == 'firefox' }}
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: ubuntu-gecko-log
+          path: ./ubuntu-gecko-log.txt
