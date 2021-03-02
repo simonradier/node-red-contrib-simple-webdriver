@@ -19,7 +19,7 @@ jobs:
 
   unit-test:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     env:
       COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
@@ -49,8 +49,20 @@ jobs:
   
   e2e-test:
     # The type of runner that the job will run on
-    runs-on: macos-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+        browser: [chrome, edge, safari, firefox]
+        exclude:
+          - os: macos-latest
+            browser: edge #because its webdriver is buggy
+          - os: windows-latest
+            browser: safari
+#          - os: ubuntu-latest
+#            browser: safari
+#          - os: ubuntu-latest
+#            browser: edge
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -67,47 +79,55 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run chromedriver
+        if: ${{ matrix.browser == 'chrome' }}
         run: chromedriver & 
 
       - name: Run geckodriver
-        run: geckodriver & 
+        if: ${{ matrix.browser == 'firefox' }}
+        run: geckodriver &
 
       - name: Run msedgedriver
-        run: msedgedriver --port=9415  & 
+        if: ${{ matrix.browser == 'edge' }}
+        run: msedgedriver --port=9415 & 
 
       - name: Enable safaridriver
+        if: ${{ matrix.browser == 'safari' }}
         run: sudo safaridriver --enable
 
       - name: Run safaridriver
-        run: safaridriver --port=9315  & 
-
-      - name: Wait on
-        uses: iFaxity/wait-on-action@v1
-        with:
-          resource: http://localhost:1880/flows  
+        if: ${{ matrix.browser == 'safari' }}
+        run: safaridriver --port 9315 & 
 
       - name: Run test with driver
-        run: npm run test-wd-full
+        run: npm run test-wd-${{ matrix.browser }}
 
-      - name: Install node-red
-        run: sudo npm install -g --unsafe-perm node-red
-
-      - name: Install newman
-        run: sudo npm install -g newman
+#      - name: Install newman
+#        run: sudo npm install -g newman
           
       # Runs a single command using the runners shell
-      - name: Run node-red
-        run: npx node-red > node-red-log.txt &
-      
-      - name : Publish flows to node-red
-        run: newman run ./test/newman/init.json
+#      - name: Run node-red
+#        run: npx node-red > ${{ matrix.os }}-node-red-log.txt &
 
-      - name : Test flows
-        run: newman run ./test/newman/test-suite1.json
+#      - name: Wait on
+#        uses: iFaxity/wait-on-action@v1
+#        with:
+#          resource: http://localhost:1880/flows  
+      
+#      - name : Publish flows to node-red
+#        run: newman run ./test/newman/init.json
+
+#      - name : Test flows
+#        run: newman run ./test/newman/test-suite1.json
 
       - name: Upload artifact > node-red log
         if: ${{ always() }}
         uses: actions/upload-artifact@v2.2.2
         with:
-          name: node-red-log
-          path: ./node-red-log.txt
+          name: ${{ matrix.os }}-node-red-log
+          path: ./${{ matrix.os }}-node-red-log.txt
+
+#      - name: Upload artifact > ${{ matrix.os }}-${{ matrix.browser }}-log
+#        uses: actions/upload-artifact@v2.2.2
+#        with:
+#          name: ${{ matrix.os }}-${{ matrix.browser }}-log
+#          path: ./${{ matrix.os }}-${{ matrix.browser }}-log.txt

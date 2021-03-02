@@ -50,11 +50,11 @@
 		"prepublishOnly": "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
 		"clean": "rm -rf dist",
 		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-full": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-chrome": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Chrome(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-safari": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Safari(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-edge": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Edge(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-chromium": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --grep '^.*Chromium(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-full": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-chrome": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Chrome(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-safari": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Safari(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-edge": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Edge(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
+		"test-wd-firefox": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Firefox(?!.*Nock Only).*$' --timeout 10000 -r ts-node/register 'test/unit/**/*.ts'",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"author": {
