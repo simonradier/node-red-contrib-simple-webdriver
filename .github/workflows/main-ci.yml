@@ -99,13 +99,13 @@ jobs:
 
 
       - name: Run test with webdriver (ubuntu)
-        if: ${{ matrix.os == "ubuntu-latest"}}
+        if: ${{ matrix.os == 'ubuntu-latest'}}
         uses: GabrielBB/xvfb-action@v1
         with:
           run: npm run test-wd-${{ matrix.browser }}
 
       - name: Run test with webdriver (others)
-        if: ${{ matrix.os != "ubuntu-latest"}}
+        if: ${{ matrix.os != 'ubuntu-latest'}}
         run: npm run test-wd-${{ matrix.browser }}
 
 #      - name: Install newman
