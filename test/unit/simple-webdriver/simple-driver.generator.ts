@@ -14,7 +14,7 @@ export function generateSimpleDriverTest(browser : string) {
     describe('SimpleDriver', function (){ 
         before(function () {
             // Deactivate SimpleWebdriver Logs
-            LoggerConfiguration.logLevel = LogLevel.None;
+            LoggerConfiguration.logLevel = LogLevel.Debug;
         });
 
 
