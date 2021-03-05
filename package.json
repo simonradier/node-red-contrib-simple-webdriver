@@ -6,6 +6,9 @@
 		"rxjs": "~6.6.3"
 	},
 	"devDependencies": {
+		"@swc/cli": "^0.1.35",
+		"@swc/core": "^1.2.50",
+		"@swc/register": "^0.1.7",
 		"@types/chai": "^4.2.14",
 		"@types/chai-as-promised": "^7.1.3",
 		"@types/mocha": "^8.2.0",
@@ -50,7 +53,9 @@
 	"scripts": {
 		"prepublishOnly": "mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
 		"clean": "rm -rf dist",
-		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha -r ts-node/register 'test/unit/**/*.ts'",
+		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
+		"test-swc": "env SWC_NODE_PROJECT='./tsconfig.json' mocha --parallel -r @swc/register 'test/unit/**/*test.ts' > /dev/null",
+		"test-tsc": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --parallel --jobs 4 -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
 		"test-wd-full": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
 		"test-wd-chrome": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Chrome(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
 		"test-wd-safari": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Safari(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
@@ -58,7 +63,7 @@
 		"test-wd-firefox": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Firefox(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
-	"pre-commit" : [
+	"pre-commit": [
 		"clean",
 		"prepublishOnly",
 		"test"
