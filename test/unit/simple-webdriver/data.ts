@@ -41,6 +41,8 @@ export let WD_SESSION_ID = "session-test-id-1337"
 
 export let WD_ELEMENT_ID = "element-test-id-1337"
 
+export let WD_ELEMENT_ID_FAKE = "element-FAKE-id-1337"
+
 export let WD_ELEMENT_SEARCH = {
     id : "id_1234",
     name : "input_1234",
@@ -349,5 +351,71 @@ export let WD_WINDOW_HANDLE_RESPONSE = {
             "value" : WD_HANDLE_ID
         },
         headers : { "Content-Type" : "application/json"}
+    }
+}
+
+export let WD_ELEMENT_CLICK = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : null
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_ELEMENT_CLEAR = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : null
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_ELEMENT_SENDKEYS = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : null
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
     }
 }

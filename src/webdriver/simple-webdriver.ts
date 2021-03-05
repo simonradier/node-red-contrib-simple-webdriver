@@ -445,14 +445,14 @@ export class SimpleWebDriver {
                 } catch (err) {
                     error = err;
                     resp = err.httpResponse;
-                    Logger.trace(resp);
+                    Logger.trace(resp || err);
                 }
-            } while ((resp.body.value === null || resp.statusCode !== 200 ) && timer)
-            if (resp.statusCode === 200 && resp.body.value) {
+            } while (resp && (resp.body.value === null || resp.statusCode !== 200 ) && timer)
+            if (resp && resp.statusCode === 200 && resp.body.value) {
                 const element = new WebElement(this, resp.body.value[Object.keys(resp.body.value)[0]])
                 resolve(element);
             } else {
-                if (resp.statusCode === 404)
+                if (resp && resp.statusCode === 404)
                     reject (new LocationError(using, value, timeout));
                 else
                     reject (error);
