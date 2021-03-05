@@ -63,11 +63,9 @@
 		"test-wd-firefox": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Firefox(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
-	"pre-commit": [
-		"clean",
-		"prepublishOnly",
-		"test-swc"
-	],
+	"pre-commit": {
+		"run" : [ "clean", "prepublishOnly", "test-swc"]
+	},
 	"author": {
 		"name": "Simon Radier"
 	}
