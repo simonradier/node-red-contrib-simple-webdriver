@@ -2,13 +2,15 @@ import { SimpleWebDriver } from "./webdriver"
 
 export class WebElement {
 
+    public get ELEMENT () {
+        return this["element-6066-11e4-a52e-4f735466cecf"];
+    }
+
     public constructor (driver : SimpleWebDriver, elementID : string) {
-        this.ELEMENT = elementID;
         this["element-6066-11e4-a52e-4f735466cecf"] = elementID;
         this._driver = driver;
     }
 
-    public readonly ELEMENT : string;
     public readonly "element-6066-11e4-a52e-4f735466cecf" : string
     private _driver : SimpleWebDriver;
 
@@ -33,6 +35,6 @@ export class WebElement {
     }
 
     public toString() {
-        return this.ELEMENT;
+        return this["element-6066-11e4-a52e-4f735466cecf"];
     }
 }
