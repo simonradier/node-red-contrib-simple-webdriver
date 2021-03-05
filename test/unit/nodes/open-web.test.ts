@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import helper from 'node-red-node-test-helper';
 import wd2 from '../../../src/selenium-wd2'
 import { NODE_OPEN_WEB } from './data';
-import { WD_NAVIGATE_TO_RESPONSE, WD_SERVER_URL_HTTP, WD_SESSION_ID, WD_START_SESSION_RESPONSE, WD_TESTED_Browser, WD_WINDOW_HANDLE_RESPONSE } from '../simple-webdriver/data';
+import * as td from '../simple-webdriver/data';
 import nock from 'nock';
 import { LoggerConfiguration, LogLevel } from '../../../src/webdriver/utils/logger';
 import { SimpleWebDriver } from '../../../src/webdriver/webdriver';
@@ -13,7 +13,7 @@ chai.use(chaiAsPromised);
 helper.init(require.resolve('node-red'));
 
 describe('node : open-web', function (){ 
-    for(let browser in WD_TESTED_Browser) {
+    for(let browser in td.WD_TESTED_Browser) {
       if (nock.isActive && browser != "Chrome")
         continue;
       describe ('browser : ' + browser, function() {
@@ -47,13 +47,13 @@ describe('node : open-web', function (){
         });
     
         it('should create a new webdriver session and push it to the msg object ', function (done) {
-          let resp = WD_START_SESSION_RESPONSE.OK;
-          nock(WD_SERVER_URL_HTTP[browser]).post("/session").reply(resp.code, resp.body, resp.headers);  
-          let resp2 = WD_WINDOW_HANDLE_RESPONSE.OK;
-          nock(WD_SERVER_URL_HTTP[browser]).get(`/session/${WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
-          let resp3 = WD_NAVIGATE_TO_RESPONSE.OK;
-          nock(WD_SERVER_URL_HTTP[browser]).post(`/session/${WD_SESSION_ID}/url`).reply(resp3.code, resp3.body, resp3.headers); 
-          nock(WD_SERVER_URL_HTTP[browser]).post(`/session/${WD_SESSION_ID}/window/rect`).reply(resp3.code, resp3.body, resp3.headers);   
+          let resp = td.WD_START_SESSION_RESPONSE.OK;
+          nock(td.WD_SERVER_URL_HTTP[browser]).post("/session").reply(resp.code, resp.body, resp.headers);  
+          let resp2 = td.WD_WINDOW_HANDLE_RESPONSE.OK;
+          nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);  
+          let resp3 = td.WD_NAVIGATE_TO_RESPONSE.OK;
+          nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/url`).reply(resp3.code, resp3.body, resp3.headers); 
+          nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/window/rect`).reply(resp3.code, resp3.body, resp3.headers);   
             let flow = [
               NODE_OPEN_WEB[browser]("n1", ["n3"]),
               //@ts-ignore
@@ -67,7 +67,7 @@ describe('node : open-web', function (){
                 expect(msg.error, 'check error').to.be.undefined;
                 expect(msg.driver, 'check driver').to.exist;
                 if (nock.isActive()){
-                  expect(msg.driver.session, 'check session').to.be.equal(WD_SESSION_ID);
+                  expect(msg.driver.session, 'check session').to.be.equal(td.WD_SESSION_ID);
                 }
                 expect(msg.payload, 'check payload').to.be.equal("test");
                 done();
