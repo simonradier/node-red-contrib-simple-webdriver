@@ -511,7 +511,7 @@ describe('SimpleDriver', function (){
                     nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element`).times(50).reply(resp.code, resp.body, resp.headers);
                     let resp2 = td.WD_FIND_ELEMENT_RESPONSE.OK;
                     nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element`).reply(resp2.code, resp2.body, resp2.headers);
-                    await expect(driver.findElement(Using.css, ".class_1234", 500)).to.be.fulfilled;
+                    await expect(driver.findElement(Using.css, ".class_1234", 1000)).to.be.fulfilled;
                 });
 
                 it('should thrown an error if element is not found before the timeout', async function () {
@@ -580,7 +580,7 @@ describe('SimpleDriver', function (){
                         let element : WebElement = await driver.findElement(Using.tag, "input");
                         let resp = td.WD_FIND_ELEMENT_RESPONSE.OK;
                         nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/clear`).reply(resp.code, resp.body, resp.headers);
-                        await expect(element.click()).to.be.fulfilled;
+                        await expect(element.clear()).to.be.fulfilled;
                     });
 
                     it('should return a throw an error if the webdriver server return an error ', async function () {
@@ -593,7 +593,7 @@ describe('SimpleDriver', function (){
                         //@ts-ignore
                         element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
                         nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID_FAKE}/clear`).reply(resp.code, resp.body, resp.headers);
-                        await expect(element.click()).to.be.rejectedWith(/element/);
+                        await expect(element.clear()).to.be.rejectedWith(/element/);
                     });
                 });
 
@@ -606,7 +606,7 @@ describe('SimpleDriver', function (){
                         let element : WebElement = await driver.findElement(Using.tag, "input");
                         let resp = td.WD_ELEMENT_SENDKEYS.OK;
                         nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/value`).reply(resp.code, resp.body, resp.headers);
-                        await expect(element.click()).to.be.fulfilled;
+                        await expect(element.sendKeys("test")).to.be.fulfilled;
                     });
 
                     it('should return a throw an error if the webdriver server return an error', async function () {
@@ -619,7 +619,7 @@ describe('SimpleDriver', function (){
                         //@ts-ignore
                         element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
                         nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID_FAKE}/value`).reply(resp.code, resp.body, resp.headers);
-                        await expect(element.click()).to.be.rejectedWith(/element/);
+                        await expect(element.sendKeys("test")).to.be.rejectedWith(/element/);
                     });
                 });
             });

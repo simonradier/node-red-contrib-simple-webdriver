@@ -59,6 +59,7 @@
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"pre-commit" : [
+		"clean",
 		"prepublishOnly",
 		"test"
 	],
