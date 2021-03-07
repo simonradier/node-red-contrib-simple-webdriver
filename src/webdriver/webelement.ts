@@ -18,10 +18,28 @@ export class WebElement {
         return  this._driver.element(this).click();
     }
 
-    public getAttribute(name : string) : Promise<string> {
-        return this._driver.element(this).getAttribute(name);
+    public getAttribute(attributeName : string) : Promise<string> {
+        return this._driver.element(this).getAttribute(attributeName);
 
     }
+
+    public getProperty(propertyName : string) : Promise<string> {
+        return this._driver.element(this).getProperty(propertyName);
+    }
+
+    public getTagName() : Promise<string> {
+        return this._driver.element(this).getTagName();
+    }
+
+    public getCSSValue(cssPropertyName : string) : Promise<string> {
+        return this._driver.element(this).getCSSValue(cssPropertyName);
+    }
+
+    public getValue() : Promise<string> {
+        return this._driver.element(this).getValue();
+
+    }
+
     public getText() : Promise<string> {
         return  this._driver.element(this).getText();
     }

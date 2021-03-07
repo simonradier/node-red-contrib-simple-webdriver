@@ -43,6 +43,14 @@ export let WD_ELEMENT_ID = "element-test-id-1337"
 
 export let WD_ELEMENT_ID_FAKE = "element-FAKE-id-1337"
 
+export let WD_ATTRIBUTE_NAME = "value"
+
+export let WD_CSS_ATTRIBUTE_NAME = "text-align"
+
+export let WD_PROPERTY_NAME = "value"
+
+
+
 export let WD_ELEMENT_SEARCH = {
     id : "id_1234",
     name : "input_1234",
@@ -419,3 +427,160 @@ export let WD_ELEMENT_SENDKEYS = {
         headers : { "Content-Type" : "application/json" }
     }
 }
+
+export let WD_ELEMENT_GETTEXT = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : "Hello"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_ELEMENT_GETVALUE = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : "hello"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    OK_UPDATED : {
+        code : 200,
+        body : {
+            "value" : "hellototo"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    OK_CLEARED : {
+        code : 200,
+        body : {
+            "value" : ""
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+
+export let WD_ELEMENT_GETATTRIBUTE = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : "hello"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    OK_UPDATED : {
+        code : 200,
+        body : {
+            "value" : "hello"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_ELEMENT_GETPROPERTY = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : "hello"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    OK_UPDATED : {
+        code : 200,
+        body : {
+            "value" : "hellototo"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+
+export let WD_ELEMENT_GETTAGNAME = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : "input"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_ELEMENT_GETCSSVALUE = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : "center"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+

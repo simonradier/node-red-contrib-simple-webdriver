@@ -512,7 +512,7 @@ export function generateSimpleDriverTest(browser : string) {
                 nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element`).times(50).reply(resp.code, resp.body, resp.headers);
                 let resp2 = td.WD_FIND_ELEMENT_RESPONSE.OK;
                 nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element`).reply(resp2.code, resp2.body, resp2.headers);
-                await expect(driver.findElement(Using.css, ".class_1234", 1000)).to.be.fulfilled;
+                await expect(driver.findElement(Using.css, ".class_1234", 2000)).to.be.fulfilled;
             });
 
             it('should thrown an error if element is not found before the timeout', async function () {
@@ -568,7 +568,7 @@ export function generateSimpleDriverTest(browser : string) {
                     //@ts-ignore
                     element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
                     nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID_FAKE}/click`).reply(resp.code, resp.body, resp.headers);
-                    await expect(element.click()).to.be.rejectedWith(/element/);
+                    await expect(element.click()).to.be.rejected;
                 });
             });
 
@@ -594,7 +594,21 @@ export function generateSimpleDriverTest(browser : string) {
                     //@ts-ignore
                     element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
                     nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID_FAKE}/clear`).reply(resp.code, resp.body, resp.headers);
-                    await expect(element.clear()).to.be.rejectedWith(/element/);
+                    await expect(element.clear()).to.be.rejected;
+                });
+
+                it('should return an empty string if the server response was successful ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_FIND_ELEMENT_RESPONSE.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/clear`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.clear()).to.be.fulfilled;
+                    let resp2 = td.WD_ELEMENT_GETVALUE.OK_CLEARED;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp2.code, resp2.body, resp2.headers);
+                    await expect(element.getValue()).to.become("");
                 });
             });
 
@@ -620,9 +634,208 @@ export function generateSimpleDriverTest(browser : string) {
                     //@ts-ignore
                     element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
                     nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID_FAKE}/value`).reply(resp.code, resp.body, resp.headers);
-                    await expect(element.sendKeys("test")).to.be.rejectedWith(/element/);
+                    await expect(element.sendKeys("test")).to.be.rejected;
+                });
+
+                it('should update the text field if the webdriver server return a success ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_SENDKEYS.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/value`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.sendKeys("toto")).to.be.fulfilled;
+                    let resp2 = td.WD_ELEMENT_GETVALUE.OK_UPDATED;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp2.code, resp2.body, resp2.headers);
+                    await expect(element.getValue()).to.become("hellototo");
                 });
             });
+            
+            describe('getText', function () {
+                it('should return the correct text of the element if webdriver response is successful', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "h1");
+                    let resp = td.WD_ELEMENT_GETTEXT.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/text`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getText()).to.be.become(td.WD_ELEMENT_GETTEXT.OK.body.value);
+                });
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "h1");
+                    let resp = td.WD_ELEMENT_GETTEXT.KO_NOT_FOUND;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/text`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.clear()).to.be.rejected;
+                });
+            });
+
+            describe('getValue', function () {
+                it('should return the correct text of the element if webdriver response is successful', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETVALUE.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getValue()).to.be.become(td.WD_ELEMENT_GETVALUE.OK.body.value);
+                });
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETVALUE.KO_NOT_FOUND;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getValue()).to.be.rejected;
+                });
+            });
+
+            describe('getAttribute', function () {
+                it('should return the correct value of the attribute of the element if webdriver response is successful', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETATTRIBUTE.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/${td.WD_ATTRIBUTE_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getAttribute(td.WD_ATTRIBUTE_NAME)).to.be.become(td.WD_ELEMENT_GETATTRIBUTE.OK.body.value);
+                });
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETATTRIBUTE.KO_NOT_FOUND;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/${td.WD_ATTRIBUTE_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getAttribute(td.WD_ATTRIBUTE_NAME)).to.be.rejected;
+                });
+
+                it.skip('should not update the property value if the attribute is updated', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_SENDKEYS.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/${td.WD_PROPERTY_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.sendKeys("toto")).to.be.fulfilled;
+                    let resp2 = td.WD_ELEMENT_GETATTRIBUTE.OK_UPDATED;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/${td.WD_ATTRIBUTE_NAME}`).reply(resp2.code, resp2.body, resp2.headers);
+                    await expect(element.getAttribute(td.WD_ATTRIBUTE_NAME)).to.become(td.WD_ELEMENT_GETATTRIBUTE.OK_UPDATED.body.value);
+                });
+            });
+
+            describe('getProperty', function () {
+                it('should return the correct value of the property of the element if webdriver response is successful', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETPROPERTY.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/${td.WD_PROPERTY_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getProperty(td.WD_PROPERTY_NAME)).to.be.become("hello");
+                });
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETPROPERTY.KO_NOT_FOUND;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/${td.WD_PROPERTY_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getProperty(td.WD_PROPERTY_NAME)).to.be.rejected;
+                });
+
+                it('should update the property value if the attribute is updated', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_SENDKEYS.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/${td.WD_PROPERTY_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.sendKeys("toto")).to.be.fulfilled;
+                    let resp2 = td.WD_ELEMENT_GETPROPERTY.OK_UPDATED;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/${td.WD_PROPERTY_NAME}`).reply(resp2.code, resp2.body, resp2.headers);
+                    await expect(element.getProperty(td.WD_PROPERTY_NAME)).to.become(td.WD_ELEMENT_GETPROPERTY.OK_UPDATED.body.value);
+                });
+            });
+
+            describe('getTagName', function () {
+                it('should return the correct TagName of the element if webdriver response is successful', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETTAGNAME.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/name`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getTagName()).to.be.become(td.WD_ELEMENT_GETTAGNAME.OK.body.value);
+                });
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "h1");
+                    let resp = td.WD_ELEMENT_GETTAGNAME.KO_NOT_FOUND;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/name`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getTagName()).to.be.rejected;
+                });
+            });
+
+            describe('getCSSValue', function () {
+                it('should return the correct CSS property value of the element if webdriver response is successful', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_GETCSSVALUE.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/css/${td.WD_CSS_ATTRIBUTE_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getCSSValue(td.WD_CSS_ATTRIBUTE_NAME)).to.be.become(td.WD_ELEMENT_GETCSSVALUE.OK.body.value);
+                });
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "h1");
+                    let resp = td.WD_ELEMENT_GETCSSVALUE.KO_NOT_FOUND;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/${td.WD_ELEMENT_ID}css/${td.WD_CSS_ATTRIBUTE_NAME}`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.getCSSValue(td.WD_CSS_ATTRIBUTE_NAME)).to.be.rejected;
+                });
+            });
+
         });
 
     });

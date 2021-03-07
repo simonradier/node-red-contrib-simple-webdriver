@@ -318,18 +318,18 @@ export class SimpleWebDriver {
                     });
                 })
             },
-            getAttribute : (name : string) => {
+            getAttribute : (attributeName : string) => {
                 return new Promise<string> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, name)).then(resp => {
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, attributeName)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
                     });
                 });
             },
-            getProperty : (name : string) => {
+            getProperty : (propertyName : string) => {
                 return new Promise<string> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETPROPERTY(this.session, elementId, name)).then(resp => {
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETPROPERTY(this.session, elementId, propertyName)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
@@ -339,6 +339,15 @@ export class SimpleWebDriver {
             getTagName : () => {
                 return new Promise<string> ((resolve, reject) => {
                     wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETTAGNAME(this.session, elementId)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
+            },
+            getCSSValue : (cssPropertyName : string) => {
+                return new Promise<string> ((resolve, reject) => {
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETCSS(this.session, elementId, cssPropertyName)).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
