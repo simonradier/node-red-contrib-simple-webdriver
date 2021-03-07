@@ -55,6 +55,7 @@
 		"clean": "rm -rf dist",
 		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
 		"test-swc": "env SWC_NODE_PROJECT='./tsconfig.json' mocha --parallel -r @swc/register 'test/unit/**/*test.ts' > /dev/null",
+		"test-swc-log": "env SWC_NODE_PROJECT='./tsconfig.json' mocha --parallel --jobs 4 -r @swc/register 'test/unit/**/*test.ts'",
 		"test-tsc": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --parallel --jobs 4 -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
 		"test-wd-full": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
 		"test-wd-chrome": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Chrome(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
@@ -64,7 +65,7 @@
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"pre-commit": {
-		"run" : [ "clean", "prepublishOnly", "test-swc"]
+		"run" : [ "clean", "prepublishOnly", "test-tsc"]
 	},
 	"author": {
 		"name": "Simon Radier"
