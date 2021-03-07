@@ -56,13 +56,13 @@ jobs:
         browser: [chrome, edge, safari, firefox]
         exclude:
           - os: macos-latest
-            browser: edge #because its webdriver is buggy
+            browser: edge #because its webdriver is buggy on MacOS with GithubAction
           - os: windows-latest
-            browser: safari
+            browser: safari #Not available
           - os: ubuntu-latest
-            browser: safari
+            browser: safari #Not available
           - os: ubuntu-latest
-            browser: edge
+            browser: edge #Not available
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -132,31 +132,31 @@ jobs:
           sudo npm install -g node-red --unsafe-perm
           sudo npm install -g .
 
-      - name: Run node-red (windows)
-        if: ${{ matrix.os == 'windows-latest' && matrix.browser == 'Chrome' }}
-        run: cmd /c "START node-red > ${{ matrix.os }}-node-red-log.txt"
-
-      - name: Run node-red (other)
-        if: ${{ matrix.os != 'windows-latest' && matrix.browser == 'Chrome' }}
-        run: node-red > ${{ matrix.os }}-node-red-log.txt &
-
-      - name: Wait on
-        if: ${{ matrix.browser == 'Chrome' }}
-        uses: iFaxity/wait-on-action@v1
-        with:
-          resource: http://localhost:1880/flows  
-      
-      - name : Publish flows to node-red
-        if: ${{ matrix.browser == 'Chrome' }}
-        run: newman run ./test/newman/init.json
-
-      - name : Test flows
-        if: ${{ matrix.browser == 'Chrome' }}
-        run: newman run ./test/newman/test-suite1.json
-
-      - name: Upload artifact > node-red log
-        if: ${{ always() && matrix.browser == 'Chrome' }}
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: ${{ matrix.os }}-node-red-log
-          path: ./${{ matrix.os }}-node-red-log.txt
+#      - name: Run node-red (windows)
+#        if: ${{ matrix.os == 'windows-latest' && matrix.browser == 'Chrome' }}
+#        run: cmd /c "START node-red > ${{ matrix.os }}-node-red-log.txt"
+#
+#      - name: Run node-red (other)
+#        if: ${{ matrix.os != 'windows-latest' && matrix.browser == 'Chrome' }}
+#        run: node-red > ${{ matrix.os }}-node-red-log.txt &
+#
+#      - name: Wait on
+#        if: ${{ matrix.browser == 'Chrome' }}
+#        uses: iFaxity/wait-on-action@v1
+#        with:
+#          resource: http://localhost:1880/flows  
+#      
+#      - name : Publish flows to node-red
+#        if: ${{ matrix.browser == 'Chrome' }}
+#        run: newman run ./test/newman/init.json
+#
+#      - name : Test flows
+#        if: ${{ matrix.browser == 'Chrome' }}
+#        run: newman run ./test/newman/test-suite1.json
+#
+#      - name: Upload artifact > node-red log
+#        if: ${{ always() && matrix.browser == 'Chrome' }}
+#        uses: actions/upload-artifact@v2.2.2
+#        with:
+#          name: ${{ matrix.os }}-node-red-log
+#          path: ./${{ matrix.os }}-node-red-log.txt
