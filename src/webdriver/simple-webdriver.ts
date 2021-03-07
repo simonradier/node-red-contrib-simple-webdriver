@@ -302,7 +302,7 @@ export class SimpleWebDriver {
             },
             getValue : () => {
                 return new Promise<string> ((resolve, reject) => {
-                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETATTRIBUTE(this.session, elementId, "value")).then(resp => {
+                    wdapi.call<any>(this.serverURL, this._api.ELEMENT_GETPROPERTY(this.session, elementId, "value")).then(resp => {
                         resolve(resp.body.value);
                     }).catch(err => {
                         reject(err);
