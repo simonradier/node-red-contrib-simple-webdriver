@@ -52,6 +52,14 @@ export class WebElement {
         return  this._driver.element(this).sendKeys(keys);
     }
 
+    public isSelected() : Promise<boolean> {
+        return this._driver.element(this).isSelected();
+    }
+
+    public isEnabled() : Promise<boolean> {
+        return this._driver.element(this).isEnabled();
+    }
+
     public toString() {
         return this["element-6066-11e4-a52e-4f735466cecf"];
     }
