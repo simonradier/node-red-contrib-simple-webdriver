@@ -584,3 +584,59 @@ export let WD_ELEMENT_GETCSSVALUE = {
     }
 }
 
+export let WD_ELEMENT_ISSELECTED = {
+    OK : {
+        code : 200,
+        body : {
+            "value" : true
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    OK_FALSE : {
+        code : 200,
+        body : {
+            "value" : false
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_ELEMENT_ISENABLED= {
+    OK : {
+        code : 200,
+        body : {
+            "value" : true
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    OK_FALSE : {
+        code : 200,
+        body : {
+            "value" : false
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO_NOT_FOUND : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "element", 
+                "message" : "element not found",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+

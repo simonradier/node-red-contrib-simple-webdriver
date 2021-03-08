@@ -844,6 +844,96 @@ export function generateSimpleDriverTest(browser : string) {
                 });
             });
 
+            describe('isSelected', function () {
+                it('should return false if an element is not selected if webdriver response is successful 1/3', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_ISSELECTED.OK_FALSE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.isSelected()).to.be.become(false);
+                });
+
+                it('should return false if an element is selected but not a radio nor checkbox if webdriver response is successful 2/3', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_CLICK.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/click`).reply(resp.code, resp.body, resp.headers);
+                    let resp2 = td.WD_ELEMENT_ISSELECTED.OK_FALSE;
+                    await expect(element.click()).to.be.fulfilled;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp2.code, resp2.body, resp2.headers);
+                    await expect(element.isSelected()).to.be.become(false);
+                });
+
+                it('should return true if an element is selected and is an option if webdriver response is successful 3/3', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "option");
+                    let resp = td.WD_ELEMENT_ISSELECTED.OK;
+                    await expect(element.click()).to.be.fulfilled;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.isSelected()).to.be.become(true);
+                });
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "h1");
+                    let resp = td.WD_ELEMENT_ISSELECTED.OK_FALSE;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.isSelected()).to.be.rejected;
+                });
+            });
+
+            describe('isEnabled', function () {
+                it('should return if an element is enabled if webdriver response is successful 1/2', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "input");
+                    let resp = td.WD_ELEMENT_ISENABLED.OK_FALSE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.isEnabled()).to.be.become(true);
+                });
+
+                it('should return if an element is enabled if webdriver response is successful 2/2', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "button");
+                    let resp = td.WD_ELEMENT_ISSELECTED.OK_FALSE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.isEnabled()).to.be.become(false);
+                });
+
+
+                it('should throw an error if the webdriver server return an error ', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
+                    let element : WebElement = await driver.findElement(Using.tag, "h1");
+                    let resp = td.WD_ELEMENT_ISENABLED.OK_FALSE;
+                    //@ts-ignore
+                    element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    await expect(element.isEnabled()).to.be.rejected;
+                });
+            });
+
         });
 
     });
