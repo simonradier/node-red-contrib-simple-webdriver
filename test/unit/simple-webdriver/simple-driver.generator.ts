@@ -607,7 +607,7 @@ export function generateSimpleDriverTest(browser : string) {
                     nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/clear`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.clear()).to.be.fulfilled;
                     let resp2 = td.WD_ELEMENT_GETVALUE.OK_CLEARED;
-                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp2.code, resp2.body, resp2.headers);
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/value`).reply(resp2.code, resp2.body, resp2.headers);
                     await expect(element.getValue()).to.become("");
                 });
             });
@@ -647,7 +647,7 @@ export function generateSimpleDriverTest(browser : string) {
                     nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/value`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.sendKeys("toto")).to.be.fulfilled;
                     let resp2 = td.WD_ELEMENT_GETVALUE.OK_UPDATED;
-                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp2.code, resp2.body, resp2.headers);
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/value`).reply(resp2.code, resp2.body, resp2.headers);
                     if(!nock.isActive() && browser == "Safari")
                         await expect(element.getValue()).to.become("toto");
                     else //Safari seems to clear the input
@@ -689,7 +689,7 @@ export function generateSimpleDriverTest(browser : string) {
                     await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
                     let element : WebElement = await driver.findElement(Using.tag, "input");
                     let resp = td.WD_ELEMENT_GETVALUE.OK;
-                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp.code, resp.body, resp.headers);
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/value`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.getValue()).to.be.become(td.WD_ELEMENT_GETVALUE.OK.body.value);
                 });
 
@@ -702,7 +702,7 @@ export function generateSimpleDriverTest(browser : string) {
                     let resp = td.WD_ELEMENT_GETVALUE.KO_NOT_FOUND;
                     //@ts-ignore
                     element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
-                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/attribute/value`).reply(resp.code, resp.body, resp.headers);
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/property/value`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.getValue()).to.be.rejected;
                 });
             });
