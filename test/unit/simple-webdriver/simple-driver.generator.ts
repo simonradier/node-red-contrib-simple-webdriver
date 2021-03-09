@@ -877,7 +877,6 @@ export function generateSimpleDriverTest(browser : string) {
                     await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
                     let element : WebElement = await driver.findElement(Using.tag, "option");
                     let resp = td.WD_ELEMENT_ISSELECTED.OK;
-                    await expect(element.click()).to.be.fulfilled;
                     nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.isSelected()).to.be.become(true);
                 });
@@ -903,8 +902,8 @@ export function generateSimpleDriverTest(browser : string) {
                     await expect(driver.start(), 'start').to.be.fulfilled;
                     await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
                     let element : WebElement = await driver.findElement(Using.tag, "input");
-                    let resp = td.WD_ELEMENT_ISENABLED.OK_FALSE;
-                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    let resp = td.WD_ELEMENT_ISENABLED.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/enabled`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.isEnabled()).to.be.become(true);
                 });
 
@@ -915,7 +914,7 @@ export function generateSimpleDriverTest(browser : string) {
                     await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;
                     let element : WebElement = await driver.findElement(Using.tag, "button");
                     let resp = td.WD_ELEMENT_ISSELECTED.OK_FALSE;
-                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/enabled`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.isEnabled()).to.be.become(false);
                 });
 
@@ -929,12 +928,75 @@ export function generateSimpleDriverTest(browser : string) {
                     let resp = td.WD_ELEMENT_ISENABLED.OK_FALSE;
                     //@ts-ignore
                     element['element-6066-11e4-a52e-4f735466cecf'] = td.WD_ELEMENT_ID_FAKE;
-                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/selected`).reply(resp.code, resp.body, resp.headers);
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/element/${td.WD_ELEMENT_ID}/enabled`).reply(resp.code, resp.body, resp.headers);
                     await expect(element.isEnabled()).to.be.rejected;
                 });
             });
 
         });
 
+        describe('window', function () {
+            beforeEach(function () {
+                nock.cleanAll();
+                // Required for session Start
+                let resp = td.WD_START_SESSION_RESPONSE.OK;
+                nock(td.WD_SERVER_URL_HTTP[browser]).post("/session").reply(resp.code, resp.body, resp.headers);
+                // Required for session Start
+                let resp2 = td.WD_WINDOW_HANDLE_RESPONSE.OK;
+                nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window`).reply(resp2.code, resp2.body, resp2.headers);
+                // Required for .get
+                let resp3 = td.WD_NAVIGATE_TO_RESPONSE.OK;
+                nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/url`).reply(resp3.code, resp3.body, resp3.headers);
+           });
+
+            describe ('getHandle', function () {
+                it('should return the window\'s handle if the webdriver response is successful', async function() {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                    let resp = td.WD_WINDOW_HANDLE_RESPONSE.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window`).reply(resp.code, resp.body, resp.headers);                          
+                    await expect(driver.window().getHandle()).to.be.fulfilled;
+                });
+
+                it('should throw an error if the webdriver server return an error | Nock Only', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                    let resp = td.WD_WINDOW_HANDLE_RESPONSE.KO;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window`).reply(resp.code, resp.body, resp.headers);                          
+                    await expect(driver.window().getHandle()).to.be.rejected;
+                });                  
+            });
+            describe ('getAllHandles', function () {
+                it('should return the window\'s handle if the webdriver response is successful', async function() {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                    let resp = td.WD_WINDOW_HANDLES_RESPONSE.OK;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window/handles`).reply(resp.code, resp.body, resp.headers);                          
+                    await expect(driver.window().getAllHandles()).to.be.fulfilled;
+                });
+
+                it('should throw an error if the webdriver server return an error | Nock Only', async function () {
+                    let driver : SimpleWebDriver;
+                    driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                    await expect(driver.start(), 'start').to.be.fulfilled;
+                    await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                    let resp = td.WD_WINDOW_HANDLES_RESPONSE.KO;
+                    nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window/handles`).reply(resp.code, resp.body, resp.headers);                          
+                    await expect(driver.window().getAllHandles()).to.be.rejected;
+                });  
+            });
+            describe ('handle', function (){
+
+            });
+            describe ('current', function () {
+
+            });
+        });
     });
 }

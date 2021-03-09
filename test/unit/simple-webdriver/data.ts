@@ -359,6 +359,39 @@ export let WD_WINDOW_HANDLE_RESPONSE = {
             "value" : WD_HANDLE_ID
         },
         headers : { "Content-Type" : "application/json"}
+    },
+    KO : {
+        code : 404,
+        body : {
+            "value" : { 
+                "error" : "handle", 
+                "message" : "no such window",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let WD_WINDOW_HANDLES_RESPONSE = {
+    OK : {
+        code : 200,
+        body : {
+            //@ts-ignore
+            "value" : [WD_HANDLE_ID , WD_HANDLE_ID]
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO : {
+        code : 500,
+        body : {
+            "value" : { 
+                "error" : "handle", 
+                "message" : "internal server error",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
     }
 }
 
