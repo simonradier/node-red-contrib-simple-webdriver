@@ -131,7 +131,7 @@ export class W3C implements WDAPIDef {
     WINDOW_GETHANDLES(sessionId: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
-        result.path = `session/${sessionId}/windows`;
+        result.path = `session/${sessionId}/window/handle`;
         result.requestOptions.method = "GET"
         return result;
     }
