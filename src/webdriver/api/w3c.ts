@@ -148,7 +148,7 @@ export class W3C implements WDAPIDef {
         return result;
     }
 
-    WINDOW_GETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef {
+    WINDOW_GETRECT(sessionId: string, handle: string): RequestDef {
         let result = new WebDriverRequest();
         W3C._initHttpOptions(result);
         result.path = `session/${sessionId}/window/rect`;

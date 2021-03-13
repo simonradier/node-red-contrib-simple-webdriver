@@ -35,7 +35,7 @@ export class JSONWire implements WDAPIDef {
     WINDOW_SETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef {
         throw new Error("Method not implemented.");
     }
-    WINDOW_GETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef {
+    WINDOW_GETRECT(sessionId: string, handle: string): RequestDef {
         throw new Error("Method not implemented.");
     }
     WINDOW_MAXIMIZE(sessionId: string, handle: string): RequestDef {

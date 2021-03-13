@@ -13,7 +13,7 @@ export interface WDAPIDef {
     WINDOW_GETHANDLE(sessionId: string): RequestDef;
     WINDOW_GETHANDLES(sessionId: string): RequestDef;
     WINDOW_SETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef;
-    WINDOW_GETRECT(sessionId: string, handle: string, width: number, height: number): RequestDef;
+    WINDOW_GETRECT(sessionId: string, handle: string): RequestDef;
     WINDOW_MAXIMIZE(sessionId: string, handle: string): RequestDef;
     WINDOW_MINIMIZE(sessionId: string, handle: string): RequestDef;
     WINDOW_FULLSCREEN(sessionId: string, handle: string): RequestDef;
