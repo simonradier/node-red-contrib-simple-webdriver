@@ -138,6 +138,15 @@ export class SimpleWebDriver {
                     });
                 })
             },
+            getSize : async () => {
+                return new Promise<WindowRect> (async (resolve, reject) => {
+                    wdapi.call<WindowRect>(this.serverURL, this._api.WINDOW_GETRECT(this.session, handle)).then(resp => {
+                        resolve(resp.body.value);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                })
+            },
             maximize : async () => {
                 return new Promise<WindowRect> (async (resolve, reject) => {
                     wdapi.call<WindowRect>(this.serverURL, this._api.WINDOW_MAXIMIZE(this.session, handle)).then(resp => {
@@ -215,7 +224,7 @@ export class SimpleWebDriver {
                 return this._windowActions(handle);
             },
             current : () => { 
-                return this._windowActions(this._currentHandle);
+                return this.window().handle(this._currentHandle);
             }
         }
     }

@@ -673,3 +673,80 @@ export let WD_ELEMENT_ISENABLED= {
     }
 }
 
+export let WD_WINDOW_GETTITLE= {
+    OK : {
+        code : 200,
+        body : {
+            "value" : "WD2 Test Page"
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO : {
+        code : 500,
+        body : {
+            "value" : { 
+                "error" : "window", 
+                "message" : "internal server error",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+export let  WD_WINDOW_SETSIZE = (width, height) => {
+    return {
+        OK : {
+            code : 200,
+            body : {
+                "value" :  {
+                    "height": width,
+                    "width": height,
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            headers : { "Content-Type" : "application/json"}
+        },
+        KO : {
+            code : 500,
+            body : {
+                "value" : { 
+                    "error" : "window", 
+                    "message" : "internal server error",
+                    "stacktrace" : "this is a stack\ntrace"
+                }
+            },
+            headers : { "Content-Type" : "application/json" }
+        }
+    }
+}
+
+export let WD_WINDOW_GETSIZE = {
+    OK : {
+        code : 200,
+        body : {
+            "value" :  {
+                "height": 1280,
+                "width": 720,
+                "x": 0,
+                "y": 0
+            }
+        },
+        headers : { "Content-Type" : "application/json"}
+    },
+    KO : {
+        code : 500,
+        body : {
+            "value" : { 
+                "error" : "window", 
+                "message" : "internal server error",
+                "stacktrace" : "this is a stack\ntrace"
+            }
+        },
+        headers : { "Content-Type" : "application/json" }
+    }
+}
+
+
+

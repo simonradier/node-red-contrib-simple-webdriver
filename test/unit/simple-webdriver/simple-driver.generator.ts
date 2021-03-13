@@ -991,11 +991,109 @@ export function generateSimpleDriverTest(browser : string) {
                     await expect(driver.window().getAllHandles()).to.be.rejected;
                 });  
             });
-            describe ('handle', function (){
+            describe ('current', function (){
+                describe('getTitle', async function () {
+                    it('should return the title of the windows if the webdriver server response is successful', async function() {
+                        let driver : SimpleWebDriver;
+                        driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                        await expect(driver.start(), 'start').to.be.fulfilled;
+                        await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                        let resp = td.WD_WINDOW_GETTITLE.OK;
+                        nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/title`).reply(resp.code, resp.body, resp.headers);                          
+                        await expect(driver.window().current().getTitle()).to.become("WD2 Test Page");
+                    });
+                    it('should throw an error if the webdriver server return an error | Nock Only', async function () {
+                        let driver : SimpleWebDriver;
+                        driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                        await expect(driver.start(), 'start').to.be.fulfilled;
+                        await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                        let resp = td.WD_WINDOW_GETTITLE.KO;
+                        nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/title`).reply(resp.code, resp.body, resp.headers);                          
+                        await expect(driver.window().current().getTitle()).to.be.rejected;
+                    });  
+                });
 
+                describe('getSize', function () {
+                    it('should modify the windows size if the webdriver server response is successful', async function() {
+                        let driver : SimpleWebDriver;
+                        driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                        await expect(driver.start(), 'start').to.be.fulfilled;
+                        await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                        let resp = td.WD_WINDOW_GETSIZE.OK;
+                        nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window/rect`).reply(resp.code, resp.body, resp.headers);                          
+                        await expect(driver.window().current().getSize()).to.be.fulfilled;
+                    });
+                    it('should throw an error if the webdriver server return an error | Nock Only', async function () {
+                        let driver : SimpleWebDriver;
+                        driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                        await expect(driver.start(), 'start').to.be.fulfilled;
+                        await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                        let resp = td.WD_WINDOW_GETSIZE.KO;
+                        nock(td.WD_SERVER_URL_HTTP[browser]).get(`/session/${td.WD_SESSION_ID}/window/rect`).reply(resp.code, resp.body, resp.headers);                          
+                        await expect(driver.window().current().getSize()).to.be.rejected;
+                    });  
+                });
+
+                describe('setSize', function () {
+                    it('should modify the windows size if the webdriver server response is successful', async function() {
+                        let driver : SimpleWebDriver;
+                        driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                        await expect(driver.start(), 'start').to.be.fulfilled;
+                        await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                        let resp = td.WD_WINDOW_SETSIZE(1280, 720).OK;
+                        nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/window/rect`).reply(resp.code, resp.body, resp.headers);                          
+                        await expect(driver.window().current().setSize(1280, 720)).to.be.fulfilled;
+                    });
+                    it('should throw an error if the webdriver server return an error | Nock Only', async function () {
+                        let driver : SimpleWebDriver;
+                        driver = new SimpleWebDriver(td.WD_SERVER_URL_HTTP[browser], Browser[browser]);
+                        await expect(driver.start(), 'start').to.be.fulfilled;
+                        await expect(driver.navigate().to(td.WD_WEBSITE_URL_HTTP), 'navigate to webpage').to.be.fulfilled;     
+                        let resp = td.WD_WINDOW_SETSIZE(1280, 720).KO;
+                        nock(td.WD_SERVER_URL_HTTP[browser]).post(`/session/${td.WD_SESSION_ID}/window/rect`).reply(resp.code, resp.body, resp.headers);                          
+                        await expect(driver.window().current().setSize(1280, 720)).to.be.rejected;
+                    });  
+                });
+                describe('maximize', function () {
+
+                });
+                describe('minimize', function () {
+
+                });
+                describe('fullscreen', function () {
+
+                });
+                describe('switch', function () {
+
+                });
+                describe('screenshot', function () {
+
+                });
             });
-            describe ('current', function () {
+            describe ('handle', function () {
+                describe('getTitle', function () {
+                    it('should return the title of the webpage if the webdriver server response is successful', function() {
 
+                    });
+                });
+                describe('setSize', function () {
+
+                });
+                describe('maximize', function () {
+
+                });
+                describe('minimize', function () {
+
+                });
+                describe('fullscreen', function () {
+
+                });
+                describe('switch', function () {
+
+                });
+                describe('screenshot', function () {
+
+                });
             });
         });
     });
