@@ -1,3 +1,5 @@
+Version 0.1.6 : 
+- Corrected issue during package installation on node-red 2.2
 Version 0.1.5 : 
 - Corrected incorrect clearVal type thx to MyGg29
 Version 0.1.4 : 
