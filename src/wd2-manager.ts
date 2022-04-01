@@ -1,10 +1,12 @@
 import { NodeAPI, NodeAPISettingsWithData } from "node-red";
-import { NodeOpenWebDef } from "./nodes/node";
+import { WebDriver } from "@critik/simple-webdriver"
 import { portCheck } from "./utils";
+import { Protocol } from "@critik/simple-webdriver/dist/webdriver";
 
 export class WD2Manager {
     private static _RED : NodeAPI<NodeAPISettingsWithData>;
     private static _serverURL : string = "";
+    private static _webDriver : WebDriver
 
     public static get RED () {
         return WD2Manager._RED;
@@ -21,12 +23,12 @@ export class WD2Manager {
      */
     public static async setServerConfig(serverURL : string) : Promise<boolean> {
         WD2Manager._serverURL = serverURL;
-        const server = serverURL.match(/\/\/([a-z0-9A-Z.:-]*)/)?.[1];
-        if (!server)
-            return new Promise((resolve) => resolve(false));
-        const host = server.split(":")[0];
-        const port = server.split(":")[1] || "80";
-        return portCheck(host, parseInt(port, 10));
+
+        const host = serverURL.split(":")[0];
+        const port = parseInt(serverURL.split(":")[1] || "80");
+        if (!(await portCheck(host, port)))
+            return false;
+        this._webDriver = new WebDriver(serverURL, Protocol.W3C);
     }
 
     public static checkIfCritical(error : Error) : boolean {

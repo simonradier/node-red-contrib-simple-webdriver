@@ -1,12 +1,14 @@
 import { WD2Manager } from "../wd2-manager";
-import { Browser, SimpleWebDriver } from "../webdriver/simple-webdriver";
+import { Browser, Capabilities, WebDriver } from "@critik/simple-webdriver";
 import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
+import { Protocol } from "@critik/simple-webdriver/dist/webdriver";
+import { BrowserType } from "@critik/simple-webdriver/dist/browser";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeOpenWebDef extends SeleniumNodeDef {
     serverURL : string;
     name : string;
-    browser : string;
+    browser : BrowserType;
     webURL : string;
     width : string;
     height : string;
@@ -43,8 +45,9 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
         const msg : SeleniumMsg = message;
         const node = this;
         let driverError = false;
-        msg.driver = new SimpleWebDriver(conf.serverURL, <Browser> conf.browser);
-        msg.driver.capabilities.headless = conf.headless;
+        let driver = new WebDriver(conf.serverURL, Protocol.W3C);
+        let capabilities = conf.headless ? Capabilities.headless : Capabilities.default;
+        msg.browser = await driver.start(conf.browser ,capabilities);
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {
             await msg.driver.get(conf.webURL);

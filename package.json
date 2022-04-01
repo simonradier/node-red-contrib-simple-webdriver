@@ -3,7 +3,8 @@
 	"version": "0.2.0-alpha1",
 	"description": "Selenium-webdriver nodes for Node-RED based on node-red-contrib-selenium-webdriver",
 	"dependencies": {
-		"rxjs": "~6.6.3"
+		"rxjs": "~6.6.3",
+		"@critik/simple-webdriver": "0.1.0"
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.1.35",
@@ -16,13 +17,9 @@
 		"@types/node-red-node-test-helper": "^0.2.1",
 		"chai": "^4.2.0",
 		"chai-as-promised": "^7.1.1",
-		"chromedriver": "88.0.0",
 		"coveralls": "^3.1.0",
-		"eslint": "7.17.0",
-		"eslint-config-prettier": "7.1.0",
 		"geckodriver": "1.22.1",
 		"mocha": "^8.2.1",
-		"msedgedriver": "87.0.13",
 		"nock": "^13.0.7",
 		"node-red": "1.2.9",
 		"node-red-node-test-helper": "^0.2.6",
@@ -65,7 +62,7 @@
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"pre-commit": {
-		"run" : [ "clean", "prepublishOnly", "test-tsc"]
+		"run" : [ "clean"]
 	},
 	"author": {
 		"name": "Simon Radier"
