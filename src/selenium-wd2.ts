@@ -1,13 +1,15 @@
 import { NodeAPI, NodeAPISettingsWithData} from "node-red";
 import { NodeNavigateConstructor } from "./nodes/navigate";
-import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetAttributeConstructor, NodeGetTextConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenWebConstructor, NodeRunScriptConstructor, NodeScreenshotConstructor, NodeSendKeysConstructor, NodeSetAttributeConstructor, NodeSetValueConstructor } from "./nodes/node";
+import { NodeClickOnConstructor, NodeClickPrerequisite, NodeCloseWebConstructor, NodeFindElementConstructor, NodeGetAttributeConstructor, NodeGetTextConstructor, NodeGetTitleConstructor, NodeGetValueConstructor, NodeOpenBrowserConstructor, NodeRunScriptConstructor, NodeScreenshotConstructor, NodeSendKeysConstructor, NodeSetAttributeConstructor, NodeSetValueConstructor } from "./nodes/node";
 import { WD2Manager } from "./wd2-manager";
 
 
 export = (RED : NodeAPI<NodeAPISettingsWithData>) => {
     WD2Manager.init(RED);
-    RED.nodes.registerType("open-web", NodeOpenWebConstructor);
-    RED.nodes.registerType("close-web", NodeCloseWebConstructor);
+    
+
+    RED.nodes.registerType("close-browser", NodeCloseWebConstructor);
+    RED.nodes.registerType("open-browser", NodeOpenBrowserConstructor);
     NodeClickPrerequisite();
     RED.nodes.registerType("find-element", NodeFindElementConstructor);
     RED.nodes.registerType("click-on", NodeClickOnConstructor);

@@ -1,5 +1,5 @@
 
-<script type="text/html" data-template-name="close-web">
+<script type="text/html" data-template-name="close-browser">
 	<div class="form-row">
 		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
 		<input type="text" id="node-input-waitFor" value="500">
@@ -11,8 +11,8 @@
 	</div>
 </script>
 
-<script type="text/html" data-help-name="close-web">
-	<p>Close the web browser which is openned by the open-web node and finalize the selenium session.</p>		
+<script type="text/html" data-help-name="close-browser">
+	<p>Close the web browser which is openned by the open-browser node and finalize the selenium session.</p>		
 	<h3>Inputs</h3>
 		<dl class="message-properties">
 			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
@@ -51,7 +51,7 @@
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('close-web', {
+	RED.nodes.registerType('close-browser', {
 		category : 'wd2',
 		defaults : {
 			name : {

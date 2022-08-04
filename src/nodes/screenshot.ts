@@ -1,5 +1,5 @@
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
+import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 import * as fs from "fs";
 
 
@@ -18,10 +18,10 @@ export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScr
 
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        const msg : SeleniumMsg = message;
+        const msg : WebDriverMessage = message;
         const node = this;
         node.status({});
-        if (msg.driver == null) {
+        if (msg.browser == null) {
             const error = new Error("Open URL must be call before any other action. For node : " + conf.name);
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
@@ -30,7 +30,7 @@ export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScr
             const filePath : string = msg.filePath ?? conf.filePath;
             setTimeout (async () => {
                 try {
-                    const sc = await msg.driver.window().current().screenshot();
+                    const sc = await msg.browser.screenshot();
                     if (filePath)
                         await fs.promises.writeFile(filePath, sc, "base64");
                     msg.payload = sc;

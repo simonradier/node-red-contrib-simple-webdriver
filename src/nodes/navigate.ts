@@ -1,5 +1,5 @@
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
+import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeNavigateDef extends SeleniumNodeDef {
@@ -17,11 +17,11 @@ export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigat
 
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        const msg : SeleniumMsg = message;
+        const msg : WebDriverMessage = message;
         const node = this;
         node.status({});
-        if (msg.driver == null) {
-            const error = new Error("Open URL must be call before any other action. For node : " + conf.name);
+        if (msg.browser == null) {
+            const error = new Error("Can't use this node without a working open-browser node first. For node : " + conf.name);
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
@@ -34,16 +34,16 @@ export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigat
                     node.status({ fill : "blue", shape : "ring", text : "loading"});
                     switch (type) {
                         case "forward" :
-                            await msg.driver.navigate().forward();
+                            await msg.browser.navigate().forward();
                         break;
                         case "back":
-                            await msg.driver.navigate().back();
+                            await msg.browser.navigate().back();
                         break;
                         case "refresh":
-                            await msg.driver.navigate().refresh();
+                            await msg.browser.navigate().refresh();
                         break;
                         default:
-                            await msg.driver.navigate().to(url);
+                            await msg.browser.navigate().to(url);
                     }
                     send([msg, null]);
                     node.status({ fill : "green", shape : "dot", text : "success"});

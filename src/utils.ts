@@ -11,6 +11,11 @@ function getValueFromPropertyNameRec(obj : any, listProp : string[])
     return res;
 }
 
+export class WaitForError extends Error {
+    value : any
+    name : string = "WaitForError"
+}
+
 export function replaceMustache(str : string, obj : any) {
     const mustache = str.match(/\{\{(.*)\}\}/g)
 }
@@ -35,6 +40,23 @@ export function replaceVar (str :string, msg : any) {
     } else {
         return str;
     }
+}
+
+export async function waitForValue<T>(param: any [], func : (...args) => Promise<T>, expectedValue : T, timeout : number) : Promise<T> {
+    return new Promise<T> ( async (resolve, reject) => {
+        setTimeout(() => {
+            let err = new WaitForError()
+            err.message = "Cannot resolve expected value : " + value
+            err.value = value
+            reject (err)
+        }, timeout)
+
+        let value : T
+        do {
+            value = await func(param)
+        } while (value == expectedValue)
+        resolve(value);
+    })
 }
 
 export async function portCheck(host : string, port : number) : Promise<boolean> {

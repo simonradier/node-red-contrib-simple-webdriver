@@ -1,5 +1,6 @@
+import { waitForValue as waitUntil } from "../utils";
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
+import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeGetTitleDef extends SeleniumNodeDef {
@@ -16,11 +17,11 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
 
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        const msg : SeleniumMsg = message;
+        const msg : WebDriverMessage = message;
         const node = this;
         node.status({});
-        if (msg.driver == null) {
-            const error = new Error("Open URL must be call before any other action. For node : " + conf.name);
+        if (msg.browser == null) {
+            const error = new Error("Can't use this node without a working open-browser node first");
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
@@ -28,44 +29,31 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
             const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
             const timeout : number = parseInt(msg.timeout ?? conf.timeout, 10);
             setTimeout (async () => {
-                if (expected && expected !== "") {
-                    try {
-                        //await msg.driver.wait(until.titleIs(expected), timeout);
-                        await msg.driver.wait(expected, timeout);
-                        send([msg, null]);
-                        node.status({ fill : "green", shape : "dot", text : "success"});
+                try {
+                    let title : string = (expected && expected !== "") ? await waitUntil(null, msg.browser.getTitle, expected, timeout) : await msg.browser.getTitle()
+                    if (msg.error) { delete msg.error; }
+                    msg.payload = title;
+                    send([msg, null]);
+                    node.status({ fill : "green", shape : "dot", text : "success"});
+                    done();
+                } catch (e) {
+                    if (WD2Manager.checkIfCritical(e)) {
+                        node.status({ fill : "red", shape : "dot", text : "critical error"});
+                        done(e);
+                    } 
+                    if (e.name == "WaitForError") {
+                        msg.payload = e.value;
+                        const error = { message : "Browser windows title does not have the expected value", expected, found : msg.webTitle}
+                        node.warn(error.message);
+                        msg.error = error;
+                        node.status({ fill : "yellow", shape : "dot", text : "wrong title"});
+                        send([null, msg]);
                         done();
-                    } catch (e) {
-                        if (WD2Manager.checkIfCritical(e)) {
-                            node.status({ fill : "red", shape : "dot", text : "critical error"});
-                            done(e);
-                        } else {
-                            try {
-                                msg.payload = await msg.driver.window().current().getTitle();
-                            } catch (sube) {
-                                msg.payload = "[Unknown]";
-                            }
-                            const error = { message : "Browser windows title does not have the expected value", expected, found : msg.webTitle}
-                            node.warn(error.message);
-                            msg.error = error;
-                            node.status({ fill : "yellow", shape : "dot", text : "wrong title"});
-                            send([null, msg]);
-                            done();
-                        }
                     }
-                } else {
-                    try {
-                        msg.payload = await msg.driver.window().current().getTitle();
-                        node.status({ fill : "green", shape : "dot", text : "success"});
-                        if (msg.error) { delete msg.error; }
-                        send([msg, null]);
-                        done();
-                    } catch (e) {
-                        node.status({ fill : "red", shape : "dot", text : "error"});
-                        node.error("Can't get title of the browser window. Check msg.error for more information");
-                        done (e);
-                    }
-                }
+                    node.status({ fill : "red", shape : "dot", text : "error"});
+                    node.error("Can't get title of the browser window. Check msg.error for more information");
+                    done (e);  
+                }  
             }, waitFor);
         }
     });

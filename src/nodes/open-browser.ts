@@ -1,14 +1,12 @@
 import { WD2Manager } from "../wd2-manager";
-import { Browser, Capabilities, WebDriver } from "@critik/simple-webdriver";
-import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
-import { Protocol } from "@critik/simple-webdriver/dist/webdriver";
-import { BrowserType } from "@critik/simple-webdriver/dist/browser";
+import { Browser, Capabilities, WebDriver, Protocol, BrowserType} from "@critik/simple-webdriver";
+import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeOpenWebDef extends SeleniumNodeDef {
+export interface NodeOpenBrowserDef extends SeleniumNodeDef {
     serverURL : string;
     name : string;
-    browser : BrowserType;
+    browserType : BrowserType;
     webURL : string;
     width : string;
     height : string;
@@ -21,11 +19,11 @@ export interface NodeOpenWeb extends SeleniumNode {
 
 }
 
-export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDef) {
+export function NodeOpenBrowserConstructor (this : NodeOpenWeb, conf : NodeOpenBrowserDef) {
     WD2Manager.RED.nodes.createNode(this, conf);
 
     if (!conf.serverURL) {
-        this.log("Selenium server URL is undefined");
+        this.log("Webdriver server URL is undefined");
         this.status({ fill : "red", shape : "ring", text : "no server defined"});
     } else {
         WD2Manager.setServerConfig(conf.serverURL).then ((result) => {
@@ -42,35 +40,37 @@ export function NodeOpenWebConstructor (this : NodeOpenWeb, conf : NodeOpenWebDe
     }
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        const msg : SeleniumMsg = message;
+        const msg : WebDriverMessage = message;
         const node = this;
         let driverError = false;
         let driver = new WebDriver(conf.serverURL, Protocol.W3C);
         let capabilities = conf.headless ? Capabilities.headless : Capabilities.default;
-        msg.browser = await driver.start(conf.browser ,capabilities);
+        msg.browser = await driver.start(conf.browserType, capabilities);
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {
-            await msg.driver.get(conf.webURL);
+            await msg.browser.navigate().to(conf.webURL);
         } catch (e) {
-            msg.driver = null;
-            node.error("Can't open an instance of " + conf.browser);
+            msg.browser = null;
+            node.error("Can't open an instance of " + conf.browserType);
             node.status({ fill : "red", shape : "ring", text : "launch error"});
             driverError = true;
             done(e);
         }
         try {
-            if (msg.driver) {
-                if (!driverError)
+            if (msg.browser) {
+                if (!driverError) {
+                    let window = await msg.browser.getCurrentWindow()
                     if (!conf.maximized)
-                        await msg.driver.window().current().setSize(parseInt(conf.width, 10), parseInt(conf.height, 10));
+                        await window.setSize(parseInt(conf.width, 10), parseInt(conf.height, 10));
                     else if (!conf.headless)
-                        await msg.driver.window().current().maximize();
+                        await window.maximize();
+                }
                 send(msg);
                 this.status({ fill : "green", shape : "dot", text : "success"});
                 done();
             }
         } catch (e) {
-            node.error("Can't resize the instance of " + conf.browser);
+            node.error("Can't resize the instance of " + conf.browserType);
             node.status({ fill : "red", shape : "ring", text : "resize error"});
             driverError = true;
             done(e);

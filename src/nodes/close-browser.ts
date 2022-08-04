@@ -1,5 +1,5 @@
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
+import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeCloseWebDef extends SeleniumNodeDef {
@@ -17,10 +17,10 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
 
     this.on("input", async (message : any, send, done) => {
         // Cheat to allow correct typing in typescript
-        const msg : SeleniumMsg = message;
+        const msg : WebDriverMessage = message;
 
-        if (null === msg.driver) {
-            const error = new Error("Can't use this node without a working open-web node first");
+        if (null === msg.browser) {
+            const error = new Error("Can't use this node without a working open-browser node first");
             this.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
@@ -29,14 +29,14 @@ export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWe
             setTimeout(async () => {
                 try {
                     this.status({ fill : "blue", shape : "ring", text : "closing"});
-                    await msg.driver.stop();
-                    msg.driver = null;
+                    await msg.browser.close();
+                    msg.browser = null;
                     this.status({ fill : "green", shape : "dot", text : "closed"});
                     send(msg);
                     done();
                 } catch (e) {
                     this.warn("Can't close the browser, check msg.error for more information");
-                    msg.driver = null;
+                    msg.browser = null;
                     msg.error = e;
                     this.status({ fill : "red", shape : "dot", text : "critical error"});
                     done(e);

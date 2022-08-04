@@ -1,4 +1,4 @@
-import { SeleniumAction, SeleniumNode, SeleniumNodeDef} from "./node";
+import { WebDriverAction, SeleniumNode, SeleniumNodeDef} from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
 // tslint:disable-next-line: no-empty-interface
@@ -9,7 +9,7 @@ export interface NodeFindElementDef extends SeleniumNodeDef {
 export interface NodeFindElement extends SeleniumNode {
 }
 
-async function inputAction (node : NodeFindElement, conf : NodeFindElementDef, action : SeleniumAction) : Promise<void> {
+async function inputAction (node : NodeFindElement, conf : NodeFindElementDef, action : WebDriverAction) : Promise<void> {
     return new Promise<void> ((resolve, reject) => {
         const msg = action.msg;
         node.status({ fill : "green", shape : "dot", text : "success"});

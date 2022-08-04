@@ -1,6 +1,6 @@
 import { Node } from "node-red"
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumAction, SeleniumMsg, SeleniumNode, SeleniumNodeDef } from "./node";
+import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
 export interface NodeSendKeysDef extends SeleniumNodeDef {
@@ -9,10 +9,10 @@ export interface NodeSendKeysDef extends SeleniumNodeDef {
 }
 
 export interface NodeSendKeys extends SeleniumNode {
-    __msg : SeleniumMsg;
+    __msg : WebDriverMessage;
 }
 
-async function inputAction (node : NodeSendKeys, conf : NodeSendKeysDef, action : SeleniumAction) : Promise<void> {
+async function inputAction (node : NodeSendKeys, conf : NodeSendKeysDef, action : WebDriverAction) : Promise<void> {
     return new Promise<void> (async (resolve, reject) => {
         const msg = action.msg;
         const clearVal = msg.clearVal ?? conf.clearVal;

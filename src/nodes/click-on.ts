@@ -1,5 +1,5 @@
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumAction, SeleniumMsg, SeleniumNode, SeleniumNodeDef, waitForElement} from "./node";
+import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef, waitForElement} from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
 export interface NodeClickOnDef extends SeleniumNodeDef {
@@ -7,10 +7,10 @@ export interface NodeClickOnDef extends SeleniumNodeDef {
 }
 
 export interface NodeClickOn extends SeleniumNode {
-    __msg : SeleniumMsg;
+    __msg : WebDriverMessage;
 }
 
-async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, action : SeleniumAction) : Promise<boolean> {
+async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, action : WebDriverAction) : Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
         let msg = action.msg;
         if (msg.click && node.__msg) {
@@ -46,7 +46,7 @@ async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, ac
     });
 }
 
-async function inputAction (node : NodeClickOn, conf : NodeClickOnDef, action : SeleniumAction) : Promise<void> {
+async function inputAction (node : NodeClickOn, conf : NodeClickOnDef, action : WebDriverAction) : Promise<void> {
     const msg = action.msg;
     return new Promise<void> (async (resolve, reject) => {
         if (!conf.clickOn) {

@@ -1,5 +1,5 @@
 import { WD2Manager } from "../wd2-manager";
-import { SeleniumAction, SeleniumNode, SeleniumNodeDef } from "./node";
+import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
 // tslint:disable-next-line: no-empty-interface
@@ -13,7 +13,7 @@ export interface NodeGetAttribute extends SeleniumNode {
 
 }
 
-async function inputAction (node : NodeGetAttribute, conf : NodeGetAttributeDef, action : SeleniumAction) : Promise<void> {
+async function inputAction (node : NodeGetAttribute, conf : NodeGetAttributeDef, action : WebDriverAction) : Promise<void> {
     return new Promise<void> (async (resolve, reject) => {
         const msg = action.msg;
         const expected = msg.expected ?? conf.expected;
