@@ -1,5 +1,5 @@
 import { Node } from "node-red"
-import { WD2Manager } from "../wd2-manager";
+import { WebDriverManager } from "../webdriver-manager";
 import { WebDriverAction, WebDriverMessage, SeleniumNodeDef, waitForElement } from "./node";
 
 export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef extends SeleniumNodeDef> (
@@ -7,7 +7,7 @@ export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef ext
         inputAction : (node : TNode, conf : TNodeDef, action : WebDriverAction) => Promise<void>,
         nodeCreation : () => void = null) {
     return function (this : TNode, conf : TNodeDef) : void {
-        WD2Manager.RED.nodes.createNode(this, conf);
+        WebDriverManager.RED.nodes.createNode(this, conf);
         const node = this;
         node.status({});
         this.on("input", async (message : any, send, done) => {
@@ -32,7 +32,7 @@ export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef ext
                                 }
                             },
                             error(err) {
-                                if (WD2Manager.checkIfCritical(err)) {
+                                if (WebDriverManager.checkIfCritical(err)) {
                                     node.status({ fill : "red", shape : "dot", text : "critical error"});
                                     node.error(err.toString());
                                     done(err);

@@ -1,4 +1,4 @@
-import { WD2Manager } from "../wd2-manager";
+import { WebDriverManager } from "../webdriver-manager";
 import { Browser, Capabilities, WebDriver, Protocol, BrowserType} from "@critik/simple-webdriver";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
@@ -20,13 +20,13 @@ export interface NodeOpenWeb extends SeleniumNode {
 }
 
 export function NodeOpenBrowserConstructor (this : NodeOpenWeb, conf : NodeOpenBrowserDef) {
-    WD2Manager.RED.nodes.createNode(this, conf);
+    WebDriverManager.RED.nodes.createNode(this, conf);
 
     if (!conf.serverURL) {
         this.log("Webdriver server URL is undefined");
         this.status({ fill : "red", shape : "ring", text : "no server defined"});
     } else {
-        WD2Manager.setServerConfig(conf.serverURL).then ((result) => {
+        WebDriverManager.setServerConfig(conf.serverURL).then ((result) => {
             if (result) {
                 this.log(conf.serverURL + " is reacheable by Node-red");
                 this.status({ fill : "green", shape : "ring", text : conf.serverURL + ": reachable"});

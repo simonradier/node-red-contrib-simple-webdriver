@@ -41,10 +41,10 @@
 <script type="text/html" data-help-name="set-value">
 	<p>Set a value to the <code>value</code> attribute of the <code>msg.element</code> or after waiting for the expected element is located.</p>
 	<h3>Inputs</h3>
-		<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-		<dd>the WebDriver object required to execute Selenium actions.</dd>
-		<dt class="optional">element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
-		<dd>the WebElement object required to execute Selenium actions.</dd>
+		<dt>browser</dt>
+		<dd>the browser session object required to execute browsing actions.</dd>
+		<dt class="optional">element</dt>
+		<dd>the Element object required to execute the required action.</dd>
 		<dt class="optional">value<span class="property-type">string</span></dt>
 		<dd> the keys which must be sent to the browser element.</dd>
 		<dt class="optional">selector<span class="property-type">string</span></dt>
@@ -60,22 +60,22 @@
 	<ol class="node-ports">
 		<li>Success output (Primary)
 			<dl class="message-properties">
-				<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-				<dd>the WebDriver object required to execute Selenium actions.</dd>
+				<dt>browser</dt>
+				<dd>the browser session object required to execute browsing actions.</dd>
 			</dl>
 			<dl class="message-properties">
-				<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
-				<dd>the WebElement object required to execute Selenium actions (if Selector & Target are set)</dd>
+				<dt>element</dt>
+				<dd>the Element object required to execute the required action.</dd>
 			</dl>
 		</li>
 		<li>Failure output (Secondary)
 			<dl class="message-properties">
-				<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-				<dd>the WebDriver object required to execute Selenium actions.</dd>
+				<dt>browser</dt>
+				<dd>the browser session object required to execute browsing actions.</dd>
 			</dl>
 			<dl class="message-properties">
-				<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
-				<dd>the WebElement object required to execute Selenium actions (if Selector & Target are set)</dd>
+				<dt>element</dt>
+				<dd>the Element object required to execute the required action.</dd>
 			</dl>
 			<dl class="message-properties">
 				<dt>error<span class="property-type">Error</span></dt>
@@ -108,8 +108,8 @@
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('set-value', {
-		category : 'wd2',
+	RED.nodes.registerType('set value', {
+		category : 'webdriver',
 		defaults : {
 			name : {
 				value : ""

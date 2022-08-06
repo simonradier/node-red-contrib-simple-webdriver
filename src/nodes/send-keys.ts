@@ -1,5 +1,5 @@
 import { Node } from "node-red"
-import { WD2Manager } from "../wd2-manager";
+import { WebDriverManager } from "../webdriver-manager";
 import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
@@ -31,7 +31,7 @@ async function inputAction (node : NodeSendKeys, conf : NodeSendKeysDef, action 
             action.send([msg, null]);
             action.done();
         } catch(err) {
-            if (WD2Manager.checkIfCritical(err)) {
+            if (WebDriverManager.checkIfCritical(err)) {
                 reject(err);
             } else {
                 msg.error = {

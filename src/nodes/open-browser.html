@@ -54,8 +54,8 @@
 			 <ol class="node-ports">
 				 <li>Standard output
 					 <dl class="message-properties">
-						 <dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-						 <dd>the WebDriver object required to execute Selenium actions.</dd>
+						<dt>browser</dt>
+						<dd>the browser session object required to execute browsing actions.</dd>
 					 </dl>
 				 </li>
 				 <li>Critical error
@@ -83,8 +83,8 @@
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('open-browser', {
-		category : 'wd2',
+	RED.nodes.registerType('open browser', {
+		category : 'webdriver',
 		defaults : {
 			name : {
 				value : ""

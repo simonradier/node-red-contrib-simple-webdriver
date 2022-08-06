@@ -15,8 +15,8 @@
 	<p>Close the web browser which is openned by the open-browser node and finalize the selenium session.</p>		
 	<h3>Inputs</h3>
 		<dl class="message-properties">
-			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt>browser</dt>
+			<dd>the browser session object required to execute browsing actions.</dd>
 			<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
 			<dd> the pause time before launching the close request.</dd>
 		</dl>
@@ -24,8 +24,8 @@
 		<ol class="node-ports">
 			<li>Primary output
 				<dl class="message-properties">
-					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-					<dd>the value is set to null in case of success.</dd>
+					<dt>browser</dt>
+					<dd>the browser session object required to execute browsing actions.</dd>
 				</dl>
 			</li>
 			<li>Error
@@ -51,8 +51,8 @@
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('close-browser', {
-		category : 'wd2',
+	RED.nodes.registerType('close browser', {
+		category : 'webdriver',
 		defaults : {
 			name : {
 				value : ""

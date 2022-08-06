@@ -1,24 +1,23 @@
-# node-red-contrib-selenium-wd2
-[![Coverage Status](https://coveralls.io/repos/github/simonradier/node-red-contrib-selenium-wd2/badge.svg)](https://coveralls.io/github/simonradier/node-red-contrib-selenium-wd2)
+# node-red-contrib-simplewebdriver
+[![Coverage Status](https://coveralls.io/repos/github/simonradier/node-red-contrib-simplewebdriver/badge.svg)](https://coveralls.io/github/simonradier/node-red-contrib-simplewebdriver)
 
-Selenium-wd2 nodes for Node-Red allow web browser automation based on the [Selenium-Webdriver](https://www.selenium.dev/documentation/) API. Based on [node-red-constrib-selenium-webdriver](https://flows.nodered.org/node/node-red-contrib-selenium-webdriver) library, it was rewritten in Typescript to ease its maintenance, improve the overall stability and upgrade a little bit the set of features.
+Simplewebdriver nodes for Node-Red allow web browser automation initially based on the [Selenium-Webdriver](https://www.selenium.dev/documentation/) API. Based on [node-red-contrib-selenium-webdriver](https://flows.nodered.org/node/node-red-contrib-selenium-webdriver) library and forked from node-red-contrib-selenium-wd2, it was rewritten in Typescript to ease its maintenance, improve the overall stability and upgrade a little bit the set of features.
 
 ![wd2 workflow example](https://raw.githubusercontent.com/simonradier/node-red-contrib-selenium-wd2/master/doc/img/workflow.png "wd2 workflow example")
 
 ## Prerequisite
 In order to use node-red-contrib-selenium-wd2, you must fullfill the following prerequisite :
-* Install java 8 or later
-* Install a selenium server : `npm install -g webdriver-manager`
+* Install a webdriver server : `npm install -g chromedriver` (can be replaced with geckodriver, edgedriver, safaridriver)
 * Install a node-red server : `npm install -g --unsafe-perm node-red`
 
 
 ## Installation
-* Install node-red-contrib-selenium-wd2 library : `npm install -g node-red-contrib-selenium-wd2` and that's all!
+* Install node-red-contrib-simple-webdriver library : `npm install -g node-red-contrib-simplewebdriver` and that's all!
 
 ## Run
-Launch Node-red `node-red` and the selenium-wd2 will be loaded automatically. You should see the list of node under the wd2 section.
+Launch Node-red `node-red` and the simplewebdriver nodes will be loaded automatically. You should see the list of node under the simplewebdriver section.
 
-![wd2 section overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-selenium-wd2/master/doc/img/wd2.png "wd2 section")
+![simplewebdriver section overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simplewebdriver/master/doc/img/wd2.png "simplewebdriver section")
 
 
 ## Develop
@@ -29,7 +28,7 @@ To test it, you will have to :
 * Install a node-red locally (in another folder) `npm install -g node-red`
 * Launch, from the `node-red` folder, the following command to debug :
 
-    `npm install [PATH_TO_SELENIUM_WD2] && node --inspect node_modules/node-red/red.js`
+    `npm install [PATH_TO_CONTRIB_SIMPLEWEBDRIVER] && node --inspect node_modules/node-red/red.js`
 
 ## Behavior
 You will always have to start with an 

@@ -40,13 +40,13 @@
 </script>
 
 <script type="text/html" data-help-name="click-on">
-	<p>Click on the WebElement which is passed by previous node or after the expected element is located.</p>
+	<p>Click on the Element which is passed by previous node or after the expected element is located.</p>
 	<h3>Inputs</h3>
 		<dl class="message-properties">
-			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-			<dd>the WebDriver object required to execute Selenium actions.</dd>
-			<dt class="optional">element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
-			<dd>the WebElement object required to execute Selenium actions.</dd>
+			<dt>browser</dt>
+			<dd>the browser session object required to execute browsing actions.</dd>
+			<dt class="optional">element</dt>
+			<dd>the Element object required to execute the required action.</dd>
 			<dt class="optional">selector<span class="property-type">string</span></dt>
 			<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
 			<dt class="optional">target<span class="property-type">string</span></dt>
@@ -63,22 +63,22 @@
 		<ol class="node-ports">
 			<li>Success output (Primary)
 				<dl class="message-properties">
-					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-					<dd>the WebDriver object required to execute Selenium actions.</dd>
+					<dt>browser</dt>
+					<dd>the browser session object required to execute browsing actions.</dd>
 				</dl>
 				<dl class="message-properties">
-					<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
-					<dd>the WebElement object required to execute Selenium actions.</dd>
+					<dt class="optional">element</dt>
+					<dd>the Element object required to execute the required action.</dd>
 				</dl>
 			</li>
 			<li>Failure output (Secondary)
 			<dl class="message-properties">
-				<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-				<dd>the WebDriver object required to execute Selenium actions.</dd>
+				<dt>browser</dt>
+				<dd>the browser session object required to execute browsing actions.</dd>
 			</dl>
 			<dl class="message-properties">
 				<dt>error<span class="property-type">Error</span></dt>
-				<dd>the selenium error which describe the failure cause.</dd>
+				<dd>the error which describe the failure cause.</dd>
 			</dl>
 		</li>
 			<li>Critical error
@@ -104,13 +104,13 @@
 		<p>In case of a critical error (meaning the driver connection is lost), the node will raise an error and put it in msg.error, msg.driver is cleaned as well and unset.</p>
 	<h3>References</h3>
 		<ul>
-			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+			<li><a href="https://github.com/simonradier/node-red-contrib-simplewebdriver">GitHub</a> - the nodes github repository</li>
 		</ul>
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('click-on', {
-		category : 'wd2',
+	RED.nodes.registerType('click on', {
+		category : 'webdriver',
 		defaults : {
 			name : {
 				value : ""

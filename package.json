@@ -1,7 +1,7 @@
 {
-	"name": "node-red-contrib-selenium-wd2",
-	"version": "0.2.0-alpha2",
-	"description": "Selenium-webdriver nodes for Node-RED based on node-red-contrib-selenium-webdriver",
+	"name": "node-red-contrib-simple-webdriver",
+	"version": "0.2.0-alpha3",
+	"description": "SimpleWebdriver nodes for Node-RED initially based on node-red-contrib-selenium-wd2",
 	"dependencies": {
 		"rxjs": "^7.5.6",
 		"@critik/simple-webdriver": "^0.1.1-alpha7"
@@ -31,22 +31,24 @@
 	"license": "Apache-2.0",
 	"keywords": [
 		"node-red",
-		"selenium-wd2"
+		"selenium",
+		"simple-webdriver",
+		"webdriver"
 	],
 	"node-red": {
 		"nodes": {
-			"selenium-wd2": "dist/selenium-wd2.js"
+			"simple-webdriver": "dist/simple-webdriver.js"
 		}
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/simonradier/node-red-contrib-selenium-wd2"
+		"url": "https://github.com/simonradier/node-red-contrib-simple-webdriver"
 	},
 	"engines": {
 		"node": ">= 14.0.0"
 	},
 	"scripts": {
-		"prepublishOnly": "npm run clean && mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/selenium-wd2.html && tsc",
+		"prepublishOnly": "npm run clean && mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/simple-webdriver.html && tsc",
 		"clean": "rimraf dist",
 		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
 		"test-swc": "env SWC_NODE_PROJECT='./tsconfig.json' mocha --parallel -r @swc/register 'test/unit/**/*test.ts' > /dev/null",

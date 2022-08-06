@@ -1,4 +1,4 @@
-import { WD2Manager } from "../wd2-manager";
+import { WebDriverManager } from "../webdriver-manager";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -12,7 +12,7 @@ export interface NodeCloseWeb extends SeleniumNode {
 
 
 export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWebDef) {
-    WD2Manager.RED.nodes.createNode(this, conf);
+    WebDriverManager.RED.nodes.createNode(this, conf);
     this.status({});
 
     this.on("input", async (message : any, send, done) => {

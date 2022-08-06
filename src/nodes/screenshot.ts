@@ -1,4 +1,4 @@
-import { WD2Manager } from "../wd2-manager";
+import { WebDriverManager } from "../webdriver-manager";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 import * as fs from "fs";
 
@@ -13,7 +13,7 @@ export interface NodeScreenshot extends SeleniumNode {
 }
 
 export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScreenshotDef) {
-    WD2Manager.RED.nodes.createNode(this, conf);
+    WebDriverManager.RED.nodes.createNode(this, conf);
     this.status({});
 
     this.on("input", async (message : any, send, done) => {
@@ -38,7 +38,7 @@ export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScr
                     node.status({ fill : "green", shape : "dot", text : "success"});
                     done();
                 } catch (e) {
-                    if (WD2Manager.checkIfCritical(e)) {
+                    if (WebDriverManager.checkIfCritical(e)) {
                         node.status({ fill : "red", shape : "dot", text : "critical error"});
                         done(e);
                     } else {

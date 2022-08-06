@@ -2,26 +2,26 @@ import { NodeAPI, NodeAPISettingsWithData } from "node-red";
 import { WebDriver, Protocol } from "@critik/simple-webdriver"
 import { portCheck } from "./utils";
 
-export class WD2Manager {
+export class WebDriverManager {
     private static _RED : NodeAPI<NodeAPISettingsWithData>;
     private static _serverURL : string = "";
     private static _webDriver : WebDriver
 
     public static get RED () {
-        return WD2Manager._RED;
+        return WebDriverManager._RED;
     }
 
     public static init (RED : NodeAPI<NodeAPISettingsWithData>) : void {
-        WD2Manager._RED = RED;
+        WebDriverManager._RED = RED;
     }
 
     /**
-     * Define the configuration of the Selenium Server and return a boolean if the server is reacheable
+     * Define the configuration of the Webdriver Server and return a boolean if the server is reacheable
      * @param serverURL
      * @param browser
      */
     public static async setServerConfig(serverURL : string) : Promise<boolean> {
-        WD2Manager._serverURL = serverURL;
+        WebDriverManager._serverURL = serverURL;
 
         const url = new URL(serverURL);
         const host = url.hostname

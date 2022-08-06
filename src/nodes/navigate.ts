@@ -1,4 +1,4 @@
-import { WD2Manager } from "../wd2-manager";
+import { WebDriverManager } from "../webdriver-manager";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -12,7 +12,7 @@ export interface NodeNavigate extends SeleniumNode {
 }
 
 export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigateDef) {
-    WD2Manager.RED.nodes.createNode(this, conf);
+    WebDriverManager.RED.nodes.createNode(this, conf);
     this.status({});
 
     this.on("input", async (message : any, send, done) => {
@@ -49,7 +49,7 @@ export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigat
                     node.status({ fill : "green", shape : "dot", text : "success"});
                     done();
                 } catch (e) {
-                    if (WD2Manager.checkIfCritical(e)) {
+                    if (WebDriverManager.checkIfCritical(e)) {
                         node.status({ fill : "red", shape : "dot", text : "critical error"});
                         done(e);
                     } else {

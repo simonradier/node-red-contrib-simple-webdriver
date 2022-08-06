@@ -1,4 +1,4 @@
-import { WD2Manager } from "../wd2-manager";
+import { WebDriverManager } from "../webdriver-manager";
 import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
@@ -26,7 +26,7 @@ async function inputAction (node : NodeSetAttribute, conf : NodeSetAttributeDef,
             action.send([msg, null]);
             action.done();
         } catch(err) {
-            if (WD2Manager.checkIfCritical(err)) {
+            if (WebDriverManager.checkIfCritical(err)) {
                 reject(err);
             } else {
                 msg.error = {

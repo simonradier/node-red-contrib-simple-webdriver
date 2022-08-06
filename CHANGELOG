@@ -1,3 +1,5 @@
+Version 0.2.0 :
+- Switched to simple-webdriver
 Version 0.1.4 : 
 - Added a system of postinstall to patch selenium-webdriver http client behavior (temporary)
 Version 0.1.2 : 

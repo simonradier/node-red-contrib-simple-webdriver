@@ -36,8 +36,8 @@
 	<p>Find an object or element by using selenium webdriver <code>findElement()</code>.</p>		
 	<h3>Inputs</h3>
 		<dl class="message-properties">
-			<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-			<dd>the WebDriver object required to execute Selenium actions.</dd>
+			<dt>browser</dt>
+			<dd>the browser session object required to execute browsing actions.</dd>
 			<dt class="optional">selector<span class="property-type">string</span></dt>
 			<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
 			<dt class="optional">target<span class="property-type">string</span></dt>
@@ -52,18 +52,18 @@
 		<ol class="node-ports">
 			<li>Success output (Primary)
 				<dl class="message-properties">
-					<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-					<dd>the WebDriver object required to execute Selenium actions.</dd>
+					<dt>browser</dt>
+					<dd>the browser session object required to execute browsing actions.</dd>
 				</dl>
 				<dl class="message-properties">
-				<dt>element <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html">WebElement</a></span></dt>
-				<dd>the WebElement object required to execute Selenium actions.</dd>
+					<dt class="optional">element</dt>
+					<dd>the Element object required to execute the required action.</dd>
 			</dl>
 			</li>
 			<li>Failure output (Secondary)
 			<dl class="message-properties">
-				<dt>driver <span class="property-type"><a href="https://www.selenium.dev/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebDriver.html">WebDriver</a></span></dt>
-				<dd>the WebDriver object required to execute Selenium actions.</dd>
+				<dt>browser</dt>
+				<dd>the browser session object required to execute browsing actions.</dd>
 			</dl>
 			<dl class="message-properties">
 				<dt>error<span class="property-type">Error</span></dt>
@@ -97,8 +97,8 @@
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('find-element', {
-		category : 'wd2',
+	RED.nodes.registerType('find element', {
+		category : 'webdriver',
 		defaults : {
 			name : {
 				value : ""

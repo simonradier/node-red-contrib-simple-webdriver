@@ -7,27 +7,6 @@
         "info": ""
     },
     {
-        "id": "bf4af36d.b83af",
-        "type": "open-web",
-        "z": "6a5fd7c2.ab7598",
-        "name": "",
-        "browser": "chrome",
-        "webURL": "https://duckduckgo.com/",
-        "width": "1920",
-        "height": "1080",
-        "timeout": 3000,
-        "maximized": true,
-        "headless": false,
-        "serverURL": "http://localhost:9515",
-        "x": 370,
-        "y": 120,
-        "wires": [
-            [
-                "8206817b.71a7c"
-            ]
-        ]
-    },
-    {
         "id": "8035baaa.c1b388",
         "type": "inject",
         "z": "6a5fd7c2.ab7598",
@@ -52,13 +31,13 @@
         "y": 120,
         "wires": [
             [
-                "bf4af36d.b83af"
+                "ac56ed7b69e039f1"
             ]
         ]
     },
     {
         "id": "8206817b.71a7c",
-        "type": "find-element",
+        "type": "find element",
         "z": "6a5fd7c2.ab7598",
         "name": "Find Search input",
         "selector": "id",
@@ -73,20 +52,6 @@
             ],
             [
                 "2f745a90.666676"
-            ]
-        ]
-    },
-    {
-        "id": "9583f32f.cc0f9",
-        "type": "close-web",
-        "z": "6a5fd7c2.ab7598",
-        "name": "",
-        "waitFor": "30000",
-        "x": 1050,
-        "y": 320,
-        "wires": [
-            [
-                "c7c135a0.c0d6e8"
             ]
         ]
     },
@@ -141,7 +106,7 @@
     },
     {
         "id": "d210dfa4.b7c89",
-        "type": "click-on",
+        "type": "click on",
         "z": "6a5fd7c2.ab7598",
         "name": "Click on search button",
         "selector": "id",
@@ -162,7 +127,7 @@
     },
     {
         "id": "858ace24.4a56",
-        "type": "click-on",
+        "type": "click on",
         "z": "6a5fd7c2.ab7598",
         "name": "Click on first result",
         "selector": "xpath",
@@ -183,7 +148,7 @@
     },
     {
         "id": "a2206fd8.d9eb",
-        "type": "get-title",
+        "type": "get title",
         "z": "6a5fd7c2.ab7598",
         "name": "Get web page title",
         "expected": "",
@@ -213,10 +178,10 @@
         "y": 320,
         "wires": [
             [
-                "9583f32f.cc0f9"
+                "edb3ba8283829ac1"
             ],
             [
-                "9583f32f.cc0f9"
+                "edb3ba8283829ac1"
             ]
         ]
     },
@@ -242,12 +207,12 @@
     },
     {
         "id": "2ba887ee.fc34d8",
-        "type": "get-text",
+        "type": "get text",
         "z": "6a5fd7c2.ab7598",
         "name": "Get H1 text",
-        "expected": "Node-RED",
-        "selector": "css selector",
-        "target": ".title h1",
+        "expected": "",
+        "selector": "id",
+        "target": "r1-0",
         "timeout": 1000,
         "waitFor": 500,
         "savetofile": false,
@@ -285,7 +250,7 @@
     },
     {
         "id": "e83ff6a8.152d08",
-        "type": "click-on",
+        "type": "click on",
         "z": "6a5fd7c2.ab7598",
         "name": "Click on first result",
         "selector": "xpath",
@@ -306,7 +271,7 @@
     },
     {
         "id": "14574237.855fbe",
-        "type": "send-keys",
+        "type": "send keys",
         "z": "6a5fd7c2.ab7598",
         "name": "Write search text",
         "keys": "selenium",
@@ -328,7 +293,7 @@
     },
     {
         "id": "b9d2517e.a6d7c",
-        "type": "set-value",
+        "type": "set value",
         "z": "6a5fd7c2.ab7598",
         "name": "Set value to search",
         "value": "node-red",
@@ -349,7 +314,7 @@
     },
     {
         "id": "95e0c843.9bcf48",
-        "type": "get-attribute",
+        "type": "get attribute",
         "z": "6a5fd7c2.ab7598",
         "name": "Check style from H1 flow-title",
         "attribute": "style",
@@ -387,5 +352,40 @@
         "x": 900,
         "y": 760,
         "wires": []
+    },
+    {
+        "id": "ac56ed7b69e039f1",
+        "type": "open browser",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "browserType": "chrome",
+        "webURL": "https://www.duckduckgo.com/",
+        "width": 1280,
+        "height": 1024,
+        "timeout": 3000,
+        "maximized": true,
+        "headless": false,
+        "serverURL": "http://localhost:9515",
+        "x": 390,
+        "y": 120,
+        "wires": [
+            [
+                "8206817b.71a7c"
+            ]
+        ]
+    },
+    {
+        "id": "edb3ba8283829ac1",
+        "type": "close browser",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "waitFor": 500,
+        "x": 1050,
+        "y": 320,
+        "wires": [
+            [
+                "c7c135a0.c0d6e8"
+            ]
+        ]
     }
 ]
