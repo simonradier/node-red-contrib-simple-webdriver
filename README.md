@@ -12,7 +12,7 @@ In order to use node-red-contrib-selenium-wd2, you must fullfill the following p
 
 
 ## Installation
-* Install node-red-contrib-simple-webdriver library : `npm install -g node-red-contrib-simplewebdriver` and that's all!
+* Install node-red-contrib-simple-webdriver library : `npm install -g node-red-contrib-simple-webdriver` and that's all!
 
 ## Run
 Launch Node-red `node-red` and the simplewebdriver nodes will be loaded automatically. You should see the list of node under the simplewebdriver section.
