@@ -18,6 +18,11 @@
             {
                 "p": "topic",
                 "vt": "str"
+            },
+            {
+                "p": "value",
+                "v": "node-red",
+                "vt": "str"
             }
         ],
         "repeat": "",
@@ -131,7 +136,7 @@
         "z": "6a5fd7c2.ab7598",
         "name": "Click on first result",
         "selector": "xpath",
-        "target": "//a[contains(@class,\"result__a\")][1]",
+        "target": "//article[1]",
         "timeout": "2000",
         "waitFor": 3000,
         "clickOn": true,
@@ -211,8 +216,8 @@
         "z": "6a5fd7c2.ab7598",
         "name": "Get H1 text",
         "expected": "",
-        "selector": "id",
-        "target": "r1-0",
+        "selector": "tag name",
+        "target": "h1",
         "timeout": 1000,
         "waitFor": 500,
         "savetofile": false,
@@ -296,7 +301,7 @@
         "type": "set value",
         "z": "6a5fd7c2.ab7598",
         "name": "Set value to search",
-        "value": "node-red",
+        "value": "",
         "selector": "",
         "target": "filter-term",
         "timeout": "2000",
