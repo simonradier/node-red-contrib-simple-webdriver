@@ -14,7 +14,7 @@ export interface NodeClickOn extends SeleniumNode {
 async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, action : WebDriverAction) : Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
         let msg = action.msg;
-        if (msg.click && node.__msg) {
+        if (msg.clickEvent && node.__msg) {
             msg = node.__msg; // msg restoration
             try {
                 await msg.element.click()
@@ -36,11 +36,8 @@ async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, ac
             }
             resolve(false); // We don't want to execute the full node
         }
-        if (msg.click && !node.__msg) {
+        if (msg.clickEvent && !node.__msg) {
             node.status({ fill : "yellow", shape : "ring", text : "ignored"});
-            setTimeout(() => {
-                node.status({});
-            }, 3000);
             resolve(false);
         }
         resolve(true);

@@ -46,7 +46,7 @@ export interface WebDriverMessage extends NodeMessageInFlow {
     error? : any;
     element? : Element;
     webTitle? : string;
-    click? : boolean;
+    clickEvent? : boolean;
     clearVal? : boolean;
     keys? : string;
     value? : string;
