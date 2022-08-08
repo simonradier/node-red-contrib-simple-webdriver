@@ -1,7 +1,7 @@
 import nodeRed from "node-red";
 import { checkIfCritical, REDAPI } from "../utils";
 import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef, waitForElement} from "./node";
-import { GenericSeleniumConstructor } from "./node-constructor";
+import { GenericNodeConstructor } from "./node-constructor";
 
 export interface NodeClickOnDef extends SeleniumNodeDef {
     clickOn? : boolean;
@@ -77,7 +77,7 @@ async function inputAction (node : NodeClickOn, conf : NodeClickOnDef, action : 
     })
 }
 
-const NodeClickOnConstructor = GenericSeleniumConstructor(inputPreCondAction, inputAction);
+const NodeClickOnConstructor = GenericNodeConstructor(inputPreCondAction, inputAction);
 
 export { NodeClickOnConstructor as NodeClickOnConstructor}
 

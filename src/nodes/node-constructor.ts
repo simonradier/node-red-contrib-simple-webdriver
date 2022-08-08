@@ -3,7 +3,7 @@ import { checkIfCritical, REDAPI } from "../utils";
 import { WebDriverAction, WebDriverMessage, SeleniumNodeDef, waitForElement } from "./node";
 
 
-export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef extends SeleniumNodeDef> (
+export function GenericNodeConstructor<TNode extends Node<any>, TNodeDef extends SeleniumNodeDef> (
         inputPreCondAction : (node : TNode, conf : TNodeDef, action : WebDriverAction) => Promise<boolean>,
         inputAction : (node : TNode, conf : TNodeDef, action : WebDriverAction) => Promise<void>,
         nodeCreation : () => void = null) {

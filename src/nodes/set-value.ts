@@ -1,6 +1,6 @@
 import { checkIfCritical } from "../utils";
 import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
-import { GenericSeleniumConstructor } from "./node-constructor";
+import { GenericNodeConstructor } from "./node-constructor";
 
 export interface NodeSetValueDef extends SeleniumNodeDef {
     value : string;
@@ -38,6 +38,6 @@ async function inputAction (node : NodeSetValue, conf : NodeSetValueDef, action 
     });
 }
 
-const NodeSetValueConstructor = GenericSeleniumConstructor(null, inputAction);
+const NodeSetValueConstructor = GenericNodeConstructor(null, inputAction);
 
 export { NodeSetValueConstructor as NodeSetValueConstructor}

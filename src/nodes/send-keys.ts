@@ -1,6 +1,6 @@
 import { checkIfCritical } from "../utils";
 import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
-import { GenericSeleniumConstructor } from "./node-constructor";
+import { GenericNodeConstructor } from "./node-constructor";
 
 export interface NodeSendKeysDef extends SeleniumNodeDef {
     keys : string;
@@ -45,6 +45,6 @@ async function inputAction (node : NodeSendKeys, conf : NodeSendKeysDef, action 
     });
 }
 
-const NodeSendKeysConstructor = GenericSeleniumConstructor(null, inputAction);
+const NodeSendKeysConstructor = GenericNodeConstructor(null, inputAction);
 
 export { NodeSendKeysConstructor as NodeSendKeysConstructor}

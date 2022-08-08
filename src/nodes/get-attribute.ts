@@ -1,6 +1,6 @@
 import { checkIfCritical } from "../utils";
 import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
-import { GenericSeleniumConstructor } from "./node-constructor";
+import { GenericNodeConstructor } from "./node-constructor";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeGetAttributeDef extends SeleniumNodeDef {
@@ -51,6 +51,6 @@ async function inputAction (node : NodeGetAttribute, conf : NodeGetAttributeDef,
     });
 }
 
-const NodeGetAttributeConstructor = GenericSeleniumConstructor(null, inputAction);
+const NodeGetAttributeConstructor = GenericNodeConstructor(null, inputAction);
 
 export { NodeGetAttributeConstructor as NodeGetAttributeConstructor}

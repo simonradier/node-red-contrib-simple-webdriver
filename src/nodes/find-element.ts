@@ -1,5 +1,5 @@
 import { WebDriverAction, SeleniumNode, SeleniumNodeDef} from "./node";
-import { GenericSeleniumConstructor } from "./node-constructor";
+import { GenericNodeConstructor } from "./node-constructor";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeFindElementDef extends SeleniumNodeDef {
@@ -20,6 +20,6 @@ async function inputAction (node : NodeFindElement, conf : NodeFindElementDef, a
     });
 }
 
-const NodeFindElementConstructor = GenericSeleniumConstructor(null, inputAction);
+const NodeFindElementConstructor = GenericNodeConstructor(null, inputAction);
 
 export { NodeFindElementConstructor as NodeFindElementConstructor}
