@@ -1,4 +1,5 @@
-import { WebDriverManager } from "../webdriver-manager";
+import nodeRed from "node-red";
+import { checkIfCritical, REDAPI } from "../utils";
 import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef, waitForElement} from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
@@ -22,7 +23,7 @@ async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, ac
                 action.send([msg, null]);
                 action.done();
             } catch(err) {
-                if (WebDriverManager.checkIfCritical(err)) {
+                if (checkIfCritical(err)) {
                     reject(err);
                 } else {
                     msg.error = {
@@ -57,7 +58,7 @@ async function inputAction (node : NodeClickOn, conf : NodeClickOnDef, action : 
                 action.send([msg, null]);
                 action.done();
             } catch(err) {
-                if (WebDriverManager.checkIfCritical(err)) {
+                if (checkIfCritical(err)) {
                     reject(err);
                 } else {
                     msg.error = {
@@ -81,8 +82,8 @@ const NodeClickOnConstructor = GenericSeleniumConstructor(inputPreCondAction, in
 export { NodeClickOnConstructor as NodeClickOnConstructor}
 
 export function NodeClickPrerequisite () {
-    WebDriverManager.RED.httpAdmin.post("/onclick/:id", WebDriverManager.RED.auth.needsPermission("inject.write"), (req, res) => {
-        const node = WebDriverManager.RED.nodes.getNode(req.params.id);
+    REDAPI.get().httpAdmin.post("/onclick/:id", REDAPI.get().auth.needsPermission("inject.write"), (req, res) => {
+        const node = REDAPI.get().nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 // @ts-ignore
@@ -90,7 +91,7 @@ export function NodeClickPrerequisite () {
                 res.sendStatus(200);
             } catch(err) {
                 res.sendStatus(500);
-                node.error(WebDriverManager.RED._("inject.failed", {
+                node.error(REDAPI.get()._("inject.failed", {
                     error : err.toString()
                 }));
             }

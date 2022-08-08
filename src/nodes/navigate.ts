@@ -1,4 +1,4 @@
-import { WebDriverManager } from "../webdriver-manager";
+import { checkIfCritical, REDAPI } from "../utils";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -12,7 +12,7 @@ export interface NodeNavigate extends SeleniumNode {
 }
 
 export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigateDef) {
-    WebDriverManager.RED.nodes.createNode(this, conf);
+    REDAPI.get().nodes.createNode(this, conf);
     this.status({});
 
     this.on("input", async (message : any, send, done) => {
@@ -49,7 +49,7 @@ export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigat
                     node.status({ fill : "green", shape : "dot", text : "success"});
                     done();
                 } catch (e) {
-                    if (WebDriverManager.checkIfCritical(e)) {
+                    if (checkIfCritical(e)) {
                         node.status({ fill : "red", shape : "dot", text : "critical error"});
                         done(e);
                     } else {

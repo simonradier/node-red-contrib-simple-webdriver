@@ -1,13 +1,14 @@
 import { Node } from "node-red"
-import { WebDriverManager } from "../webdriver-manager";
+import { checkIfCritical, REDAPI } from "../utils";
 import { WebDriverAction, WebDriverMessage, SeleniumNodeDef, waitForElement } from "./node";
+
 
 export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef extends SeleniumNodeDef> (
         inputPreCondAction : (node : TNode, conf : TNodeDef, action : WebDriverAction) => Promise<boolean>,
         inputAction : (node : TNode, conf : TNodeDef, action : WebDriverAction) => Promise<void>,
         nodeCreation : () => void = null) {
     return function (this : TNode, conf : TNodeDef) : void {
-        WebDriverManager.RED.nodes.createNode(this, conf);
+        REDAPI.get().nodes.createNode(this, conf);
         const node = this;
         node.status({});
         this.on("input", async (message : any, send, done) => {
@@ -32,7 +33,7 @@ export function GenericSeleniumConstructor<TNode extends Node<any>, TNodeDef ext
                                 }
                             },
                             error(err) {
-                                if (WebDriverManager.checkIfCritical(err)) {
+                                if (checkIfCritical(err)) {
                                     node.status({ fill : "red", shape : "dot", text : "critical error"});
                                     node.error(err.toString());
                                     done(err);

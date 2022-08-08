@@ -1,4 +1,4 @@
-import { WebDriverManager } from "../webdriver-manager";
+import { checkIfCritical } from "../utils";
 import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericSeleniumConstructor } from "./node-constructor";
 
@@ -35,7 +35,7 @@ async function inputAction (node : NodeGetAttribute, conf : NodeGetAttributeDef,
                 action.done();
             }
         } catch(err) {
-            if (WebDriverManager.checkIfCritical(err)) {
+            if (checkIfCritical(err)) {
                 reject(err);
             } else {
                 msg.error = {

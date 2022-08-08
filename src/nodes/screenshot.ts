@@ -1,7 +1,6 @@
-import { WebDriverManager } from "../webdriver-manager";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 import * as fs from "fs";
-
+import { checkIfCritical, REDAPI } from "../utils";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeScreenshotDef extends SeleniumNodeDef {
@@ -13,7 +12,7 @@ export interface NodeScreenshot extends SeleniumNode {
 }
 
 export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScreenshotDef) {
-    WebDriverManager.RED.nodes.createNode(this, conf);
+    REDAPI.get().nodes.createNode(this, conf);
     this.status({});
 
     this.on("input", async (message : any, send, done) => {
@@ -38,7 +37,7 @@ export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScr
                     node.status({ fill : "green", shape : "dot", text : "success"});
                     done();
                 } catch (e) {
-                    if (WebDriverManager.checkIfCritical(e)) {
+                    if (checkIfCritical(e)) {
                         node.status({ fill : "red", shape : "dot", text : "critical error"});
                         done(e);
                     } else {

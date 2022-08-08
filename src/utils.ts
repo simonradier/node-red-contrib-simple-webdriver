@@ -1,4 +1,5 @@
 import { Socket } from "net";
+import { NodeAPI, NodeAPISettingsWithData } from "node-red";
 
 function getValueFromPropertyNameRec(obj : any, listProp : string[])
 {
@@ -16,11 +17,7 @@ export class WaitForError extends Error {
     name : string = "WaitForError"
 }
 
-export function replaceMustache(str : string, obj : any) {
-    const mustache = str.match(/\{\{(.*)\}\}/g)
-}
-
-export function replaceVar (str :string, msg : any) {
+export function replaceMustacheByVar (str :string, msg : any) {
     if (typeof str !== "string")
         return str;
     if (str.match(/^\{\{.*\}\}$/g)) { // if the string is in double brackets like {{ foo }}
@@ -59,7 +56,10 @@ export async function waitForValue<T>(param: any [], func : (...args) => Promise
     })
 }
 
-export async function portCheck(host : string, port : number) : Promise<boolean> {
+export async function checkIfOnline(url_string : string) : Promise<boolean> {
+    const url : URL = new URL(url_string)
+    const host = url.hostname
+    const port = Number.parseInt(url.port)
     return new Promise<boolean> ((resolve, reject) => {
         const socket = new Socket();
         let status : boolean = false;
@@ -76,4 +76,33 @@ export async function portCheck(host : string, port : number) : Promise<boolean>
         socket.on('close', (exception) => {resolve(status)});
         socket.connect(port, host);
     });
+}
+
+export function checkIfCritical(error : Error) : boolean {
+    // Blocking error in case of "WebDriverError : Failed to decode response from marionett"
+    if (error.toString().includes("decode response"))
+        return true;
+    // Blocking error in case of "NoSuchSessionError: Tried to run command without establishing a connection"
+    if (error.name.includes("NoSuchSessionError"))
+        return true;
+    // Blocking error in case of "ReferenceError" like in case of msg.driver is modified
+    if (error.name.includes("ReferenceError"))
+        return true;
+    // Blocking error in case of "TypeError" like in case of msg.driver is modified
+    if (error.name.includes("TypeError"))
+        return true;
+    return false;
+}
+
+let p_REDAPI : NodeAPI<NodeAPISettingsWithData> 
+export class REDAPI {
+    private static instance : NodeAPI<NodeAPISettingsWithData>
+
+    public static get () : NodeAPI<NodeAPISettingsWithData> {
+        return REDAPI.instance
+    }
+
+    public static set (redAPI : NodeAPI<NodeAPISettingsWithData>) : void {
+        REDAPI.instance = redAPI
+    }
 }

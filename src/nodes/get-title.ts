@@ -1,5 +1,4 @@
-import { waitForValue as waitUntil } from "../utils";
-import { WebDriverManager } from "../webdriver-manager";
+import { checkIfCritical, REDAPI, waitForValue as waitUntil } from "../utils";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -12,7 +11,7 @@ export interface NodeGetTitle extends SeleniumNode {
 }
 
 export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitleDef) {
-    WebDriverManager.RED.nodes.createNode(this, conf);
+    REDAPI.get().nodes.createNode(this, conf);
     this.status({});
 
     this.on("input", async (message : any, send, done) => {
@@ -37,7 +36,7 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
                     node.status({ fill : "green", shape : "dot", text : "success"});
                     done();
                 } catch (e) {
-                    if (WebDriverManager.checkIfCritical(e)) {
+                    if (checkIfCritical(e)) {
                         node.status({ fill : "red", shape : "dot", text : "critical error"});
                         done(e);
                     } 

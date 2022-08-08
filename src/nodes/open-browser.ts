@@ -1,5 +1,5 @@
-import { WebDriverManager } from "../webdriver-manager";
 import { Browser, Capabilities, WebDriver, Protocol, BrowserType} from "@critik/simple-webdriver";
+import { checkIfOnline as checkIfReachable, REDAPI } from "../utils";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -20,13 +20,13 @@ export interface NodeOpenWeb extends SeleniumNode {
 }
 
 export function NodeOpenBrowserConstructor (this : NodeOpenWeb, conf : NodeOpenBrowserDef) {
-    WebDriverManager.RED.nodes.createNode(this, conf);
+    REDAPI.get().nodes.createNode(this, conf);
 
     if (!conf.serverURL) {
         this.log("Webdriver server URL is undefined");
         this.status({ fill : "red", shape : "ring", text : "no server defined"});
     } else {
-        WebDriverManager.setServerConfig(conf.serverURL).then ((result) => {
+        checkIfReachable(conf.serverURL).then ((result) => {
             if (result) {
                 this.log(conf.serverURL + " is reacheable by Node-red");
                 this.status({ fill : "green", shape : "ring", text : conf.serverURL + ": reachable"});

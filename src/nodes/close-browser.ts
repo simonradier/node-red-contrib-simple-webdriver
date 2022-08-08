@@ -1,4 +1,4 @@
-import { WebDriverManager } from "../webdriver-manager";
+import { REDAPI } from "../utils";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -12,7 +12,7 @@ export interface NodeCloseWeb extends SeleniumNode {
 
 
 export function NodeCloseWebConstructor (this : NodeCloseWeb, conf : NodeCloseWebDef) {
-    WebDriverManager.RED.nodes.createNode(this, conf);
+    REDAPI.get().nodes.createNode(this, conf);
     this.status({});
 
     this.on("input", async (message : any, send, done) => {
