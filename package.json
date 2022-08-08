@@ -36,6 +36,7 @@
 		"webdriver"
 	],
 	"node-red": {
+		"version": ">=3.0.0",
 		"nodes": {
 			"simple-webdriver": "dist/simple-webdriver.js"
 		}
