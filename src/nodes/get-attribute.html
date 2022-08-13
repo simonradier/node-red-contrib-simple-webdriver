@@ -110,12 +110,12 @@
 		<p> This node is used to retreive the attribute value from an element in the web page.</p>
 		<p>
 			<ul>
-				<li><a>Attribute</a>: specify the name of the attribute to retrieve. The <code>msg.attribute</code> will override the <code>Attribute</code> field if set.</li>
-				<li><a>Expected</a>: (if set) specify the expected value of the attribute to retrieve and go to failure output in case of disalignment. The <code>msg.expected</code> will override the <code>Attribute</code> field if set.</li>
-				<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will override the <code>By</code> field if set.</li>
-				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will override the <code>Target</code> field if set.</li>
-				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will override the <code>Timeout</code> field if set.</li>
-				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+				<li><a>Attribute</a>: specify the name of the attribute to retrieve. The <code>msg.attribute</code> will be overrided by the <code>Attribute</code> field if set.</li>
+				<li><a>Expected</a>: (if set) specify the expected value of the attribute to retrieve and go to failure output in case of disalignment. The <code>msg.expected</code> will be overrided by the <code>Attribute</code> field if set.</li>
+				<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will be overrided by the <code>By</code> field if set.</li>
+				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will be overrided by the <code>Target</code> field if set.</li>
+				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will be overrided by the <code>Timeout</code> field if set.</li>
+				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
 			</ul>
 		</p>
 		<p>In case of find error, the secondary output will be used with an error which detailled the failure case</p>

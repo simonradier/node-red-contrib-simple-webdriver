@@ -49,8 +49,8 @@
 		<p> This node is used to navigate accordingly to specified options.</p>
 		<p>	
 			<ul>
-				<li><a>File path</a>: (if set) specify the file path which will be used to write the file. If folder doesn't exist, the node will fail. The <code>msg.filePath</code> will override the <code>File Path</code> field if set.</li>
-				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will override the <code>Wait For</code> field if set.</li>
+				<li><a>File path</a>: (if set) specify the file path which will be used to write the file. If folder doesn't exist, the node will fail. The <code>msg.filePath</code> will be overrided by the <code>File Path</code> field if set.</li>
+				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
 			</ul>
 		</p>
 		<p>In case of a an error , the node will raise an error and put it in msg.error, msg.driver is cleaned and unset.</p>
