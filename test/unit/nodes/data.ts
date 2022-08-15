@@ -5,9 +5,9 @@ export let NODE_OPEN_WEB = {
     Chrome : (id : string, next : string[]) => {
         return {
             "id": id,
-            "type": "open-web",
+            "type": "open browser",
             "name": "open chrome",
-            "browser": "chrome",
+            "browserType": "chrome",
             "webURL": "https://www.google.com/",
             "width": 1280,
             "height": 1024,

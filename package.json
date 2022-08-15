@@ -51,15 +51,7 @@
 	"scripts": {
 		"prepublishOnly": "npm run clean && mkdir dist && cp -r src/icons dist/icons && cat src/nodes/*.html > dist/simple-webdriver.html && tsc",
 		"clean": "rimraf dist",
-		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
-		"test-swc": "env SWC_NODE_PROJECT='./tsconfig.json' mocha --parallel -r @swc/register 'test/unit/**/*test.ts' > /dev/null",
-		"test-swc-log": "env SWC_NODE_PROJECT='./tsconfig.json' mocha --parallel --jobs 4 -r @swc/register 'test/unit/**/*test.ts'",
-		"test-tsc": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --parallel --jobs 4 -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
-		"test-wd-full": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-chrome": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Chrome(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-safari": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Safari(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-edge": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Edge(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
-		"test-wd-firefox": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' NOCK_OFF=true mocha --retries 2 --grep '^.*Firefox(?!.*Nock Only).*$' --timeout 30000 -r ts-node/register 'test/unit/**/*.ts'",
+		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=lcov --reporter=text mocha --timeout 30000 -r ts-node/register/transpile-only 'test/unit/**/*test.ts'",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"pre-commit": {
