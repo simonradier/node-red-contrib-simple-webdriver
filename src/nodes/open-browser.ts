@@ -45,10 +45,16 @@ export function NodeOpenBrowserConstructor (this : NodeOpenWeb, conf : NodeOpenB
         let driverError = false;
         let driver = new WebDriver(conf.serverURL, Protocol.W3C);
         let capabilities = conf.headless ? Capabilities.headless : Capabilities.default;
-        msg.browser = await driver.start(conf.browserType, capabilities);
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {
-            await msg.browser.navigate().to(conf.webURL);
+            msg.browser = await driver.start(conf.browserType, capabilities);
+            try {
+                await msg.browser.navigate().to(conf.webURL);
+            } catch (e) {
+                node.error("Can't navitage to " + conf.webURL);
+                node.status({ fill : "yellow", shape : "dot", text : "navigate error"});
+                done(e);    
+            }
         } catch (e) {
             msg.browser = null;
             node.error("Can't open an instance of " + conf.browserType);
@@ -71,7 +77,7 @@ export function NodeOpenBrowserConstructor (this : NodeOpenWeb, conf : NodeOpenB
             }
         } catch (e) {
             node.error("Can't resize the instance of " + conf.browserType);
-            node.status({ fill : "red", shape : "ring", text : "resize error"});
+            node.status({ fill : "yellow", shape : "dot", text : "resize error"});
             driverError = true;
             done(e);
         }
