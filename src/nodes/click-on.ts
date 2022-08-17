@@ -13,41 +13,44 @@ export interface NodeClickOn extends SeleniumNode {
 
 async function inputPreCondAction (node : NodeClickOn, conf : NodeClickOnDef, action : WebDriverAction) : Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
-        let msg = action.msg;
-        if (msg.clickEvent && node.__msg) {
-            msg = node.__msg; // msg restoration
-            try {
-                await msg.element.click()
-                node.status({ fill : "green", shape : "dot", text : "success"})
-                if (msg.error) { delete msg.error; }
-                action.send([msg, null]);
-                action.done();
-            } catch(err) {
-                if (checkIfCritical(err)) {
-                    reject(err);
-                } else {
-                    msg.error = {
-                        value : "Can't click on the the element : " + err.message
-                    };
-                    node.status({ fill : "yellow", shape : "dot", text : "click error"})
-                    action.send([null, msg]);
+        const waitingNode = node.context().get("waiting") || false
+        let msg = action.msg
+        if (msg.clickEvent) {
+            if (waitingNode) {
+                const msg = node.__msg
+                try {
+                    await msg.element.click()
+                    node.status({ fill : "green", shape : "dot", text : "success"})
+                    if (msg.error) { delete msg.error; }
+                    action.send([msg, null]);
                     action.done();
+                } catch(err) {
+                    if (checkIfCritical(err)) {
+                        reject(err);
+                    } else {
+                        msg.error = {
+                            value : "Can't click on the the element : " + err.message
+                        };
+                        node.status({ fill : "yellow", shape : "dot", text : "click error"})
+                        action.send([null, msg]);
+                        action.done();
+                    }
                 }
+            } else {
+                node.status({ fill : "yellow", shape : "ring", text : "ignored"});
+                resolve(false);
             }
-            resolve(false); // We don't want to execute the full node
+            resolve(false)
         }
-        if (msg.clickEvent && !node.__msg) {
-            node.status({ fill : "yellow", shape : "ring", text : "ignored"});
-            resolve(false);
-        }
-        resolve(true);
+        resolve(true)
     });
 }
 
 async function inputAction (node : NodeClickOn, conf : NodeClickOnDef, action : WebDriverAction) : Promise<void> {
     const msg = action.msg;
     return new Promise<void> (async (resolve, reject) => {
-        if (!conf.clickOn) {
+        const waitingNode = node.context().get("waiting") || false
+        if (!conf.clickOn || waitingNode) {
             try {
                 await msg.element.click()
                 node.status({ fill : "green", shape : "dot", text : "success"})
@@ -68,6 +71,7 @@ async function inputAction (node : NodeClickOn, conf : NodeClickOnDef, action : 
             }
         } else { // If we have to wait for the user click and we save the msg
             node.status({ fill : "blue", shape : "dot", text : "waiting for user click"});
+            node.context().set("waiting", true)
             node.__msg = msg;
         }
         resolve();
@@ -84,7 +88,7 @@ export function NodeClickPrerequisite () {
         if (node != null) {
             try {
                 // @ts-ignore
-                node.receive({ click : true });
+                node.receive({ clickEvent : true });
                 res.sendStatus(200);
             } catch(err) {
                 res.sendStatus(500);
