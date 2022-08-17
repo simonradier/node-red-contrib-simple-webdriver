@@ -13,11 +13,12 @@ export function GenericNodeConstructor<TNode extends Node<any>, TNodeDef extends
         node.status({});
         this.on("input", async (message : any, send, done) => {
             // Cheat to allow correct typing in typescript
-            const msg : WebDriverMessage = message;
+            let msg : WebDriverMessage = message;
             const action : WebDriverAction = { msg,  send, done};
             node.status({});
             try {
                 if (!inputPreCondAction || await inputPreCondAction(node, conf, action)) {
+                    msg = action.msg
                     if (msg.browser == null) {
                         const error = new Error("Can't use this node without a working open-browser node first. For node : " + conf.name);
                         node.status({ fill : "red", shape : "ring", text : "error"});

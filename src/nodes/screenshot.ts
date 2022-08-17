@@ -1,6 +1,6 @@
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 import * as fs from "fs";
-import { checkIfCritical, REDAPI } from "../utils";
+import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty } from "../utils";
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeScreenshotDef extends SeleniumNodeDef {
@@ -25,8 +25,8 @@ export function NodeScreenshotConstructor (this : NodeScreenshot, conf : NodeScr
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
-            const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
-            const filePath : string = msg.filePath ?? conf.filePath;
+            const waitFor : number = parseInt(falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,10)
+            const filePath : string = falseIfEmpty(replaceMustache(conf.filePath, msg)) || msg.filePath
             setTimeout (async () => {
                 try {
                     const sc = await msg.browser.screenshot();

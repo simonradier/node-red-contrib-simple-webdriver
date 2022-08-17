@@ -6,13 +6,14 @@ function getValueFromPropertyNameRec(object : any, path: string) {
 
 
 export function replaceMustache(str :string, msg : any) {
+    console.log("input" + str)
     if (typeof str !== "string")
         return str;
 
     const matches = str.match(/\{\{.+?\}\}/g)
     let result = str
 
-    if (matches.length > 0) { // if the string has at least a double brackets like {{ foo }}
+    if (matches?.length > 0) { // if the string has at least a double brackets like {{ foo }}
         for (const match of matches) {
             const path = match.replace(/\{\{(.*?)\}\}/g, '$1')
             const firstProp = path.split(/[\.\[\]\'\"]/)[0]
@@ -31,5 +32,6 @@ export function replaceMustache(str :string, msg : any) {
         }
 
     } 
+    console.log("output" + result)
     return result;
 }

@@ -1,4 +1,4 @@
-import { checkIfCritical } from "../utils";
+import { checkIfCritical, replaceMustache, falseIfEmpty } from "../utils";
 import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericNodeConstructor } from "./node-constructor";
 
@@ -14,7 +14,7 @@ export interface NodeRunScript extends SeleniumNode {
 async function inputAction (node : NodeRunScript, conf : NodeRunScriptDef, action : WebDriverAction) : Promise<void> {
     return new Promise<void> (async (resolve, reject) => {
         const msg = action.msg;
-        const script = msg.script ?? conf.script;
+        const script = falseIfEmpty(replaceMustache(conf.script, msg)) || msg.script
         try {
             msg.payload = await msg.browser.executeSync(script, msg.element);
             node.status({ fill : "green", shape : "dot", text : "success"})

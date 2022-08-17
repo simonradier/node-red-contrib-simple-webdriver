@@ -1,4 +1,4 @@
-import { checkIfCritical } from "../utils";
+import { checkIfCritical, replaceMustache, falseIfEmpty } from "../utils";
 import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericNodeConstructor } from "./node-constructor";
 
@@ -16,8 +16,8 @@ export interface NodeSetAttribute extends SeleniumNode {
 async function inputAction (node : NodeSetAttribute, conf : NodeSetAttributeDef, action : WebDriverAction) : Promise<void> {
     return new Promise<void> (async (resolve, reject) => {
         const msg = action.msg;
-        const attribute = msg.attribute ?? conf.attribute;
-        const value = msg.value ?? conf.value;
+        const attribute = falseIfEmpty(replaceMustache(conf.attribute, msg)) || msg.attribute
+        const value = falseIfEmpty(replaceMustache(conf.value, msg)) || msg.value
         const step = "";
         try {
 			await msg.browser.executeSync("arguments[0].setAttribute(" + "'" + attribute + "', '" + value + "')", msg.element);

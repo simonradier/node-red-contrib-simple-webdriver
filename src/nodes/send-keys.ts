@@ -1,4 +1,4 @@
-import { checkIfCritical } from "../utils";
+import { checkIfCritical, replaceMustache, falseIfEmpty } from "../utils";
 import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 import { GenericNodeConstructor } from "./node-constructor";
 
@@ -14,8 +14,8 @@ export interface NodeSendKeys extends SeleniumNode {
 async function inputAction (node : NodeSendKeys, conf : NodeSendKeysDef, action : WebDriverAction) : Promise<void> {
     return new Promise<void> (async (resolve, reject) => {
         const msg = action.msg;
-        const clearVal = msg.clearVal ?? conf.clearVal;
-        const keys = msg.keys ?? conf.keys;
+        const clearVal = falseIfEmpty(replaceMustache(conf.clearVal, msg)) || msg.clearVal 
+        const keys = falseIfEmpty(replaceMustache(conf.keys, msg)) || msg.keys
         let step = "";
         try {
             if (clearVal){

@@ -37,3 +37,9 @@ export function checkIfCritical(error : Error) : boolean {
         return true;
     return false;
 }
+
+export function falseIfEmpty(str : string) : false | string {
+    if (str === '')
+        return false
+    return str
+}

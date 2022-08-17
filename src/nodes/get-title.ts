@@ -1,4 +1,4 @@
-import { checkIfCritical, REDAPI, waitForValue as waitUntil } from "../utils";
+import { checkIfCritical, REDAPI, waitForValue, replaceMustache, falseIfEmpty } from "../utils";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -24,12 +24,12 @@ export function NodeGetTitleConstructor (this : NodeGetTitle, conf : NodeGetTitl
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
-            const expected = msg.expected ?? conf.expected;
-            const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
-            const timeout : number = parseInt(msg.timeout ?? conf.timeout, 10);
+            const expected = falseIfEmpty(replaceMustache(conf.expected, msg)) || msg.expected
+            const waitFor : number = parseInt(falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,10);
+            const timeout : number = parseInt(falseIfEmpty(replaceMustache(conf.timeout, msg)) || msg.timeout,10);
             setTimeout (async () => {
                 try {
-                    let title : string = (expected && expected !== "") ? await waitUntil(null, msg.browser.getTitle, expected, timeout) : await msg.browser.getTitle()
+                    let title : string = (expected && expected !== "") ? await waitForValue(null, msg.browser.getTitle, expected, timeout) : await msg.browser.getTitle()
                     if (msg.error) { delete msg.error; }
                     msg.payload = title;
                     send([msg, null]);

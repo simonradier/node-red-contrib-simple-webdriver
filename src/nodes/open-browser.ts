@@ -1,5 +1,5 @@
-import { Browser, Capabilities, WebDriver, Protocol, BrowserType} from "@critik/simple-webdriver";
-import { checkIfOnline as checkIfReachable, REDAPI } from "../utils";
+import { Capabilities, WebDriver, Protocol, BrowserType} from "@critik/simple-webdriver";
+import { checkIfOnline as checkIfReachable, REDAPI, replaceMustache } from "../utils";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -45,13 +45,14 @@ export function NodeOpenBrowserConstructor (this : NodeOpenWeb, conf : NodeOpenB
         let driverError = false;
         let driver = new WebDriver(conf.serverURL, Protocol.W3C);
         let capabilities = conf.headless ? Capabilities.headless : Capabilities.default;
+        let webURL = replaceMustache(conf.webURL, msg)
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {
             msg.browser = await driver.start(conf.browserType, capabilities);
             try {
-                await msg.browser.navigate().to(conf.webURL);
+                await msg.browser.navigate().to(webURL);
             } catch (e) {
-                node.error("Can't navitage to " + conf.webURL);
+                node.error("Can't navitage to " + webURL);
                 node.status({ fill : "yellow", shape : "dot", text : "navigate error"});
                 done(e);    
             }

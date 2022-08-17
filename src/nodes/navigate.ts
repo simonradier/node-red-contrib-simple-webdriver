@@ -1,4 +1,4 @@
-import { checkIfCritical, REDAPI } from "../utils";
+import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty } from "../utils";
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
@@ -25,10 +25,10 @@ export function NodeNavigateConstructor (this : NodeNavigate, conf : NodeNavigat
             node.status({ fill : "red", shape : "ring", text : "error"});
             done(error);
         } else {
-            const webTitle = msg.url ?? conf.url;
-            const type = msg.navType ?? conf.navType;
-            const url = msg.url ?? conf.url;
-            const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
+            const webTitle = falseIfEmpty(replaceMustache(conf.url, msg)) || msg.url
+            const type = falseIfEmpty(replaceMustache(conf.navType, msg)) || msg.navType
+            const url = falseIfEmpty(replaceMustache(conf.url, msg)) || msg.url
+            const waitFor : number = parseInt(falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,10);
             setTimeout (async () => {
                 try {
                     node.status({ fill : "blue", shape : "ring", text : "loading"});

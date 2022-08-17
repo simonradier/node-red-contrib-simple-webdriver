@@ -1,7 +1,8 @@
 import { NodeMessageInFlow } from "node-red__registry";
 import { Node, NodeDef, NodeMessage } from "node-red";
 import { Observable } from "rxjs";
-import { WebDriver, Using, Browser, Element, BrowserType } from "@critik/simple-webdriver";
+import { Browser, Element } from "@critik/simple-webdriver";
+import { replaceMustache, falseIfEmpty } from "../utils";
 
 
 export * from "./open-browser";
@@ -66,16 +67,16 @@ export interface WebDriverMessage extends NodeMessageInFlow {
  */
 export function waitForElement(conf : SeleniumNodeDef, msg : WebDriverMessage) : Observable<string | Element>{
     return new Observable<string | Element> ((subscriber) => {
-        const waitFor : number = parseInt(msg.waitFor ?? conf.waitFor,10);
-        const timeout : number = parseInt(msg.timeout ?? conf.timeout, 10);
-        const target : string = msg.target ?? conf.target;
-        const selector : string = msg.selector ?? conf.selector;
+        const waitFor : number = parseInt(falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,10);
+        const timeout : number = parseInt(falseIfEmpty(replaceMustache(conf.timeout, msg)) || msg.timeout, 10);
+        const target : string = falseIfEmpty(replaceMustache(conf.target, msg)) || msg.target
+        const selector : string = falseIfEmpty(replaceMustache(conf.selector, msg))|| msg.selector
         let element : Element;
         subscriber.next("waiting for " + (waitFor / 1000).toFixed(1) + " s");
         setTimeout (async () => {
             try {
                 subscriber.next("locating");
-                if (selector !== "") {
+                if (selector && selector !== "") {
                     // @ts-ignore
                     element = await msg.browser.findElement(selector, target, timeout);
                 } else {
