@@ -37,6 +37,9 @@
 		<input type="checkbox" id="node-input-headless" style="display: inline-block; width: auto; vertical-align: top;">
 		<label for="node-input-headless" style="width: 70%;"><span>Launch a headless browser</span></label>
 	</div>
+    <div class="form-row node-input-args-container-row">
+        <ol id="node-input-args-container"></ol>
+    </div>
 	<hr align="middle">
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
@@ -78,7 +81,7 @@
 			</p>
 		<h3>References</h3>
 			<ul>
-				<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+				<li><a href="https://github.com/simonradier/node-red-contrib-simple-webdriver">GitHub</a> - the nodes github repository</li>
 			</ul>
 </script>
 
@@ -118,6 +121,10 @@
 				value : false,
 				required : true
 			},
+			args : {
+					value:[],
+					required : false
+			},
 			serverURL : {
 				required : true,
 				value :  "http://localhost:9515"
@@ -136,5 +143,45 @@
 		labelStyle : function() {
 			return this.name ? "node_label_italic" : "";
 		},
+		oneditprepare : function () {
+			const node = this;
+			let init = false;
+            $("#node-input-args-container").editableList({
+				addButton: "add",
+				removable: true,
+				sortable: true,
+                addItem: function(row, index, data) {
+					$(row).html(`<input type="text" id="node-input-args-${index}" class="node-input-args-row" value="${ data.argName || "--arg-name-" + (index + 1) }">`);
+					$(row).on("keyup", (event) => {
+						debugger
+						if(row.children()[0].value === "--headless")
+							$("#node-input-headless").prop('checked', true)
+						else
+							$("#node-input-headless").prop('checked', false)
+					});
+				},
+				removeItem: function(data) {
+        			for(const row of $(".node-input-args-row")) {
+						if(data.argName && row.value === data.argName)
+							row.parentElement.parentElement.remove()
+					}
+    			},
+			});
+			$("#node-input-args-container").editableList('addItems',node.args.map((arg) => ({ argName : arg})))
+			$("#node-input-headless").on("click", (event) => {
+				if ($("#node-input-headless").prop('checked')) {
+					$("#node-input-args-container").editableList('addItem',{argName : '--headless'})
+				}
+				else
+					$("#node-input-args-container").editableList('removeItem',{argName : "--headless"});
+			});
+		},
+		oneditsave: function() {
+            const rows = $(".node-input-args-row");
+            this.args = [];
+			for (row of rows) {
+                this.args.push(row.value);
+			}
+        }
 	}); 
 </script>
