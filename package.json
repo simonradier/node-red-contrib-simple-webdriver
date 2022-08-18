@@ -1,6 +1,6 @@
 {
 	"name": "node-red-contrib-simple-webdriver",
-	"version": "0.2.0-alpha6",
+	"version": "0.2.0-alpha7",
 	"description": "SimpleWebdriver nodes for Node-RED initially based on node-red-contrib-selenium-wd2",
 	"dependencies": {
 		"rxjs": "^7.5.6",
