@@ -12,6 +12,7 @@ export interface NodeOpenBrowserDef extends SeleniumNodeDef {
     height : string;
     maximized : boolean;
     headless : boolean;
+    args: string[];
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -44,7 +45,8 @@ export function NodeOpenBrowserConstructor (this : NodeOpenWeb, conf : NodeOpenB
         const node = this;
         let driverError = false;
         let driver = new WebDriver(conf.serverURL, Protocol.W3C);
-        let capabilities = conf.headless ? Capabilities.headless : Capabilities.default;
+        let capabilities = new Capabilities()
+        capabilities.args = conf.args;
         let webURL = replaceMustache(conf.webURL, msg)
         this.status({ fill : "blue", shape : "ring", text : "opening browser"});
         try {

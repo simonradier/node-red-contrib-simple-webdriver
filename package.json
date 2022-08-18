@@ -4,7 +4,7 @@
 	"description": "SimpleWebdriver nodes for Node-RED initially based on node-red-contrib-selenium-wd2",
 	"dependencies": {
 		"rxjs": "^7.5.6",
-		"@critik/simple-webdriver": "^0.1.1-alpha7"
+		"@critik/simple-webdriver": "^0.1.1-alpha8"
 	},
 	"devDependencies": {
 		"@types/chai": "^4.3.1",
