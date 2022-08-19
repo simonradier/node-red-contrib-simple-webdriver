@@ -1,90 +1,96 @@
 <script type="text/html" data-template-name="screenshot">
-	<div class="form-row">
-		<label for="node-input-filePath"><i class="fa fa-globe"></i> <span>Filename</span></label>
-		<input type="text" id="node-input-filePath">
-	</div>
-    <div class="form-row">
-		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
-		<input type="text" id="node-input-waitFor" value="00">
-	</div>
-	<hr align="middle">
-	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
-	</div>
+  <div class="form-row">
+    <label for="node-input-filePath"
+      ><i class="fa fa-globe"></i> <span>Filename</span></label
+    >
+    <input type="text" id="node-input-filePath" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-waitFor"
+      ><i class="fa fa-pause"></i> <span>Wait For</span></label
+    >
+    <input type="text" id="node-input-waitFor" value="00" />
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-name"
+      ><i class="fa fa-tag"></i> <span>Name</span></label
+    >
+    <input type="text" id="node-input-name" />
+  </div>
 </script>
 
 <script type="text/html" data-help-name="screenshot">
-	<p>Using Selenium WebDriver to require a screenshot.</p>
-	<h3>Inputs</h3>
-		<dl class="message-properties">
-			<dt>browser</dt>
-			<dd>the browser session object required to execute browsing actions.</dd>
-			<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
-			<dd> the pause time before launching the close request.</dd>
-		</dl>
-	<h3>Outputs</h3>
-		<ol class="node-ports">
-			<li>Success output
-				<dl class="message-properties">
-					<dt>browser</dt>
-					<dd>the browser session object required to execute browsing actions.</dd>
-				</dl>
-			</li>
-			<li>Failure output
-				<dl class="message-properties">
-					<dt>browser</dt>
-					<dd>the browser session object required to execute browsing actions.</dd>
-				</dl>
-			</li>
-			<li>Critical Error
-				<dl class="message-properties">
-					<dt>error<span class="property-type">Error</span></dt>
-					<dd>the critical error which describe the issue encoutered.</dd>
-				</dl>
-			</li>
-		</ol>
-	
-	<h3>Details</h3>
-		<p> This node is used to navigate accordingly to specified options.</p>
-		<p>	
-			<ul>
-				<li><a>File path</a>: (if set) specify the file path which will be used to write the file. If folder doesn't exist, the node will fail. The <code>msg.filePath</code> will be overrided by the <code>File Path</code> field if set.</li>
-				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
-			</ul>
-		</p>
-		<p>In case of a an error , the node will raise an error and put it in msg.error, msg.driver is cleaned and unset.</p>
-	<h3>References</h3>
-		<ul>
-			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
-		</ul>
+  <p>Using Selenium WebDriver to require a screenshot.</p>
+  <h3>Inputs</h3>
+  	<dl class="message-properties">
+  		<dt>browser</dt>
+  		<dd>the browser session object required to execute browsing actions.</dd>
+  		<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+  		<dd> the pause time before launching the close request.</dd>
+  	</dl>
+  <h3>Outputs</h3>
+  	<ol class="node-ports">
+  		<li>Success output
+  			<dl class="message-properties">
+  				<dt>browser</dt>
+  				<dd>the browser session object required to execute browsing actions.</dd>
+  			</dl>
+  		</li>
+  		<li>Failure output
+  			<dl class="message-properties">
+  				<dt>browser</dt>
+  				<dd>the browser session object required to execute browsing actions.</dd>
+  			</dl>
+  		</li>
+  		<li>Critical Error
+  			<dl class="message-properties">
+  				<dt>error<span class="property-type">Error</span></dt>
+  				<dd>the critical error which describe the issue encoutered.</dd>
+  			</dl>
+  		</li>
+  	</ol>
+
+  <h3>Details</h3>
+  	<p> This node is used to navigate accordingly to specified options.</p>
+  	<p>
+  		<ul>
+  			<li><a>File path</a>: (if set) specify the file path which will be used to write the file. If folder doesn't exist, the node will fail. The <code>msg.filePath</code> will be overrided by the <code>File Path</code> field if set.</li>
+  			<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
+  		</ul>
+  	</p>
+  	<p>In case of a an error , the node will raise an error and put it in msg.error, msg.driver is cleaned and unset.</p>
+  <h3>References</h3>
+  	<ul>
+  		<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+  	</ul>
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('screenshot', {
-		category : 'webdriver',
-		defaults : {
-			name : {
-				value : ""
-			},
-			filePath :  {
-				value : ""
-			},
-			waitFor : {
-				value : 500,
-				validate : RED.validators.number()
-			}
-		},
-		color : "#47B6EE",
-		inputs : 1,
-		outputs : 2,
-		outputLabels: ["success", "failure"],
-		icon : "font-awesome/fa-camera",
-		label : function() {
-			return this.name || "Screenshot";
-		},
-		labelStyle : function() {
-			return this.name ? "node_label_italic" : "";
-		}
-	}); 
+  RED.nodes.registerType("screenshot", {
+    category: "webdriver",
+    defaults: {
+      name: {
+        value: "",
+      },
+      filePath: {
+        value: "",
+      },
+      waitFor: {
+        value: 500,
+        validate: RED.validators.number(),
+      },
+    },
+    color: "#47B6EE",
+    inputs: 1,
+    outputs: 2,
+    outputLabels: ["success", "failure"],
+    icon: "font-awesome/fa-camera",
+    label: function () {
+      return this.name || "Screenshot";
+    },
+    labelStyle: function () {
+      return this.name ? "node_label_italic" : "";
+    },
+  });
 </script>

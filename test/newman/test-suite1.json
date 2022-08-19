@@ -1,41 +1,37 @@
 {
-	"info": {
-		"_postman_id": "6ef1acc4-4cbc-4771-b152-919c9b205b1b",
-		"name": "WD2 Test Suite",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "New Request",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:1880/test1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "1880",
-					"path": [
-						"test1"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "6ef1acc4-4cbc-4771-b152-919c9b205b1b",
+    "name": "WD2 Test Suite",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "New Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:1880/test1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "1880",
+          "path": ["test1"]
+        }
+      },
+      "response": []
+    }
+  ]
 }

@@ -1,187 +1,224 @@
 <script type="text/html" data-template-name="open browser">
-	<div class="form-row">
-		<label for="node-input-serverURL"><i class="fa fa-globe"></i> <span>Server</span></label>
-		<input type="text" id="node-input-serverURL">
-	</div>
-	<div class="form-row">
-        <label for="node-input-browserType"><i class="fa fa-empire"></i> <span>Browser</span></label>
-        <select id="node-input-browserType" style="width:125px !important">
-			<option value="chrome">Chrome</option>
-            <option value="chromium">Chromium</option>
-            <option value="firefox">Firefox</option>
-            <option value="safari">Safari</option>
-			<option value="opera">Opera</option>
-            <option value="edge">Edge</option>
-            <option value="ie">IE</option>
-        </select>
-    </div>
-	<div class="form-row">
-		<label for="node-input-webURL"><i class="fa fa-empire"></i> <span>Web URL</span></label>
-		<input type="text" id="node-input-webURL">
-	</div>
-	<div class="form-row">
-		<label for="node-input-width"><i class="fa fa-empire"></i> <span>Width</span></label>
-		<input type="text" id="node-input-width" value="1024">
-	</div>
-	<div class="form-row">
-		<label for="node-input-height"><i class="fa fa-empire"></i> <span>Height</span></label>
-		<input type="text" id="node-input-height" value="768">
-	</div>
-	<div class="form-row">	
-		<label for="node-input-maximized"><i class="fa fa-window-maximize"></i> <span>Maximize</span></label>	
-		<input type="checkbox" id="node-input-maximized" style="display: inline-block; width: auto; vertical-align: top;">
-		<label for="node-input-maximized" style="width: 70%;"><span>Maximize the browser at startup</span></label>
-	</div>
-	<div class="form-row">	
-		<label for="node-input-headless"><i class="fa fa-minus-square-o"></i> <span>Headless</span></label>	
-		<input type="checkbox" id="node-input-headless" style="display: inline-block; width: auto; vertical-align: top;">
-		<label for="node-input-headless" style="width: 70%;"><span>Launch a headless browser</span></label>
-	</div>
-    <div class="form-row node-input-args-container-row">
-        <ol id="node-input-args-container"></ol>
-    </div>
-	<hr align="middle">
-	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
-	</div>
+  <div class="form-row">
+    <label for="node-input-serverURL"
+      ><i class="fa fa-globe"></i> <span>Server</span></label
+    >
+    <input type="text" id="node-input-serverURL" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-browserType"
+      ><i class="fa fa-empire"></i> <span>Browser</span></label
+    >
+    <select id="node-input-browserType" style="width:125px !important">
+      <option value="chrome">Chrome</option>
+      <option value="chromium">Chromium</option>
+      <option value="firefox">Firefox</option>
+      <option value="safari">Safari</option>
+      <option value="opera">Opera</option>
+      <option value="edge">Edge</option>
+      <option value="ie">IE</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-webURL"
+      ><i class="fa fa-empire"></i> <span>Web URL</span></label
+    >
+    <input type="text" id="node-input-webURL" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-width"
+      ><i class="fa fa-empire"></i> <span>Width</span></label
+    >
+    <input type="text" id="node-input-width" value="1024" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-height"
+      ><i class="fa fa-empire"></i> <span>Height</span></label
+    >
+    <input type="text" id="node-input-height" value="768" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-maximized"
+      ><i class="fa fa-window-maximize"></i> <span>Maximize</span></label
+    >
+    <input
+      type="checkbox"
+      id="node-input-maximized"
+      style="display: inline-block; width: auto; vertical-align: top;"
+    />
+    <label for="node-input-maximized" style="width: 70%;"
+      ><span>Maximize the browser at startup</span></label
+    >
+  </div>
+  <div class="form-row">
+    <label for="node-input-headless"
+      ><i class="fa fa-minus-square-o"></i> <span>Headless</span></label
+    >
+    <input
+      type="checkbox"
+      id="node-input-headless"
+      style="display: inline-block; width: auto; vertical-align: top;"
+    />
+    <label for="node-input-headless" style="width: 70%;"
+      ><span>Launch a headless browser</span></label
+    >
+  </div>
+  <div class="form-row node-input-args-container-row">
+    <ol id="node-input-args-container"></ol>
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-name"
+      ><i class="fa fa-tag"></i> <span>Name</span></label
+    >
+    <input type="text" id="node-input-name" />
+  </div>
 </script>
 
 <script type="text/html" data-help-name="open browser">
-		<p>Create an instance of a Simple Webdriver and connect it to a Selenium Server (Server)</p>
-		
-		<h3>Inputs</h3>
-			<p>No specific input are required to launch this node.</p>
-		
-		 <h3>Outputs</h3>
-			 <ol class="node-ports">
-				 <li>Standard output
-					 <dl class="message-properties">
-						<dt>browser</dt>
-						<dd>the browser session object required to execute browsing actions.</dd>
-					 </dl>
-				 </li>
-				 <li>Critical error
-					<dl class="message-properties">
-						<dt>error<span class="property-type">Error</span></dt>
-						<dd>the error which describe the issue encoutered.</dd>
-					</dl>
-				</li>
-			 </ol>
-		
-		<h3>Details</h3>
-			<p> This node is used to generate a Webdriver which is a prerequisite to all the other WD2 nodes.</p>
-			<p><ul>
-				<li><a>Server</a>: specify the selenium server url. It could be localhost or remote Selenium Server.</li>
-				<li><a>Browser</a>: specify the the web browser you want to use such as [Chrome, Firefox etc.,]</li>
-				<li><a>Web URL</a>: specify the web page to start which will be loaded at the launch of the browser.</li>
-				<li><a>Maximize</a>: launch a maximized browser.</li>
-				<li><a>Headless</a>: launch a headless browser.</li>
-			</ul>
-			</p>
-		<h3>References</h3>
-			<ul>
-				<li><a href="https://github.com/simonradier/node-red-contrib-simple-webdriver">GitHub</a> - the nodes github repository</li>
-			</ul>
+  <p>Create an instance of a Simple Webdriver and connect it to a Selenium Server (Server)</p>
+
+  <h3>Inputs</h3>
+  	<p>No specific input are required to launch this node.</p>
+
+   <h3>Outputs</h3>
+  	 <ol class="node-ports">
+  		 <li>Standard output
+  			 <dl class="message-properties">
+  				<dt>browser</dt>
+  				<dd>the browser session object required to execute browsing actions.</dd>
+  			 </dl>
+  		 </li>
+  		 <li>Critical error
+  			<dl class="message-properties">
+  				<dt>error<span class="property-type">Error</span></dt>
+  				<dd>the error which describe the issue encoutered.</dd>
+  			</dl>
+  		</li>
+  	 </ol>
+
+  <h3>Details</h3>
+  	<p> This node is used to generate a Webdriver which is a prerequisite to all the other WD2 nodes.</p>
+  	<p><ul>
+  		<li><a>Server</a>: specify the selenium server url. It could be localhost or remote Selenium Server.</li>
+  		<li><a>Browser</a>: specify the the web browser you want to use such as [Chrome, Firefox etc.,]</li>
+  		<li><a>Web URL</a>: specify the web page to start which will be loaded at the launch of the browser.</li>
+  		<li><a>Maximize</a>: launch a maximized browser.</li>
+  		<li><a>Headless</a>: launch a headless browser.</li>
+  	</ul>
+  	</p>
+  <h3>References</h3>
+  	<ul>
+  		<li><a href="https://github.com/simonradier/node-red-contrib-simple-webdriver">GitHub</a> - the nodes github repository</li>
+  	</ul>
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('open browser', {
-		category : 'webdriver',
-		defaults : {
-			name : {
-				value : ""
-			},
-            browserType : {
-                value : "chrome",
-                required : true
-            },
-			webURL : {
-				value : "https://www.google.com/",
-				required : true
-			},
-			width : {
-				value : 1280,
-				validate : RED.validators.number()
-			},
-			height : {
-				value : 1024,
-				validate : RED.validators.number()
-			},
-			timeout : {
-				value : 3000,
-				required : true,
-				validate : RED.validators.number()
-			},
-			maximized : {
-				value : true,
-				required : true
-			},
-			headless : {
-				value : false,
-				required : true
-			},
-			args : {
-					value:[],
-					required : false
-			},
-			serverURL : {
-				required : true,
-				value :  "http://localhost:9515"
-			}
-		},
-		color : "#47B6EE",
-		inputs : 1,
-		outputs : 1,
-		outputLabels: ["success"],
-		icon : function() {
-			return this.browser + ".svg";
-		},
-		label : function() {
-			return this.name || this.topic || "Open URL";
-		},
-		labelStyle : function() {
-			return this.name ? "node_label_italic" : "";
-		},
-		oneditprepare : function () {
-			const node = this;
-			let init = false;
-            $("#node-input-args-container").editableList({
-				addButton: "add",
-				removable: true,
-				sortable: true,
-                addItem: function(row, index, data) {
-					$(row).html(`<input type="text" id="node-input-args-${index}" class="node-input-args-row" value="${ data.argName || "--arg-name-" + (index + 1) }">`);
-					$(row).on("keyup", (event) => {
-						debugger
-						if(row.children()[0].value === "--headless")
-							$("#node-input-headless").prop('checked', true)
-						else
-							$("#node-input-headless").prop('checked', false)
-					});
-				},
-				removeItem: function(data) {
-        			for(const row of $(".node-input-args-row")) {
-						if(data.argName && row.value === data.argName)
-							row.parentElement.parentElement.remove()
-					}
-    			},
-			});
-			$("#node-input-args-container").editableList('addItems',node.args.map((arg) => ({ argName : arg})))
-			$("#node-input-headless").on("click", (event) => {
-				if ($("#node-input-headless").prop('checked')) {
-					$("#node-input-args-container").editableList('addItem',{argName : '--headless'})
-				}
-				else
-					$("#node-input-args-container").editableList('removeItem',{argName : "--headless"});
-			});
-		},
-		oneditsave: function() {
-            const rows = $(".node-input-args-row");
-            this.args = [];
-			for (row of rows) {
-                this.args.push(row.value);
-			}
-        }
-	}); 
+  RED.nodes.registerType("open browser", {
+    category: "webdriver",
+    defaults: {
+      name: {
+        value: "",
+      },
+      browserType: {
+        value: "chrome",
+        required: true,
+      },
+      webURL: {
+        value: "https://www.google.com/",
+        required: true,
+      },
+      width: {
+        value: 1280,
+        validate: RED.validators.number(),
+      },
+      height: {
+        value: 1024,
+        validate: RED.validators.number(),
+      },
+      timeout: {
+        value: 3000,
+        required: true,
+        validate: RED.validators.number(),
+      },
+      maximized: {
+        value: true,
+        required: true,
+      },
+      headless: {
+        value: false,
+        required: true,
+      },
+      args: {
+        value: [],
+        required: false,
+      },
+      serverURL: {
+        required: true,
+        value: "http://localhost:9515",
+      },
+    },
+    color: "#47B6EE",
+    inputs: 1,
+    outputs: 1,
+    outputLabels: ["success"],
+    icon: function () {
+      return this.browser + ".svg";
+    },
+    label: function () {
+      return this.name || this.topic || "Open URL";
+    },
+    labelStyle: function () {
+      return this.name ? "node_label_italic" : "";
+    },
+    oneditprepare: function () {
+      const node = this;
+      let init = false;
+      $("#node-input-args-container").editableList({
+        addButton: "add",
+        removable: true,
+        sortable: true,
+        addItem: function (row, index, data) {
+          $(row).html(
+            `<input type="text" id="node-input-args-${index}" class="node-input-args-row" value="${
+              data.argName || "--arg-name-" + (index + 1)
+            }">`
+          );
+          $(row).on("keyup", (event) => {
+            debugger;
+            if (row.children()[0].value === "--headless")
+              $("#node-input-headless").prop("checked", true);
+            else $("#node-input-headless").prop("checked", false);
+          });
+        },
+        removeItem: function (data) {
+          for (const row of $(".node-input-args-row")) {
+            if (data.argName && row.value === data.argName)
+              row.parentElement.parentElement.remove();
+          }
+        },
+      });
+      $("#node-input-args-container").editableList(
+        "addItems",
+        node.args.map((arg) => ({ argName: arg }))
+      );
+      $("#node-input-headless").on("click", (event) => {
+        if ($("#node-input-headless").prop("checked")) {
+          $("#node-input-args-container").editableList("addItem", {
+            argName: "--headless",
+          });
+        } else
+          $("#node-input-args-container").editableList("removeItem", {
+            argName: "--headless",
+          });
+      });
+    },
+    oneditsave: function () {
+      const rows = $(".node-input-args-row");
+      this.args = [];
+      for (row of rows) {
+        this.args.push(row.value);
+      }
+    },
+  });
 </script>

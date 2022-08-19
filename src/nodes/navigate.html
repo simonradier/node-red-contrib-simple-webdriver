@@ -1,134 +1,139 @@
 <script type="text/html" data-template-name="navigate">
-    <div class="form-row">
-		<label for="node-input-navType"><i class="fa fa-empire"></i> <span>Type</span></label>
-		<select id="node-input-navType" style="width:125px !important">
-			<option value="to">to</option>
-			<option value="back">back</option>
-			<option value="forward">forward</option>
-			<option value="refresh">refresh</option>
-		</select>
-    </div>
-	<div class="form-row" id="row-input-url">
-		<label for="node-input-url"><i class="fa fa-globe"></i> <span>URL</span></label>
-		<input type="text" id="node-input-url">
-	</div>
-    <div class="form-row">
-		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
-		<input type="text" id="node-input-waitFor" value="00">
-	</div>
-	<hr align="middle">
-	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
-	</div>
+  <div class="form-row">
+    <label for="node-input-navType"
+      ><i class="fa fa-empire"></i> <span>Type</span></label
+    >
+    <select id="node-input-navType" style="width:125px !important">
+      <option value="to">to</option>
+      <option value="back">back</option>
+      <option value="forward">forward</option>
+      <option value="refresh">refresh</option>
+    </select>
+  </div>
+  <div class="form-row" id="row-input-url">
+    <label for="node-input-url"
+      ><i class="fa fa-globe"></i> <span>URL</span></label
+    >
+    <input type="text" id="node-input-url" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-waitFor"
+      ><i class="fa fa-pause"></i> <span>Wait For</span></label
+    >
+    <input type="text" id="node-input-waitFor" value="00" />
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-name"
+      ><i class="fa fa-tag"></i> <span>Name</span></label
+    >
+    <input type="text" id="node-input-name" />
+  </div>
 </script>
 
 <script type="text/html" data-help-name="navigate">
-	<p>Using Selenium WebDriver to schedule a command to navigate to a new URL.</p>
-	<h3>Inputs</h3>
-		<dl class="message-properties">
-			<dt>browser</dt>
-			<dd>the browser session object required to execute browsing actions.</dd>
-			<dt class="optional">navType<span class="property-type">string</span></dt>
-			<dd> the type of navigation (must be to, back, forward, refresh).</dd>
-			<dt class="optional">url<span class="property-type">string</span></dt>
-			<dd> (if navType is set to <code>to</code>) the url to be loaded by the browser</dd>
-			<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
-			<dd> the pause time before launching the close request.</dd>
-		</dl>
-	<h3>Outputs</h3>
-		<ol class="node-ports">
-			<li>Success output
-				<dl class="message-properties">
-					<dt>browser</dt>
-					<dd>the browser session object required to execute browsing actions.</dd>
-				</dl>
-			</li>
-			<li>Failure output
-				<dl class="message-properties">
-					<dt>browser</dt>
-					<dd>the browser session object required to execute browsing actions.</dd>
-				</dl>
-			</li>
-			<li>Critical Error
-				<dl class="message-properties">
-					<dt>error<span class="property-type">Error</span></dt>
-					<dd>the critical error which describe the issue encoutered.</dd>
-				</dl>
-			</li>
-		</ol>
-	
-	<h3>Details</h3>
-		<p> This node is used to navigate accordingly to specified options.</p>
-		<p>	
-			<ul>
-				<li><a>Type</a>: specify the type of navigation to execute. The <code>msg.navType</code> will be overrided by the <code>Type</code> field if set.</li>
-				<li><a>URL</a>: (if Type is set to <code>to</code>) specify the type of url to browse. The <code>msg.url</code> will be overrided by the <code>URL</code> field if set.</li>
-				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
-			</ul>
-		</p>
-		<p>In case of a an error , the node will raise an error and put it in msg.error, msg.driver is cleaned and unset.</p>
-	<h3>References</h3>
-		<ul>
-			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
-		</ul>
+  <p>Using Selenium WebDriver to schedule a command to navigate to a new URL.</p>
+  <h3>Inputs</h3>
+  	<dl class="message-properties">
+  		<dt>browser</dt>
+  		<dd>the browser session object required to execute browsing actions.</dd>
+  		<dt class="optional">navType<span class="property-type">string</span></dt>
+  		<dd> the type of navigation (must be to, back, forward, refresh).</dd>
+  		<dt class="optional">url<span class="property-type">string</span></dt>
+  		<dd> (if navType is set to <code>to</code>) the url to be loaded by the browser</dd>
+  		<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+  		<dd> the pause time before launching the close request.</dd>
+  	</dl>
+  <h3>Outputs</h3>
+  	<ol class="node-ports">
+  		<li>Success output
+  			<dl class="message-properties">
+  				<dt>browser</dt>
+  				<dd>the browser session object required to execute browsing actions.</dd>
+  			</dl>
+  		</li>
+  		<li>Failure output
+  			<dl class="message-properties">
+  				<dt>browser</dt>
+  				<dd>the browser session object required to execute browsing actions.</dd>
+  			</dl>
+  		</li>
+  		<li>Critical Error
+  			<dl class="message-properties">
+  				<dt>error<span class="property-type">Error</span></dt>
+  				<dd>the critical error which describe the issue encoutered.</dd>
+  			</dl>
+  		</li>
+  	</ol>
+
+  <h3>Details</h3>
+  	<p> This node is used to navigate accordingly to specified options.</p>
+  	<p>
+  		<ul>
+  			<li><a>Type</a>: specify the type of navigation to execute. The <code>msg.navType</code> will be overrided by the <code>Type</code> field if set.</li>
+  			<li><a>URL</a>: (if Type is set to <code>to</code>) specify the type of url to browse. The <code>msg.url</code> will be overrided by the <code>URL</code> field if set.</li>
+  			<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
+  		</ul>
+  	</p>
+  	<p>In case of a an error , the node will raise an error and put it in msg.error, msg.driver is cleaned and unset.</p>
+  <h3>References</h3>
+  	<ul>
+  		<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+  	</ul>
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('navigate', {
-		category : 'webdriver',
-		defaults : {
-			name : {
-				value : ""
-			},
-			url : {
-				value : "",
-				validate : function () {
-					node = this;
-					if (node.navType === "to")
-						if (!node.url || node.url == "")
-							return false;
-					return true;
-				}
-            },
-            navType : {
-                value : "to",
-                required : true
-            },
-			waitFor : {
-				value : 500,
-				validate : RED.validators.number()
-			}
-		},
-		color : "#47B6EE",
-		inputs : 1,
-		outputs : 2,
-		outputLabels: ["success", "failure"],
-		icon : function () {
-            switch (this.navType) {
-				case "back":
-					return "font-awesome/fa-arrow-left"
-				case "forward":
-					return "font-awesome/fa-arrow-right"
-				case "refresh":
-					return "font-awesome/fa-refresh"
-            }
-            return "font-awesome/fa-location-arrow"
+  RED.nodes.registerType("navigate", {
+    category: "webdriver",
+    defaults: {
+      name: {
+        value: "",
+      },
+      url: {
+        value: "",
+        validate: function () {
+          node = this;
+          if (node.navType === "to")
+            if (!node.url || node.url == "") return false;
+          return true;
         },
-		label : function() {
-			return this.name || "Navigate";
-		},
-		labelStyle : function() {
-			return this.name ? "node_label_italic" : "";
-		},
-		oneditprepare : function() {
-			let node = this;
-			$("#node-input-navType").on("change", (event) => {
-				if ($("#node-input-navType").val() !== "to")
-					$("#row-input-url").hide();
-				else
-					$("#row-input-url").show();
-			});
-		},
-	}); 
+      },
+      navType: {
+        value: "to",
+        required: true,
+      },
+      waitFor: {
+        value: 500,
+        validate: RED.validators.number(),
+      },
+    },
+    color: "#47B6EE",
+    inputs: 1,
+    outputs: 2,
+    outputLabels: ["success", "failure"],
+    icon: function () {
+      switch (this.navType) {
+        case "back":
+          return "font-awesome/fa-arrow-left";
+        case "forward":
+          return "font-awesome/fa-arrow-right";
+        case "refresh":
+          return "font-awesome/fa-refresh";
+      }
+      return "font-awesome/fa-location-arrow";
+    },
+    label: function () {
+      return this.name || "Navigate";
+    },
+    labelStyle: function () {
+      return this.name ? "node_label_italic" : "";
+    },
+    oneditprepare: function () {
+      let node = this;
+      $("#node-input-navType").on("change", (event) => {
+        if ($("#node-input-navType").val() !== "to") $("#row-input-url").hide();
+        else $("#row-input-url").show();
+      });
+    },
+  });
 </script>

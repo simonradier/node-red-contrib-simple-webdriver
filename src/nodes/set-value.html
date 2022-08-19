@@ -1,159 +1,170 @@
 <script type="text/html" data-template-name="set value">
-	<div class="form-row">
-		<label for="node-input-value"><i class="fa fa-empire"></i> <span>Value</span></label>
-		<input type="text" id="node-input-value">
-	</div>
-	<hr align="middle">
-	<div class="form-row">
-		<label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
-		<select id="node-input-selector" style="width:125px !important">
-			<option value=""></option>
-			<option value="id">id</option>
-			<option value="name">name</option>
-			<option value="link">link</option>
-			<option value="xpath">xpath</option>
-			<option value="tag name">tagName</option>
-			<option value="className">className</option>
-			<option value="link text">linkText</option>
-			<option value="css selector">cssSelector</option>
-		</select>
-	</div>
-	<div class="form-row" id="row-input-target">
-		<label for="node-input-target"><i class="fa fa-dot-circle-o"></i> <span>Target</span></label>
-		<input type="text" id="node-input-target">
-	</div>
-	<div class="form-row">
-		<label for="node-input-timeout"><i class="fa fa-clock-o"></i> <span>Timeout</span></label>
-		<input type="text" id="node-input-timeout" value="1000">
-	</div>
-	<hr align="middle">
-	<div class="form-row">
-		<label for="node-input-waitFor"><i class="fa fa-pause"></i> <span>Wait For</span></label>
-		<input type="text" id="node-input-waitFor" value="00">
-	</div>
-	<hr align="middle">
-	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
-		<input type="text" id="node-input-name">
-	</div>
+  <div class="form-row">
+    <label for="node-input-value"
+      ><i class="fa fa-empire"></i> <span>Value</span></label
+    >
+    <input type="text" id="node-input-value" />
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-selector"
+      ><i class="fa fa-bars"></i> <span>By</span></label
+    >
+    <select id="node-input-selector" style="width:125px !important">
+      <option value=""></option>
+      <option value="id">id</option>
+      <option value="name">name</option>
+      <option value="link">link</option>
+      <option value="xpath">xpath</option>
+      <option value="tag name">tagName</option>
+      <option value="className">className</option>
+      <option value="link text">linkText</option>
+      <option value="css selector">cssSelector</option>
+    </select>
+  </div>
+  <div class="form-row" id="row-input-target">
+    <label for="node-input-target"
+      ><i class="fa fa-dot-circle-o"></i> <span>Target</span></label
+    >
+    <input type="text" id="node-input-target" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-timeout"
+      ><i class="fa fa-clock-o"></i> <span>Timeout</span></label
+    >
+    <input type="text" id="node-input-timeout" value="1000" />
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-waitFor"
+      ><i class="fa fa-pause"></i> <span>Wait For</span></label
+    >
+    <input type="text" id="node-input-waitFor" value="00" />
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-name"
+      ><i class="fa fa-tag"></i> <span>Name</span></label
+    >
+    <input type="text" id="node-input-name" />
+  </div>
 </script>
 
 <script type="text/html" data-help-name="set value">
-	<p>Set a value to the <code>value</code> attribute of the <code>msg.element</code> or after waiting for the expected element is located.</p>
-	<h3>Inputs</h3>
-		<dt>browser</dt>
-		<dd>the browser session object required to execute browsing actions.</dd>
-		<dt class="optional">element</dt>
-		<dd>the Element object required to execute the required action.</dd>
-		<dt class="optional">value<span class="property-type">string</span></dt>
-		<dd> the keys which must be sent to the browser element.</dd>
-		<dt class="optional">selector<span class="property-type">string</span></dt>
-		<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
-		<dt class="optional">target<span class="property-type">string</span></dt>
-		<dd> the name of the target to find.</dd>
-		<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
-		<dd> the timeout value of the find request.</dd>
-		<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
-		<dd> the pause time before launching the node action.</dd>
+  <p>Set a value to the <code>value</code> attribute of the <code>msg.element</code> or after waiting for the expected element is located.</p>
+  <h3>Inputs</h3>
+  	<dt>browser</dt>
+  	<dd>the browser session object required to execute browsing actions.</dd>
+  	<dt class="optional">element</dt>
+  	<dd>the Element object required to execute the required action.</dd>
+  	<dt class="optional">value<span class="property-type">string</span></dt>
+  	<dd> the keys which must be sent to the browser element.</dd>
+  	<dt class="optional">selector<span class="property-type">string</span></dt>
+  	<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
+  	<dt class="optional">target<span class="property-type">string</span></dt>
+  	<dd> the name of the target to find.</dd>
+  	<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
+  	<dd> the timeout value of the find request.</dd>
+  	<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+  	<dd> the pause time before launching the node action.</dd>
 
-	<h3>Outputs</h3>
-	<ol class="node-ports">
-		<li>Success output (Primary)
-			<dl class="message-properties">
-				<dt>browser</dt>
-				<dd>the browser session object required to execute browsing actions.</dd>
-			</dl>
-			<dl class="message-properties">
-				<dt>element</dt>
-				<dd>the Element object required to execute the required action.</dd>
-			</dl>
-		</li>
-		<li>Failure output (Secondary)
-			<dl class="message-properties">
-				<dt>browser</dt>
-				<dd>the browser session object required to execute browsing actions.</dd>
-			</dl>
-			<dl class="message-properties">
-				<dt>element</dt>
-				<dd>the Element object required to execute the required action.</dd>
-			</dl>
-			<dl class="message-properties">
-				<dt>error<span class="property-type">Error</span></dt>
-				<dd>the selenium error which describe the failure cause.</dd>
-			</dl>
-		</li>
-		<li>Critical error
-			<dl class="message-properties">
-				<dt>error<span class="property-type">Error</span></dt>
-				<dd>the critical error which describe the issue encoutered.</dd>
-			</dl>
-		</li>
-	</ol>
+  <h3>Outputs</h3>
+  <ol class="node-ports">
+  	<li>Success output (Primary)
+  		<dl class="message-properties">
+  			<dt>browser</dt>
+  			<dd>the browser session object required to execute browsing actions.</dd>
+  		</dl>
+  		<dl class="message-properties">
+  			<dt>element</dt>
+  			<dd>the Element object required to execute the required action.</dd>
+  		</dl>
+  	</li>
+  	<li>Failure output (Secondary)
+  		<dl class="message-properties">
+  			<dt>browser</dt>
+  			<dd>the browser session object required to execute browsing actions.</dd>
+  		</dl>
+  		<dl class="message-properties">
+  			<dt>element</dt>
+  			<dd>the Element object required to execute the required action.</dd>
+  		</dl>
+  		<dl class="message-properties">
+  			<dt>error<span class="property-type">Error</span></dt>
+  			<dd>the selenium error which describe the failure cause.</dd>
+  		</dl>
+  	</li>
+  	<li>Critical error
+  		<dl class="message-properties">
+  			<dt>error<span class="property-type">Error</span></dt>
+  			<dd>the critical error which describe the issue encoutered.</dd>
+  		</dl>
+  	</li>
+  </ol>
 
-	<h3>Details</h3>
-		<p>This node is used to set the value of the selected element.</p>
-		<p>
-			<ul>
-				<li><a>Value</a>: specify the keys which must be sent to the browser. The <code>msg.value</code> will be overrided by the <code>Value</code> field if set.</li>
-				<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will be overrided by the <code>By</code> field if set.</li>
-				<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will be overrided by the <code>Target</code> field if set.</li>
-				<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will be overrided by the <code>Timeout</code> field if set.</li>
-				<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
-			</ul>
-		</p>
-	<h3>References</h3>
-		<ul>
-			<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
-		</ul>
+  <h3>Details</h3>
+  	<p>This node is used to set the value of the selected element.</p>
+  	<p>
+  		<ul>
+  			<li><a>Value</a>: specify the keys which must be sent to the browser. The <code>msg.value</code> will be overrided by the <code>Value</code> field if set.</li>
+  			<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will be overrided by the <code>By</code> field if set.</li>
+  			<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will be overrided by the <code>Target</code> field if set.</li>
+  			<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will be overrided by the <code>Timeout</code> field if set.</li>
+  			<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
+  		</ul>
+  	</p>
+  <h3>References</h3>
+  	<ul>
+  		<li><a href="https://github.com/simonradier/node-red-contrib-selenium-wd2">GitHub</a> - the nodes github repository</li>
+  	</ul>
 </script>
 
 <script type="text/javascript">
-	RED.nodes.registerType('set value', {
-		category : 'webdriver',
-		defaults : {
-			name : {
-				value : ""
-			},
-			value : {
-				value : ""
-			},
-			selector : {
-				value : ""
-			},
-			target : {
-				value : ""
-			},
-			timeout : {
-				value : 1000,
-				validate : RED.validators.number()
-			},
-			waitFor : {
-				value : 500,
-				validate : RED.validators.number()
-			}
-		},
-		color : "#47B6EE",
-		inputs : 1,
-		outputs : 2,
-        icon : "font-awesome/fa-pencil",
-		label : function() {
-			return this.name || "Set Value";
-		},
-		labelStyle : function() {
-			return this.name ? "node_label_italic" : "";
-		},
-		oneditprepare : function() {
-			let node = this;
-			$("#node-input-selector").on("change", (event) => {
-				if ($("#node-input-selector").val() === "") {
-					$("#row-input-target").hide();
-					$("#row-input-timeout").hide();
-				}
-				else {
-					$("#row-input-target").show();
-					$("#row-input-timeout").show();
-				}
-			});
-		},
-	}); 
+  RED.nodes.registerType("set value", {
+    category: "webdriver",
+    defaults: {
+      name: {
+        value: "",
+      },
+      value: {
+        value: "",
+      },
+      selector: {
+        value: "",
+      },
+      target: {
+        value: "",
+      },
+      timeout: {
+        value: 1000,
+        validate: RED.validators.number(),
+      },
+      waitFor: {
+        value: 500,
+        validate: RED.validators.number(),
+      },
+    },
+    color: "#47B6EE",
+    inputs: 1,
+    outputs: 2,
+    icon: "font-awesome/fa-pencil",
+    label: function () {
+      return this.name || "Set Value";
+    },
+    labelStyle: function () {
+      return this.name ? "node_label_italic" : "";
+    },
+    oneditprepare: function () {
+      let node = this;
+      $("#node-input-selector").on("change", (event) => {
+        if ($("#node-input-selector").val() === "") {
+          $("#row-input-target").hide();
+          $("#row-input-timeout").hide();
+        } else {
+          $("#row-input-target").show();
+          $("#row-input-timeout").show();
+        }
+      });
+    },
+  });
 </script>

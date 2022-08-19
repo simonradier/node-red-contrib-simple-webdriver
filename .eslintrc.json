@@ -1,0 +1,42 @@
+{
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  //"extends": ["prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      },
+      "typescript": { "paths": ["src"] }
+    }
+  },
+  "rules": {
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "variable",
+        "format": ["camelCase"]
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "sort-imports": "off",
+    "no-use-before-define": "off",
+    "object-curly-newline": "off",
+    "prefer-const": "error",
+    "comma-dangle": "off",
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "ignoreRestSiblings": true }
+    ]
+  }
+}

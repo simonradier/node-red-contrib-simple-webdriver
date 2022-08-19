@@ -2,13 +2,13 @@
 
 name: Tests
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ 0.2.x ]
+    branches: [0.2.x]
   pull_request:
-    branches: [ 0.2.x ]
+    branches: [0.2.x]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,7 +30,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
 
@@ -41,12 +41,11 @@ jobs:
         run: npm run prepublishOnly
 
       - name: Launch unit testing
-        run: npm run test 
+        run: npm run test
 
       - name: Launch coverage update
         run: npm run coverage
-         
-  
+
   e2e-test:
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
@@ -67,7 +66,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
 
@@ -79,15 +78,15 @@ jobs:
 
       - name: Run chromedriver (ubuntu)
         if: ${{ matrix.browser == 'chrome' && matrix.os == 'ubuntu-latest' }}
-        run: xvfb-run --auto-servernum chromedriver & 
+        run: xvfb-run --auto-servernum chromedriver &
 
       - name: Run chromedriver (windows)
         if: ${{ matrix.browser == 'chrome' && matrix.os == 'windows-latest' }}
-        run: cmd /c "START chromedriver" 
+        run: cmd /c "START chromedriver"
 
       - name: Run chromedriver (macos)
         if: ${{ matrix.browser == 'chrome' && matrix.os == 'macos-latest' }}
-        run: chromedriver & 
+        run: chromedriver &
 
       - name: Run geckodriver (ubuntu)
         if: ${{ matrix.browser == 'firefox' && matrix.os == 'ubuntu-latest' }}
@@ -103,49 +102,49 @@ jobs:
 
       - name: Run msedgedriver (windows)
         if: ${{ matrix.browser == 'edge' && matrix.os == 'windows-latest'  }}
-        run: cmd /c "START msedgedriver --port=9415" 
+        run: cmd /c "START msedgedriver --port=9415"
 
       - name: Run msedgedriver (macos)
         if: ${{ matrix.browser == 'edge' && matrix.os == 'macos-latest'  }}
-        run: msedgedriver --port=9415 & 
+        run: msedgedriver --port=9415 &
 
       - name: Run safaridriver (macos)
         if: ${{ matrix.browser == 'safari' }}
         run: |
           sudo safaridriver --enable
-          safaridriver --port 9315 & 
+          safaridriver --port 9315 &
 
       - name: Run test with webdriver ${{ matrix.os }}-${{ matrix.browser }}
         run: npm run test-wd-${{ matrix.browser }}
 
-      - name: Install newman, node-red & the wd2 package (windows) 
-        if: ${{ matrix.os == 'windows-latest' && matrix.browser == 'Chrome' }}
-        run: |
-          npm install -g newman
-          npm install -g node-red --unsafe-perm
-          npm install -g .
+  #     - name: Install newman, node-red & the simplewebdriver package (windows)
+  #       if: ${{ matrix.os == 'windows-latest' && matrix.browser == 'Chrome' }}
+  #       run: |
+  #         npm install -g newman
+  #         npm install -g node-red --unsafe-perm
+#          npm install -g .
 
-      - name: Install newman, node-red & the wd2 package (other) 
-        if: ${{ matrix.os != 'windows-latest' && matrix.browser == 'Chrome' }}
-        run: |
-          sudo npm install -g newman
-          sudo npm install -g node-red --unsafe-perm
-          sudo npm install -g .
+#      - name: Install newman, node-red & the simplewebdriver package (other)
+#        if: ${{ matrix.os != 'windows-latest' && matrix.browser == 'Chrome' }}
+#        run: |
+#         sudo npm install -g newman
+#         sudo npm install -g node-red --unsafe-perm
+#         sudo npm install -g .
 
 #      - name: Run node-red (windows)
 #        if: ${{ matrix.os == 'windows-latest' && matrix.browser == 'Chrome' }}
-#        run: cmd /c "START node-red > ${{ matrix.os }}-node-red-log.txt"
+#       run: cmd /c "START node-red > ${{ matrix.os }}-node-red-log.txt"
 #
-#      - name: Run node-red (other)
-#        if: ${{ matrix.os != 'windows-latest' && matrix.browser == 'Chrome' }}
+#     - name: Run node-red (other)
+#       if: ${{ matrix.os != 'windows-latest' && matrix.browser == 'Chrome' }}
 #        run: node-red > ${{ matrix.os }}-node-red-log.txt &
 #
 #      - name: Wait on
 #        if: ${{ matrix.browser == 'Chrome' }}
 #        uses: iFaxity/wait-on-action@v1
 #        with:
-#          resource: http://localhost:1880/flows  
-#      
+#          resource: http://localhost:1880/flows
+#
 #      - name : Publish flows to node-red
 #        if: ${{ matrix.browser == 'Chrome' }}
 #        run: newman run ./test/newman/init.json

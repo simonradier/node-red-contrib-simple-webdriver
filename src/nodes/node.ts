@@ -4,7 +4,6 @@ import { Observable } from "rxjs";
 import { Browser, Element } from "@critik/simple-webdriver";
 import { replaceMustache, falseIfEmpty } from "../utils";
 
-
 export * from "./open-browser";
 export * from "./close-browser";
 export * from "./find-element";
@@ -20,43 +19,41 @@ export * from "./screenshot";
 export * from "./set-attribute";
 
 export interface SeleniumNodeDef extends NodeDef {
-    selector : string;
-    target : string;
-    // Node-red only push string from properties if modified by user
-    timeout : string;
-    waitFor : string;
+  selector: string;
+  target: string;
+  // Node-red only push string from properties if modified by user
+  timeout: string;
+  waitFor: string;
 }
 
-export interface SeleniumNode extends Node<any> {
-
-}
+export interface SeleniumNode extends Node<any> {}
 
 export interface WebDriverAction {
-    done : (err? : Error) => void;
-    send : (msg: NodeMessage | NodeMessage[]) => void;
-    msg : WebDriverMessage;
+  done: (err?: Error) => void;
+  send: (msg: NodeMessage | NodeMessage[]) => void;
+  msg: WebDriverMessage;
 }
 
 export interface WebDriverMessage extends NodeMessageInFlow {
-    browser : Browser;
-    selector? : string;
-    // Node-red only push string from properties if modified by user
-    target? : string;
-    timeout? : string;
-    waitFor? : string;
-    error? : any;
-    element? : Element;
-    webTitle? : string;
-    clickEvent? : boolean;
-    clearVal? : boolean;
-    keys? : string;
-    value? : string;
-    expected? : string;
-    attribute? : string;
-    script? : string;
-    url? : string;
-    navType? : string;
-    filePath? : string;
+  browser: Browser;
+  selector?: string;
+  // Node-red only push string from properties if modified by user
+  target?: string;
+  timeout?: string;
+  waitFor?: string;
+  error?: any;
+  element?: Element;
+  webTitle?: string;
+  clickEvent?: boolean;
+  clearVal?: boolean;
+  keys?: string;
+  value?: string;
+  expected?: string;
+  attribute?: string;
+  script?: string;
+  url?: string;
+  navType?: string;
+  filePath?: string;
 }
 
 /**
@@ -65,38 +62,54 @@ export interface WebDriverMessage extends NodeMessageInFlow {
  * @param conf A configuration of a node
  * @param msg  A node message
  */
-export function waitForElement(conf : SeleniumNodeDef, msg : WebDriverMessage) : Observable<string | Element>{
-    return new Observable<string | Element> ((subscriber) => {
-        const waitFor : number = parseInt(falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,10);
-        const timeout : number = parseInt(falseIfEmpty(replaceMustache(conf.timeout, msg)) || msg.timeout, 10);
-        const target : string = falseIfEmpty(replaceMustache(conf.target, msg)) || msg.target
-        const selector : string = falseIfEmpty(replaceMustache(conf.selector, msg))|| msg.selector
-        let element : Element;
-        subscriber.next("waiting for " + (waitFor / 1000).toFixed(1) + " s");
-        setTimeout (async () => {
-            try {
-                subscriber.next("locating");
-                if (selector && selector !== "") {
-                    // @ts-ignore
-                    element = await msg.browser.findElement(selector, target, timeout);
-                } else {
-                    if (msg.element) {
-                       element = msg.element;
-                    }
-                }
-                subscriber.next(element);
-                subscriber.complete();
-            } catch (e) {
-                let error : any;
-                if (e.toString().includes("TimeoutError"))
-                    error = new Error("catch timeout after " + timeout + " milliseconds for selector type " + selector +  " for  " + target);
-                else
-                    error = e;
-                error.selector = selector;
-                error.target = target;
-                subscriber.error(error);
-            }
-        }, waitFor);
-    });
+export function waitForElement(
+  conf: SeleniumNodeDef,
+  msg: WebDriverMessage
+): Observable<string | Element> {
+  return new Observable<string | Element>((subscriber) => {
+    const waitFor: number = parseInt(
+      falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
+      10
+    );
+    const timeout: number = parseInt(
+      falseIfEmpty(replaceMustache(conf.timeout, msg)) || msg.timeout,
+      10
+    );
+    const target: string =
+      falseIfEmpty(replaceMustache(conf.target, msg)) || msg.target;
+    const selector: string =
+      falseIfEmpty(replaceMustache(conf.selector, msg)) || msg.selector;
+    let element: Element;
+    subscriber.next("waiting for " + (waitFor / 1000).toFixed(1) + " s");
+    setTimeout(async () => {
+      try {
+        subscriber.next("locating");
+        if (selector && selector !== "") {
+          // @ts-ignore
+          element = await msg.browser.findElement(selector, target, timeout);
+        } else {
+          if (msg.element) {
+            element = msg.element;
+          }
+        }
+        subscriber.next(element);
+        subscriber.complete();
+      } catch (e) {
+        let error: any;
+        if (e.toString().includes("TimeoutError"))
+          error = new Error(
+            "catch timeout after " +
+              timeout +
+              " milliseconds for selector type " +
+              selector +
+              " for  " +
+              target
+          );
+        else error = e;
+        error.selector = selector;
+        error.target = target;
+        subscriber.error(error);
+      }
+    }, waitFor);
+  });
 }
-
