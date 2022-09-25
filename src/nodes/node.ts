@@ -10,6 +10,7 @@ export * from "./find-element";
 export * from "./get-title";
 export * from "./click-on";
 export * from "./send-keys";
+export * from "./get-cookie";
 export * from "./get-value";
 export * from "./set-value";
 export * from "./get-attribute";
@@ -54,6 +55,7 @@ export interface WebDriverMessage extends NodeMessageInFlow {
   url?: string;
   navType?: string;
   filePath?: string;
+  cookieName? : string;
 }
 
 /**

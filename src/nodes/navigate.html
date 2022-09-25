@@ -112,14 +112,15 @@
     outputs: 2,
     outputLabels: ["success", "failure"],
     icon: function () {
-      switch (this.navType) {
-        case "back":
-          return "font-awesome/fa-arrow-left";
-        case "forward":
-          return "font-awesome/fa-arrow-right";
-        case "refresh":
-          return "font-awesome/fa-refresh";
-      }
+      if (this.navType)
+        switch (this.navType) {
+          case "back":
+            return "font-awesome/fa-arrow-left";
+          case "forward":
+            return "font-awesome/fa-arrow-right";
+          case "refresh":
+            return "font-awesome/fa-refresh";
+        }
       return "font-awesome/fa-location-arrow";
     },
     label: function () {

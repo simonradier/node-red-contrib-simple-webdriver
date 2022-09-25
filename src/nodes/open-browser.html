@@ -163,7 +163,7 @@
     outputs: 1,
     outputLabels: ["success"],
     icon: function () {
-      return this.browser + ".svg";
+      return this.browserType ? this.browserType + ".svg" : "browser.svg";
     },
     label: function () {
       return this.name || this.topic || "Open URL";

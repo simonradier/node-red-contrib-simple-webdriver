@@ -1,3 +1,4 @@
+import { CookieDef } from "@critik/simple-webdriver/dist/interface";
 import {
   checkIfCritical,
   REDAPI,
@@ -8,16 +9,16 @@ import {
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from "./node";
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeGetTitleDef extends SeleniumNodeDef {
-  expected: string;
+export interface NodeGetCookieDef extends SeleniumNodeDef {
+  cookieName: string;
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeGetTitle extends SeleniumNode {}
+export interface NodeGetCookie extends SeleniumNode {}
 
-export function NodeGetTitleConstructor(
-  this: NodeGetTitle,
-  conf: NodeGetTitleDef
+export function NodeGetCookieConstructor(
+  this: NodeGetCookie,
+  conf: NodeGetCookieDef
 ) {
   REDAPI.get().nodes.createNode(this, conf);
   this.status({});
@@ -34,31 +35,30 @@ export function NodeGetTitleConstructor(
       node.status({ fill: "red", shape: "ring", text: "error" });
       done(error);
     } else {
-      const expected =
-        falseIfEmpty(replaceMustache(conf.expected, msg)) || msg.expected;
-      const waitFor: number = parseInt(
-        falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
-        10
-      );
+      const name =
+        falseIfEmpty(replaceMustache(conf.cookieName, msg)) || msg.cookieName;
       const timeout: number = parseInt(
         falseIfEmpty(replaceMustache(conf.timeout, msg)) || msg.timeout,
         10
       );
+      const waitFor: number = parseInt(
+        falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
+        10
+      );
       setTimeout(async () => {
         try {
-          const title: string =
-            expected && expected !== ""
-              ? await waitForValue(
-                  timeout,
-                  expected,
-                  () => { return msg.browser.getTitle() },
-                  null
-                )
-              : await msg.browser.getTitle();
+          const cookie : CookieDef = await waitForValue(
+            timeout, 
+            (val : CookieDef) => {
+              return (val?.name == name && 'value' in val)
+            },
+            (name : string) => { return msg.browser.cookie().get(name) },
+            name
+          )
           if (msg.error) {
             delete msg.error;
           }
-          msg.payload = title;
+          msg.payload = cookie;
           send([msg, null]);
           node.status({ fill: "green", shape: "dot", text: "success" });
           done();
@@ -70,9 +70,8 @@ export function NodeGetTitleConstructor(
           if (e.name == "WaitForError") {
             msg.payload = e.value;
             const error = {
-              message: "Browser windows title does not have the expected value",
-              expected,
-              found: msg.webTitle,
+              message: `Can't find cookie with name : ${name}`,
+              name : 'WaitForError'
             };
             node.warn(error.message);
             msg.error = error;

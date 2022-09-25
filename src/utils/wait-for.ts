@@ -1,26 +1,38 @@
+import { Timer } from "./timer";
+
 export class WaitForError extends Error {
   value: any;
   name: string = "WaitForError";
 }
 
 export async function waitForValue<T>(
-  param: any[],
+  timeout: number,
+  expectedValue: ((value : T) => boolean) | T,
   func: (...args) => Promise<T>,
-  expectedValue: T,
-  timeout: number
+  ...args
 ): Promise<T> {
-  return new Promise<T>(async (resolve, reject) => {
-    setTimeout(() => {
-      const err = new WaitForError();
-      err.message = "Cannot resolve expected value : " + value;
-      err.value = value;
-      reject(err);
-    }, timeout);
 
     let value: T;
-    do {
-      value = await func(param);
-    } while (value == expectedValue);
-    resolve(value);
-  });
+    let found = false
+    const timer = new Timer(timeout)
+
+    if (expectedValue instanceof Function) {
+      do {
+        value = await func(...args);
+        if (expectedValue(value))
+          found = true
+      } while (!found && !timer.done);
+    } else {
+      do {
+        value = await func(...args);
+        if (value == expectedValue)
+          found = true
+      } while (!found && !timer.done);
+    }
+    if (found)
+      return value
+
+    const error = new Error(`Timeout before value is found, last value returned : ${value}`)
+    error.name = "WaitForError"
+    throw error
 }
