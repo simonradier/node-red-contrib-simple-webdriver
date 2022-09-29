@@ -16,6 +16,7 @@ import {
   NodeSendKeysConstructor,
   NodeSetAttributeConstructor,
   NodeSetValueConstructor,
+  NodeSetCookieConstructor,
 } from "./nodes/node";
 import { REDAPI } from "./utils";
 
@@ -30,6 +31,7 @@ export = (RED: NodeAPI<NodeAPISettingsWithData>) => {
   REDAPI.get().nodes.registerType("send keys", NodeSendKeysConstructor);
   REDAPI.get().nodes.registerType("get value", NodeGetValueConstructor);
   REDAPI.get().nodes.registerType("get cookie", NodeGetCookieConstructor);
+  REDAPI.get().nodes.registerType("set cookie", NodeSetCookieConstructor);
   REDAPI.get().nodes.registerType("set value", NodeSetValueConstructor);
   REDAPI.get().nodes.registerType("get attribute", NodeGetAttributeConstructor);
   REDAPI.get().nodes.registerType("set attribute", NodeSetAttributeConstructor);

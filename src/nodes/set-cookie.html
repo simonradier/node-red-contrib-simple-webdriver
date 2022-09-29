@@ -1,14 +1,71 @@
-<script type="text/html" data-template-name="get cookie">
+<script type="text/html" data-template-name="set cookie">
+  <div class="form-row">
+    <i class="fa fa-cookie"></i> <span>Cookie</span></label>
+  </div>
   <div class="form-row">
     <label for="node-input-cookieName"
-      ><i class="fa fa-cookie"></i> <span>Cookie name</span></label>
+      ><i class="fa fa-cookie"></i> <span>Name</span></label>
     <input type="text" id="node-input-cookieName" />
   </div>
   <div class="form-row">
-    <label for="node-input-timeout"
-      ><i class="fa fa-clock-o"></i> <span>Timeout</span></label>
-    <input type="text" id="node-input-timeout" value="1000" />
+    <label for="node-input-cookieValue"
+      ><i class="fa fa-cookie"></i> <span>Value</span></label>
+    <input type="text" id="node-input-cookieValue" />
   </div>
+  <div class="form-row">
+    <label for="node-input-advanced"
+      ><i class="fa fa-cookie"></i> <span>Advanced options</span></label>
+      <input
+        type="checkbox"
+        id="node-input-advanced"
+        style="display: inline-block; width: auto; vertical-align: top;"
+      />
+  </div>
+  <div id="advanced-options">
+    <div class="form-row">
+      <label for="node-input-cookiePath"
+        ><i class="fa fa-cookie"></i> <span>Cookie Path</span></label>
+      <input type="text" id="node-input-cookiePath" />
+    </div>
+    <div class="form-row">
+      <label for="node-input-cookieDomaine"
+        ><i class="fa fa-cookie"></i> <span>Domain</span></label>
+      <input type="text" id="node-input-cookieDomain" />
+    </div>
+    <div class="form-row">
+      <label for="node-input-cookieSecure"
+        ><i class="fa fa-cookie"></i> <span>Secure</span></label>
+      <input
+        type="checkbox"
+        id="node-input-cookieSecure"
+        style="display: inline-block; width: auto; vertical-align: top;"
+      />
+    </div>
+    <div class="form-row">
+      <label for="node-input-cookieHttpOnly"
+        ><i class="fa fa-cookie"></i> <span>HttpOnly</span></label>
+      <input
+        type="checkbox"
+        id="node-input-cookieHttpOnly"
+        style="display: inline-block; width: auto; vertical-align: top;"
+      />
+    </div>
+    <div class="form-row">
+      <label for="node-input-cookieExpiry"
+        ><i class="fa fa-cookie"></i> <span>Max Age</span></label>
+      <input type="text" id="node-input-cookieExpiry" />
+    </div>
+    <div class="form-row">
+      <label for="node-input-cookieSameSite"
+        ><i class="fa fa-cookie"></i> <span>Same Site</span></label>
+        <select id="node-input-selector" style="width:125px !important">
+          <option value="">None</option>
+          <option value="id">Lax</option>
+          <option value="name">Strict</option>
+        </select>
+    </div>
+  </div>
+  <hr align="middle" />
   <div class="form-row">
     <label for="node-input-waitFor"
       ><i class="fa fa-pause"></i> <span>Wait For</span></label>
@@ -22,14 +79,16 @@
     </div>
 </script>
 
-<script type="text/html" data-help-name="get cookie">
-  <p>Get cookie informations based on cookie's <code>name</code>.</p>
+<script type="text/html" data-help-name="set cookie">
+  <p>Set (create or update) a cookie based on provided informations.</p>
   <h3>Inputs</h3>
   	<dl class="message-properties">
   		<dt>browser</dt>
-  		<dd>the browser session object required to execute browsing actions.</dd>
-  		<dt>cookieName<span class="property-type">string</span></dt>
-  		<dd> the name value of the cookie to retreive.</dd>
+  		<dd> the browser session object required to execute browsing actions.</dd>
+  		<dt>cookie<span class="property-type"><a href="https://www.w3.org/TR/webdriver2/#cookies">string</a></span></dt>
+  		<dd> a Cookie object which is will be used to set the target cookie.</dd>
+  		<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
+  		<dd> the timeout value of the find request.</dd>
   		<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
   		<dd> the pause time before launching the node action.</dd>
   	</dl>
@@ -84,14 +143,38 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("get cookie", {
+  RED.nodes.registerType("set cookie", {
     category: "webdriver",
     defaults: {
       name: {
         value: "",
       },
+      advanced : {
+        value : false,
+      },
       cookieName: {
         value: "",
+      },
+      cookieValue: {
+        value: "",
+      },
+      cookiePath: {
+        value: undefined,
+      },
+      cookieDomain: {
+        value: undefined,
+      },
+      cookieSecure: {
+        value: undefined,
+      },
+      cookieHttpOnly: {
+        value: undefined,
+      },
+      cookieExpiry: {
+        value: undefined,
+      },
+      cookieSameSite: {
+        value: undefined,
       },
       timeout: {
         value: 3000,
@@ -107,19 +190,20 @@
     inputs: 1,
     outputs: 2,
     outputLabels: ["success", "failure"],
-    icon : "get-cookie.svg",
+    icon : "set-cookie.svg",
     label: function () {
-      return this.name || "Get Cookie";
+      return this.name || "Set Cookie";
     },
     labelStyle: function () {
       return this.name ? "node_label_italic" : "";
     },
     oneditprepare: function () {
       let node = this;
-      $("#node-input-selector").on("change", (event) => {
-        if ($("#node-input-selector").val() === "")
-          $("#row-input-target").hide();
-        else $("#row-input-target").show();
+      $("#node-input-advanced").on("change", (event) => {
+        debugger
+        if ($("#node-input-advanced").is(":checked"))
+          $("#advanced-options").show();
+        else $("#advanced-options").hide();
       });
     },
   });

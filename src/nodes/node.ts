@@ -1,8 +1,9 @@
 import { NodeMessageInFlow } from "node-red__registry";
 import { Node, NodeDef, NodeMessage } from "node-red";
 import { Observable } from "rxjs";
-import { Browser, Element } from "@critik/simple-webdriver";
+import { Browser, Cookie, Element } from "@critik/simple-webdriver";
 import { replaceMustache, falseIfEmpty } from "../utils";
+import { CookieDef } from "@critik/simple-webdriver/dist/interface";
 
 export * from "./open-browser";
 export * from "./close-browser";
@@ -11,6 +12,7 @@ export * from "./get-title";
 export * from "./click-on";
 export * from "./send-keys";
 export * from "./get-cookie";
+export * from "./set-cookie";
 export * from "./get-value";
 export * from "./set-value";
 export * from "./get-attribute";
@@ -56,6 +58,7 @@ export interface WebDriverMessage extends NodeMessageInFlow {
   navType?: string;
   filePath?: string;
   cookieName? : string;
+  cookie? : CookieDef;
 }
 
 /**
