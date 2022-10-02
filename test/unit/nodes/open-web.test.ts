@@ -11,7 +11,7 @@ chai.use(chaiAsPromised)
 helper.init(require.resolve('node-red'))
 
 describe('node : open-web', function () {
-  for (let browser of Object.keys(WD_TESTED_Browser)) {
+  for (const browser of Object.keys(WD_TESTED_Browser)) {
     describe('browser : ' + browser, function () {
       before(function () {})
 
@@ -25,7 +25,7 @@ describe('node : open-web', function () {
       })
 
       it('should allow to create a "open browser" node', function (done) {
-        let flow = [{ id: 'n1', type: 'open browser', name: 'test name' }]
+        const flow = [{ id: 'n1', type: 'open browser', name: 'test name' }]
         helper.load(swd, flow, function () {
           var n1 = helper.getNode('n1')
           n1.should.have.property('name', 'test name')
@@ -34,7 +34,7 @@ describe('node : open-web', function () {
       })
 
       it('should create a new webdriver session and push it to the msg object ', function (done) {
-        let flow = [
+        const flow = [
           NODE_OPEN_WEB[browser]('n1', ['n4']),
           //@ts-ignore
           {
@@ -48,8 +48,8 @@ describe('node : open-web', function () {
           { id: 'n4', type: 'close browser' }
         ]
         helper.load(swd, flow, function () {
-          let n3 = helper.getNode('n3')
-          let n1 = helper.getNode('n1')
+          const n3 = helper.getNode('n3')
+          const n1 = helper.getNode('n1')
           n3.on('input', function (msg: any) {
             expect(msg.browser, 'check browser session').to.exist
             expect(msg.payload, 'check payload').to.be.equal('test')

@@ -17,10 +17,10 @@ export async function checkIfOnline(url_string: string): Promise<boolean> {
       socket.destroy()
       resolve(status)
     })
-    socket.on('error', _ => {
+    socket.on('error', () => {
       resolve(status)
     })
-    socket.on('close', _ => {
+    socket.on('close', () => {
       resolve(status)
     })
     socket.connect(port, host)

@@ -2,7 +2,6 @@ import { CookieDef } from '@critik/simple-webdriver/dist/interface'
 import {
   checkIfCritical,
   REDAPI,
-  waitForValue,
   replaceMustache,
   falseIfEmpty
 } from '../utils'
