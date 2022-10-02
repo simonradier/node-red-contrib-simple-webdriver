@@ -15,9 +15,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-selector"
-      ><i class="fa fa-bars"></i> <span>By</span></label
-    >
+    <label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
     <select id="node-input-selector" style="width:125px !important">
       <option value=""></option>
       <option value="id">id</option>
@@ -51,9 +49,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label
-    >
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
     <input type="text" id="node-input-name" />
   </div>
 </script>
@@ -129,102 +125,101 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("run script", {
-    category: "webdriver",
+  RED.nodes.registerType('run script', {
+    category: 'webdriver',
     defaults: {
       name: {
-        value: "",
+        value: ''
       },
       script: {
-        value: "console.log(arguments[0].innerHTML);",
+        value: 'console.log(arguments[0].innerHTML);'
       },
       selector: {
-        value: "",
+        value: ''
       },
       target: {
-        value: "",
+        value: ''
       },
       timeout: {
         value: 1000,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       waitfor: {
         value: 500,
-        validate: RED.validators.number(),
-      },
+        validate: RED.validators.number()
+      }
     },
-    color: "#47B6EE",
+    color: '#47B6EE',
     inputs: 1,
     outputs: 2,
-    outputLabels: ["success", "failure"],
-    icon: "debug.png",
+    outputLabels: ['success', 'failure'],
+    icon: 'debug.png',
     label: function () {
-      return this.name || "Run Script";
+      return this.name || 'Run Script'
     },
     labelStyle: function () {
-      return this.name ? "node_label_italic" : "";
+      return this.name ? 'node_label_italic' : ''
     },
     oneditprepare: function () {
-      var that = this;
+      var that = this
 
-      $("#node-input-selector").on("change", (event) => {
-        if ($("#node-input-selector").val() === "") {
-          $("#row-input-target").hide();
-          $("#row-input-timeout").hide();
+      $('#node-input-selector').on('change', event => {
+        if ($('#node-input-selector').val() === '') {
+          $('#row-input-target').hide()
+          $('#row-input-timeout').hide()
         } else {
-          $("#row-input-target").show();
-          $("#row-input-timeout").show();
+          $('#row-input-target').show()
+          $('#row-input-timeout').show()
         }
-      });
+      })
 
       function functionDialogResize() {
-        var rows = $("#dialog-form>div:not(.node-text-editor-row)");
-        var height = $("#dialog-form").height();
+        var rows = $('#dialog-form>div:not(.node-text-editor-row)')
+        var height = $('#dialog-form').height()
         for (var i = 0; i < rows.size(); i++) {
-          height -= $(rows[i]).outerHeight(true);
+          height -= $(rows[i]).outerHeight(true)
         }
-        var editorRow = $("#dialog-form>div.node-text-editor-row");
+        var editorRow = $('#dialog-form>div.node-text-editor-row')
         height -=
-          parseInt(editorRow.css("marginTop")) +
-          parseInt(editorRow.css("marginBottom"));
-        $(".node-text-editor").css("height", height + "px");
-        that.editor.resize();
+          parseInt(editorRow.css('marginTop')) + parseInt(editorRow.css('marginBottom'))
+        $('.node-text-editor').css('height', height + 'px')
+        that.editor.resize()
       }
 
-      $("#dialog").on("dialogresize", functionDialogResize);
-      $("#dialog").one("dialogopen", function (ev) {
-        var size = $("#dialog").dialog("option", "sizeCache-function");
+      $('#dialog').on('dialogresize', functionDialogResize)
+      $('#dialog').one('dialogopen', function (ev) {
+        var size = $('#dialog').dialog('option', 'sizeCache-function')
         if (size) {
-          $("#dialog").dialog("option", "width", size.width);
-          $("#dialog").dialog("option", "height", size.height);
-          functionDialogResize();
+          $('#dialog').dialog('option', 'width', size.width)
+          $('#dialog').dialog('option', 'height', size.height)
+          functionDialogResize()
         }
-      });
-      $("#dialog").one("dialogclose", function (ev, ui) {
-        var height = $("#dialog").dialog("option", "height");
-        $("#dialog").off("dialogresize", functionDialogResize);
-      });
+      })
+      $('#dialog').one('dialogclose', function (ev, ui) {
+        var height = $('#dialog').dialog('option', 'height')
+        $('#dialog').off('dialogresize', functionDialogResize)
+      })
 
       this.editor = RED.editor.createEditor({
-        id: "node-input-script-editor",
-        mode: "ace/mode/javascript",
-        value: $("#node-input-script").val(),
-      });
-      this.editor.focus();
+        id: 'node-input-script-editor',
+        mode: 'ace/mode/javascript',
+        value: $('#node-input-script').val()
+      })
+      this.editor.focus()
     },
     oneditsave: function () {
-      var annot = this.editor.getSession().getAnnotations();
-      this.noerr = 0;
-      $("#node-input-noerr").val(0);
+      var annot = this.editor.getSession().getAnnotations()
+      this.noerr = 0
+      $('#node-input-noerr').val(0)
       for (var k = 0; k < annot.length; k++) {
         //console.log(annot[k].type,":",annot[k].text, "on line", annot[k].row);
-        if (annot[k].type === "error") {
-          $("#node-input-noerr").val(annot.length);
-          this.noerr = annot.length;
+        if (annot[k].type === 'error') {
+          $('#node-input-noerr').val(annot.length)
+          this.noerr = annot.length
         }
       }
-      $("#node-input-script").val(this.editor.getValue());
-      delete this.editor;
-    },
-  });
+      $('#node-input-script').val(this.editor.getValue())
+      delete this.editor
+    }
+  })
 </script>

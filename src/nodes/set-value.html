@@ -1,15 +1,11 @@
 <script type="text/html" data-template-name="set value">
   <div class="form-row">
-    <label for="node-input-value"
-      ><i class="fa fa-empire"></i> <span>Value</span></label
-    >
+    <label for="node-input-value"><i class="fa fa-empire"></i> <span>Value</span></label>
     <input type="text" id="node-input-value" />
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-selector"
-      ><i class="fa fa-bars"></i> <span>By</span></label
-    >
+    <label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
     <select id="node-input-selector" style="width:125px !important">
       <option value=""></option>
       <option value="id">id</option>
@@ -43,9 +39,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label
-    >
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
     <input type="text" id="node-input-name" />
   </div>
 </script>
@@ -120,51 +114,51 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("set value", {
-    category: "webdriver",
+  RED.nodes.registerType('set value', {
+    category: 'webdriver',
     defaults: {
       name: {
-        value: "",
+        value: ''
       },
       value: {
-        value: "",
+        value: ''
       },
       selector: {
-        value: "",
+        value: ''
       },
       target: {
-        value: "",
+        value: ''
       },
       timeout: {
         value: 1000,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       waitFor: {
         value: 500,
-        validate: RED.validators.number(),
-      },
+        validate: RED.validators.number()
+      }
     },
-    color: "#47B6EE",
+    color: '#47B6EE',
     inputs: 1,
     outputs: 2,
-    icon: "font-awesome/fa-pencil",
+    icon: 'font-awesome/fa-pencil',
     label: function () {
-      return this.name || "Set Value";
+      return this.name || 'Set Value'
     },
     labelStyle: function () {
-      return this.name ? "node_label_italic" : "";
+      return this.name ? 'node_label_italic' : ''
     },
     oneditprepare: function () {
-      let node = this;
-      $("#node-input-selector").on("change", (event) => {
-        if ($("#node-input-selector").val() === "") {
-          $("#row-input-target").hide();
-          $("#row-input-timeout").hide();
+      let node = this
+      $('#node-input-selector').on('change', event => {
+        if ($('#node-input-selector').val() === '') {
+          $('#row-input-target').hide()
+          $('#row-input-timeout').hide()
         } else {
-          $("#row-input-target").show();
-          $("#row-input-timeout").show();
+          $('#row-input-target').show()
+          $('#row-input-timeout').show()
         }
-      });
-    },
-  });
+      })
+    }
+  })
 </script>

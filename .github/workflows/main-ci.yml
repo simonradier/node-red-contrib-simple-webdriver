@@ -22,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
-      COVERALLS_GIT_BRANCH: "${{ github.ref }}"
-      COVERALLS_SERVICE_NAME: "Github CI"
+      COVERALLS_REPO_TOKEN: '${{ secrets.COVERALLS_REPO_TOKEN }}'
+      COVERALLS_GIT_BRANCH: '${{ github.ref }}'
+      COVERALLS_SERVICE_NAME: 'Github CI'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

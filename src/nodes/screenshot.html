@@ -13,9 +13,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label
-    >
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
     <input type="text" id="node-input-name" />
   </div>
 </script>
@@ -67,30 +65,30 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("screenshot", {
-    category: "webdriver",
+  RED.nodes.registerType('screenshot', {
+    category: 'webdriver',
     defaults: {
       name: {
-        value: "",
+        value: ''
       },
       filePath: {
-        value: "",
+        value: ''
       },
       waitFor: {
         value: 500,
-        validate: RED.validators.number(),
-      },
+        validate: RED.validators.number()
+      }
     },
-    color: "#47B6EE",
+    color: '#47B6EE',
     inputs: 1,
     outputs: 2,
-    outputLabels: ["success", "failure"],
-    icon: "font-awesome/fa-camera",
+    outputLabels: ['success', 'failure'],
+    icon: 'font-awesome/fa-camera',
     label: function () {
-      return this.name || "Screenshot";
+      return this.name || 'Screenshot'
     },
     labelStyle: function () {
-      return this.name ? "node_label_italic" : "";
-    },
-  });
+      return this.name ? 'node_label_italic' : ''
+    }
+  })
 </script>

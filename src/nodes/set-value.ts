@@ -1,9 +1,9 @@
-import { checkIfCritical, replaceMustache, falseIfEmpty } from "../utils";
-import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from "./node";
-import { GenericNodeConstructor } from "./node-constructor";
+import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
+import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from './node'
+import { GenericNodeConstructor } from './node-constructor'
 
 export interface NodeSetValueDef extends SeleniumNodeDef {
-  value: string;
+  value: string
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -15,40 +15,40 @@ async function inputAction(
   action: WebDriverAction
 ): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
-    const msg = action.msg;
-    const value = falseIfEmpty(replaceMustache(conf.value, msg)) || msg.value;
+    const msg = action.msg
+    const value = falseIfEmpty(replaceMustache(conf.value, msg)) || msg.value
     try {
       await msg.browser.executeSync(
         "arguments[0].setAttribute('value', '" + value + "')",
         msg.element
-      );
-      node.status({ fill: "green", shape: "dot", text: "success" });
+      )
+      node.status({ fill: 'green', shape: 'dot', text: 'success' })
       if (msg.error) {
-        delete msg.error;
+        delete msg.error
       }
-      action.send([msg, null]);
-      action.done();
+      action.send([msg, null])
+      action.done()
     } catch (err) {
       if (checkIfCritical(err)) {
-        reject(err);
+        reject(err)
       } else {
         msg.error = {
-          message: "Can't set value on the the element : " + err.message,
-        };
-        node.warn(msg.error.message);
+          message: "Can't set value on the the element : " + err.message
+        }
+        node.warn(msg.error.message)
         node.status({
-          fill: "yellow",
-          shape: "dot",
-          text: "expected value error",
-        });
-        action.send([null, msg]);
-        action.done();
+          fill: 'yellow',
+          shape: 'dot',
+          text: 'expected value error'
+        })
+        action.send([null, msg])
+        action.done()
       }
     }
-    resolve();
-  });
+    resolve()
+  })
 }
 
-const NodeSetValueConstructor = GenericNodeConstructor(null, inputAction);
+const NodeSetValueConstructor = GenericNodeConstructor(null, inputAction)
 
-export { NodeSetValueConstructor as NodeSetValueConstructor };
+export { NodeSetValueConstructor as NodeSetValueConstructor }

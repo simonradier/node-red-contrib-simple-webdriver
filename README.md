@@ -4,7 +4,7 @@
 
 Simplewebdriver nodes for Node-Red allow web browser automation initially based on the [Selenium-Webdriver](https://www.selenium.dev/documentation/) API. Based on [node-red-contrib-selenium-webdriver](https://flows.nodered.org/node/node-red-contrib-selenium-webdriver) library and forked from node-red-contrib-selenium-wd2, it was rewritten in Typescript to ease its maintenance, improve the overall stability and upgrade a little bit the set of features.
 
-![wd2 workflow example](https://raw.githubusercontent.com/simonradier/node-red-contrib-selenium-wd2/master/doc/img/workflow.png "wd2 workflow example")
+![wd2 workflow example](https://raw.githubusercontent.com/simonradier/node-red-contrib-selenium-wd2/master/doc/img/workflow.png 'wd2 workflow example')
 
 ## Prerequisite
 
@@ -21,7 +21,7 @@ In order to use node-red-contrib-selenium-wd2, you must fullfill the following p
 
 Launch Node-red `node-red` and the simplewebdriver nodes will be loaded automatically. You should see the list of node under the simplewebdriver section.
 
-![simplewebdriver section overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simplewebdriver/master/doc/img/wd2.png "simplewebdriver section")
+![simplewebdriver section overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simplewebdriver/master/doc/img/wd2.png 'simplewebdriver section')
 
 ## Develop
 
@@ -49,4 +49,4 @@ Some nodes will provide two outputs a success and a failure one.
 
 All nodes provides their own documentation directly inside node-red.
 
-![wd2 help overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-selenium-wd2/master/doc/img/node-help.png "wd2 help")
+![wd2 help overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-selenium-wd2/master/doc/img/node-help.png 'wd2 help')

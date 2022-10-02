@@ -1,11 +1,11 @@
-import { Node } from "node-red";
-import { checkIfCritical, REDAPI } from "../utils";
+import { Node } from 'node-red'
+import { checkIfCritical, REDAPI } from '../utils'
 import {
   WebDriverAction,
   WebDriverMessage,
   SeleniumNodeDef,
-  waitForElement,
-} from "./node";
+  waitForElement
+} from './node'
 
 export function GenericNodeConstructor<
   TNode extends Node<any>,
@@ -16,91 +16,84 @@ export function GenericNodeConstructor<
     conf: TNodeDef,
     action: WebDriverAction
   ) => Promise<boolean>,
-  inputAction: (
-    node: TNode,
-    conf: TNodeDef,
-    action: WebDriverAction
-  ) => Promise<void>,
+  inputAction: (node: TNode, conf: TNodeDef, action: WebDriverAction) => Promise<void>,
   nodeCreation: () => void = null
 ) {
   return function (this: TNode, conf: TNodeDef): void {
-    REDAPI.get().nodes.createNode(this, conf);
-    const node = this;
-    node.status({});
-    this.on("input", async (message: any, send, done) => {
+    REDAPI.get().nodes.createNode(this, conf)
+    const node = this
+    node.status({})
+    this.on('input', async (message: any, send, done) => {
       // Cheat to allow correct typing in typescript
-      let msg: WebDriverMessage = message;
-      const action: WebDriverAction = { msg, send, done };
-      node.status({});
+      let msg: WebDriverMessage = message
+      const action: WebDriverAction = { msg, send, done }
+      node.status({})
       try {
-        if (
-          !inputPreCondAction ||
-          (await inputPreCondAction(node, conf, action))
-        ) {
-          msg = action.msg;
+        if (!inputPreCondAction || (await inputPreCondAction(node, conf, action))) {
+          msg = action.msg
           if (msg.browser == null) {
             const error = new Error(
               "Can't use this node without a working open-browser node first. For node : " +
                 conf.name
-            );
-            node.status({ fill: "red", shape: "ring", text: "error" });
-            done(error);
+            )
+            node.status({ fill: 'red', shape: 'ring', text: 'error' })
+            done(error)
           } else {
             // If InputPreCond return false, next steps will not be executed
             waitForElement(conf, msg).subscribe({
               next(val) {
-                if (typeof val === "string") {
-                  node.status({ fill: "blue", shape: "dot", text: val });
+                if (typeof val === 'string') {
+                  node.status({ fill: 'blue', shape: 'dot', text: val })
                 } else {
-                  msg.element = val;
+                  msg.element = val
                 }
               },
               error(err) {
                 if (checkIfCritical(err)) {
                   node.status({
-                    fill: "red",
-                    shape: "dot",
-                    text: "critical error",
-                  });
-                  node.error(err.toString());
-                  done(err);
+                    fill: 'red',
+                    shape: 'dot',
+                    text: 'critical error'
+                  })
+                  node.error(err.toString())
+                  done(err)
                 } else {
                   node.status({
-                    fill: "yellow",
-                    shape: "dot",
-                    text: "location error",
-                  });
-                  msg.error = err;
-                  send([null, msg]);
-                  done();
+                    fill: 'yellow',
+                    shape: 'dot',
+                    text: 'location error'
+                  })
+                  msg.error = err
+                  send([null, msg])
+                  done()
                 }
               },
               async complete() {
-                node.status({ fill: "blue", shape: "dot", text: "located" });
+                node.status({ fill: 'blue', shape: 'dot', text: 'located' })
                 try {
-                  await inputAction(node, conf, action);
+                  await inputAction(node, conf, action)
                 } catch (e) {
                   node.status({
-                    fill: "red",
-                    shape: "dot",
-                    text: "critical error",
-                  });
-                  node.error(e.toString());
-                  delete msg.browser;
-                  done(e);
+                    fill: 'red',
+                    shape: 'dot',
+                    text: 'critical error'
+                  })
+                  node.error(e.toString())
+                  delete msg.browser
+                  done(e)
                 }
-              },
-            });
+              }
+            })
           }
         }
       } catch (e) {
-        node.status({ fill: "red", shape: "dot", text: "critical error" });
-        node.error(e.toString());
-        delete msg.browser;
-        done(e);
+        node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
+        node.error(e.toString())
+        delete msg.browser
+        done(e)
       }
-    });
+    })
     // Activity to do during Node Creation
-    if (nodeCreation) nodeCreation();
-  };
+    if (nodeCreation) nodeCreation()
+  }
 }

@@ -14,9 +14,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-selector"
-      ><i class="fa fa-bars"></i> <span>By</span></label
-    >
+    <label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
     <select id="node-input-selector" style="width:125px !important">
       <option value=""></option>
       <option value="id">id</option>
@@ -50,9 +48,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label
-    >
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
     <input type="text" id="node-input-name" />
   </div>
 </script>
@@ -127,103 +123,103 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("click on", {
-    category: "webdriver",
+  RED.nodes.registerType('click on', {
+    category: 'webdriver',
     defaults: {
       name: {
-        value: "",
+        value: ''
       },
       selector: {
-        value: "",
+        value: ''
       },
       target: {
-        value: "",
+        value: ''
       },
       timeout: {
         value: 1000,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       waitFor: {
         value: 500,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       clickOn: {
-        value: false,
-      },
+        value: false
+      }
     },
-    color: "#47B6EE",
+    color: '#47B6EE',
     inputs: 1,
     outputs: 2,
-    outputLabels: ["success", "failure"],
-    icon: "font-awesome/fa-mouse-pointer",
+    outputLabels: ['success', 'failure'],
+    icon: 'font-awesome/fa-mouse-pointer',
     label: function () {
-      return this.name || "Click On";
+      return this.name || 'Click On'
     },
     labelStyle: function () {
-      return this.name ? "node_label_italic" : "";
+      return this.name ? 'node_label_italic' : ''
     },
     button: {
       visible: function () {
         // return whether or not the button is visible, based on the current
         // configuration of the node
-        return this.clickOn;
+        return this.clickOn
       },
       onclick: function () {
-        var node = this;
+        var node = this
         $.ajax({
-          url: "onclick/" + this.id,
-          type: "POST",
+          url: 'onclick/' + this.id,
+          type: 'POST',
           success: function (resp) {
-            RED.notify(node._("inject.success", { label: label }), "success");
+            RED.notify(node._('inject.success', { label: label }), 'success')
           },
           error: function (jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 404) {
               RED.notify(
-                node._("common.notification.error", {
-                  message: node._("common.notification.errors.not-deployed"),
+                node._('common.notification.error', {
+                  message: node._('common.notification.errors.not-deployed')
                 }),
-                "error"
-              );
+                'error'
+              )
             } else if (jqXHR.status == 500) {
               RED.notify(
-                node._("common.notification.error", {
-                  message: node._("inject.errors.failed"),
+                node._('common.notification.error', {
+                  message: node._('inject.errors.failed')
                 }),
-                "error"
-              );
+                'error'
+              )
             } else if (jqXHR.status == 0) {
               RED.notify(
-                node._("common.notification.error", {
-                  message: node._("common.notification.errors.no-response"),
+                node._('common.notification.error', {
+                  message: node._('common.notification.errors.no-response')
                 }),
-                "error"
-              );
+                'error'
+              )
             } else {
               RED.notify(
-                node._("common.notification.error", {
-                  message: node._("common.notification.errors.unexpected", {
+                node._('common.notification.error', {
+                  message: node._('common.notification.errors.unexpected', {
                     status: jqXHR.status,
-                    message: textStatus,
-                  }),
+                    message: textStatus
+                  })
                 }),
-                "error"
-              );
+                'error'
+              )
             }
-          },
-        });
-      },
+          }
+        })
+      }
     },
     oneditprepare: function () {
-      let node = this;
-      $("#node-input-selector").on("change", (event) => {
-        if ($("#node-input-selector").val() === "") {
-          $("#row-input-target").hide();
-          $("#row-input-timeout").hide();
+      let node = this
+      $('#node-input-selector').on('change', event => {
+        if ($('#node-input-selector').val() === '') {
+          $('#row-input-target').hide()
+          $('#row-input-timeout').hide()
         } else {
-          $("#row-input-target").show();
-          $("#row-input-timeout").show();
+          $('#row-input-target').show()
+          $('#row-input-timeout').show()
         }
-      });
-    },
-  });
+      })
+    }
+  })
 </script>

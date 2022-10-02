@@ -19,9 +19,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label
-    >
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
     <input type="text" id="node-input-name" />
   </div>
 </script>
@@ -88,43 +86,42 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("get cookie", {
-    category: "webdriver",
+  RED.nodes.registerType('get cookie', {
+    category: 'webdriver',
     defaults: {
       name: {
-        value: "",
+        value: ''
       },
       cookieName: {
-        value: "",
+        value: ''
       },
       timeout: {
         value: 3000,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       waitFor: {
         value: 500,
-        validate: RED.validators.number(),
-      },
+        validate: RED.validators.number()
+      }
     },
-    color: "#47B6EE",
+    color: '#47B6EE',
     inputs: 1,
     outputs: 2,
-    outputLabels: ["success", "failure"],
-    icon: "get-cookie.svg",
+    outputLabels: ['success', 'failure'],
+    icon: 'get-cookie.svg',
     label: function () {
-      return this.name || "Get Cookie";
+      return this.name || 'Get Cookie'
     },
     labelStyle: function () {
-      return this.name ? "node_label_italic" : "";
+      return this.name ? 'node_label_italic' : ''
     },
     oneditprepare: function () {
-      let node = this;
-      $("#node-input-selector").on("change", (event) => {
-        if ($("#node-input-selector").val() === "")
-          $("#row-input-target").hide();
-        else $("#row-input-target").show();
-      });
-    },
-  });
+      let node = this
+      $('#node-input-selector').on('change', event => {
+        if ($('#node-input-selector').val() === '') $('#row-input-target').hide()
+        else $('#row-input-target').show()
+      })
+    }
+  })
 </script>

@@ -26,9 +26,7 @@
     <input type="text" id="node-input-webURL" />
   </div>
   <div class="form-row">
-    <label for="node-input-width"
-      ><i class="fa fa-empire"></i> <span>Width</span></label
-    >
+    <label for="node-input-width"><i class="fa fa-empire"></i> <span>Width</span></label>
     <input type="text" id="node-input-width" value="1024" />
   </div>
   <div class="form-row">
@@ -68,9 +66,7 @@
   </div>
   <hr align="middle" />
   <div class="form-row">
-    <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label
-    >
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
     <input type="text" id="node-input-name" />
   </div>
 </script>
@@ -114,111 +110,111 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("open browser", {
-    category: "webdriver",
+  RED.nodes.registerType('open browser', {
+    category: 'webdriver',
     defaults: {
       name: {
-        value: "",
+        value: ''
       },
       browserType: {
-        value: "chrome",
-        required: true,
+        value: 'chrome',
+        required: true
       },
       webURL: {
-        value: "https://www.google.com/",
-        required: true,
+        value: 'https://www.google.com/',
+        required: true
       },
       width: {
         value: 1280,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       height: {
         value: 1024,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       timeout: {
         value: 3000,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       maximized: {
         value: true,
-        required: true,
+        required: true
       },
       headless: {
         value: false,
-        required: true,
+        required: true
       },
       args: {
         value: [],
-        required: false,
+        required: false
       },
       serverURL: {
         required: true,
-        value: "http://localhost:9515",
-      },
+        value: 'http://localhost:9515'
+      }
     },
-    color: "#47B6EE",
+    color: '#47B6EE',
     inputs: 1,
     outputs: 1,
-    outputLabels: ["success"],
+    outputLabels: ['success'],
     icon: function () {
-      return this.browserType ? this.browserType + ".svg" : "browser.svg";
+      return this.browserType ? this.browserType + '.svg' : 'browser.svg'
     },
     label: function () {
-      return this.name || this.topic || "Open URL";
+      return this.name || this.topic || 'Open URL'
     },
     labelStyle: function () {
-      return this.name ? "node_label_italic" : "";
+      return this.name ? 'node_label_italic' : ''
     },
     oneditprepare: function () {
-      const node = this;
-      let init = false;
-      $("#node-input-args-container").editableList({
-        addButton: "add",
+      const node = this
+      let init = false
+      $('#node-input-args-container').editableList({
+        addButton: 'add',
         removable: true,
         sortable: true,
         addItem: function (row, index, data) {
           $(row).html(
             `<input type="text" id="node-input-args-${index}" class="node-input-args-row" value="${
-              data.argName || "--arg-name-" + (index + 1)
+              data.argName || '--arg-name-' + (index + 1)
             }">`
-          );
-          $(row).on("keyup", (event) => {
-            debugger;
-            if (row.children()[0].value === "--headless")
-              $("#node-input-headless").prop("checked", true);
-            else $("#node-input-headless").prop("checked", false);
-          });
+          )
+          $(row).on('keyup', event => {
+            debugger
+            if (row.children()[0].value === '--headless')
+              $('#node-input-headless').prop('checked', true)
+            else $('#node-input-headless').prop('checked', false)
+          })
         },
         removeItem: function (data) {
-          for (const row of $(".node-input-args-row")) {
+          for (const row of $('.node-input-args-row')) {
             if (data.argName && row.value === data.argName)
-              row.parentElement.parentElement.remove();
+              row.parentElement.parentElement.remove()
           }
-        },
-      });
-      $("#node-input-args-container").editableList(
-        "addItems",
-        node.args.map((arg) => ({ argName: arg }))
-      );
-      $("#node-input-headless").on("click", (event) => {
-        if ($("#node-input-headless").prop("checked")) {
-          $("#node-input-args-container").editableList("addItem", {
-            argName: "--headless",
-          });
+        }
+      })
+      $('#node-input-args-container').editableList(
+        'addItems',
+        node.args.map(arg => ({ argName: arg }))
+      )
+      $('#node-input-headless').on('click', event => {
+        if ($('#node-input-headless').prop('checked')) {
+          $('#node-input-args-container').editableList('addItem', {
+            argName: '--headless'
+          })
         } else
-          $("#node-input-args-container").editableList("removeItem", {
-            argName: "--headless",
-          });
-      });
+          $('#node-input-args-container').editableList('removeItem', {
+            argName: '--headless'
+          })
+      })
     },
     oneditsave: function () {
-      const rows = $(".node-input-args-row");
-      this.args = [];
+      const rows = $('.node-input-args-row')
+      this.args = []
       for (row of rows) {
-        this.args.push(row.value);
+        this.args.push(row.value)
       }
-    },
-  });
+    }
+  })
 </script>

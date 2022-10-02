@@ -1,13 +1,13 @@
-import { NodeAPI, NodeAPISettingsWithData } from "node-red";
+import { NodeAPI, NodeAPISettingsWithData } from 'node-red'
 
 export class REDAPI {
-  private static instance: NodeAPI<NodeAPISettingsWithData>;
+  private static instance: NodeAPI<NodeAPISettingsWithData>
 
   public static get(): NodeAPI<NodeAPISettingsWithData> {
-    return REDAPI.instance;
+    return REDAPI.instance
   }
 
   public static set(redAPI: NodeAPI<NodeAPISettingsWithData>): void {
-    REDAPI.instance = redAPI;
+    REDAPI.instance = redAPI
   }
 }
