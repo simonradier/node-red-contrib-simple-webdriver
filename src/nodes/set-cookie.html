@@ -74,7 +74,7 @@
   <hr align="middle" />
   <div class="form-row">
     <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label>  
+      ><i class="fa fa-tag"></i> <span>Name</span></label>
       <input type="text" id="node-input-name" />
     </div>
 </script>
@@ -149,8 +149,8 @@
       name: {
         value: "",
       },
-      advanced : {
-        value : false,
+      advanced: {
+        value: false,
       },
       cookieName: {
         value: "",
@@ -190,7 +190,7 @@
     inputs: 1,
     outputs: 2,
     outputLabels: ["success", "failure"],
-    icon : "set-cookie.svg",
+    icon: "set-cookie.svg",
     label: function () {
       return this.name || "Set Cookie";
     },
@@ -200,7 +200,7 @@
     oneditprepare: function () {
       let node = this;
       $("#node-input-advanced").on("change", (event) => {
-        debugger
+        debugger;
         if ($("#node-input-advanced").is(":checked"))
           $("#advanced-options").show();
         else $("#advanced-options").hide();

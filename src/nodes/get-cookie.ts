@@ -47,14 +47,16 @@ export function NodeGetCookieConstructor(
       );
       setTimeout(async () => {
         try {
-          const cookie : CookieDef = await waitForValue(
-            timeout, 
-            (val : CookieDef) => {
-              return (val?.name == name && 'value' in val)
+          const cookie: CookieDef = await waitForValue(
+            timeout,
+            (val: CookieDef) => {
+              return val?.name == name && "value" in val;
             },
-            (name : string) => { return msg.browser.cookie().get(name) },
+            (name: string) => {
+              return msg.browser.cookie().get(name);
+            },
             name
-          )
+          );
           if (msg.error) {
             delete msg.error;
           }
@@ -71,7 +73,7 @@ export function NodeGetCookieConstructor(
             msg.payload = e.value;
             const error = {
               message: `Can't find cookie with name : ${name}`,
-              name : 'WaitForError'
+              name: "WaitForError",
             };
             node.warn(error.message);
             msg.error = error;

@@ -18,7 +18,7 @@ export interface NodeSetCookieDef extends SeleniumNodeDef {
   cookieHttpOnly: boolean;
   cookieExpiry: string;
   cookieSameSite: "None" | "Lax" | "Strict";
-  advanced : boolean;
+  advanced: boolean;
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -43,16 +43,20 @@ export function NodeSetCookieConstructor(
       node.status({ fill: "red", shape: "ring", text: "error" });
       done(error);
     } else {
-      const cookie : CookieDef = msg.cookie ?? {
-        name : replaceMustache(conf.cookieName, msg),
-        value : replaceMustache(conf.cookieValue, msg),
-        path : conf.advanced ? replaceMustache(conf.cookiePath, msg) : undefined,
-        domain : conf.advanced ? replaceMustache(conf.cookieDomain, msg) : undefined,
-        secure :  conf.advanced ? conf.cookieSecure : undefined,
-        httpOnly : conf.advanced ? conf.cookieHttpOnly : undefined,
-        expiry : conf.advanced ? parseInt(replaceMustache(conf.cookieExpiry, msg), 10) || undefined : undefined,
-        sameSite : conf.advanced ? conf.cookieSameSite : undefined,
-      }
+      const cookie: CookieDef = msg.cookie ?? {
+        name: replaceMustache(conf.cookieName, msg),
+        value: replaceMustache(conf.cookieValue, msg),
+        path: conf.advanced ? replaceMustache(conf.cookiePath, msg) : undefined,
+        domain: conf.advanced
+          ? replaceMustache(conf.cookieDomain, msg)
+          : undefined,
+        secure: conf.advanced ? conf.cookieSecure : undefined,
+        httpOnly: conf.advanced ? conf.cookieHttpOnly : undefined,
+        expiry: conf.advanced
+          ? parseInt(replaceMustache(conf.cookieExpiry, msg), 10) || undefined
+          : undefined,
+        sameSite: conf.advanced ? conf.cookieSameSite : undefined,
+      };
       const name =
         falseIfEmpty(replaceMustache(conf.cookieName, msg)) || msg.cookieName;
       const waitFor: number = parseInt(
@@ -61,7 +65,7 @@ export function NodeSetCookieConstructor(
       );
       setTimeout(async () => {
         try {
-          await msg.browser.cookie().create(cookie)
+          await msg.browser.cookie().create(cookie);
           if (msg.error) {
             delete msg.error;
           }
@@ -78,7 +82,7 @@ export function NodeSetCookieConstructor(
             msg.payload = e.value;
             const error = {
               message: `Can't find cookie with name : ${name}`,
-              name : 'WaitForError'
+              name: "WaitForError",
             };
             node.warn(error.message);
             msg.error = error;

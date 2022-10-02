@@ -1,25 +1,29 @@
 <script type="text/html" data-template-name="get cookie">
   <div class="form-row">
     <label for="node-input-cookieName"
-      ><i class="fa fa-cookie"></i> <span>Cookie name</span></label>
+      ><i class="fa fa-cookie"></i> <span>Cookie name</span></label
+    >
     <input type="text" id="node-input-cookieName" />
   </div>
   <div class="form-row">
     <label for="node-input-timeout"
-      ><i class="fa fa-clock-o"></i> <span>Timeout</span></label>
+      ><i class="fa fa-clock-o"></i> <span>Timeout</span></label
+    >
     <input type="text" id="node-input-timeout" value="1000" />
   </div>
   <div class="form-row">
     <label for="node-input-waitFor"
-      ><i class="fa fa-pause"></i> <span>Wait For</span></label>
+      ><i class="fa fa-pause"></i> <span>Wait For</span></label
+    >
     <input type="text" id="node-input-waitFor" value="00" />
   </div>
   <hr align="middle" />
   <div class="form-row">
     <label for="node-input-name"
-      ><i class="fa fa-tag"></i> <span>Name</span></label>  
-      <input type="text" id="node-input-name" />
-    </div>
+      ><i class="fa fa-tag"></i> <span>Name</span></label
+    >
+    <input type="text" id="node-input-name" />
+  </div>
 </script>
 
 <script type="text/html" data-help-name="get cookie">
@@ -107,7 +111,7 @@
     inputs: 1,
     outputs: 2,
     outputLabels: ["success", "failure"],
-    icon : "get-cookie.svg",
+    icon: "get-cookie.svg",
     label: function () {
       return this.name || "Get Cookie";
     },

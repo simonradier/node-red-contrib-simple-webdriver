@@ -57,8 +57,8 @@ export interface WebDriverMessage extends NodeMessageInFlow {
   url?: string;
   navType?: string;
   filePath?: string;
-  cookieName? : string;
-  cookie? : CookieDef;
+  cookieName?: string;
+  cookie?: CookieDef;
 }
 
 /**

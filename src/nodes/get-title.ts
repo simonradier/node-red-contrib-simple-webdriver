@@ -51,7 +51,9 @@ export function NodeGetTitleConstructor(
               ? await waitForValue(
                   timeout,
                   expected,
-                  () => { return msg.browser.getTitle() },
+                  () => {
+                    return msg.browser.getTitle();
+                  },
                   null
                 )
               : await msg.browser.getTitle();
