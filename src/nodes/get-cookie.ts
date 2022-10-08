@@ -41,8 +41,14 @@ export function NodeGetCookieConstructor(this: NodeGetCookie, conf: NodeGetCooki
         falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
         10
       )
+      node.status({
+        fill: 'blue',
+        shape: 'ring',
+        text: 'waiting for ' + (waitFor / 1000).toFixed(1) + ' s'
+      })
       setTimeout(async () => {
         try {
+          node.status({ fill: 'blue', shape: 'dot', text: 'retreiving cookie' })
           const cookie: CookieDef = await waitForValue(
             timeout,
             (val: CookieDef) => {
@@ -65,7 +71,7 @@ export function NodeGetCookieConstructor(this: NodeGetCookie, conf: NodeGetCooki
             node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
             done(e)
           }
-          if (e.name == 'WaitForError') {
+          if (e.name === 'WaitForError') {
             msg.payload = e.value
             const error = {
               message: `Can't find cookie with name : ${name}`,
@@ -73,15 +79,16 @@ export function NodeGetCookieConstructor(this: NodeGetCookie, conf: NodeGetCooki
             }
             node.warn(error.message)
             msg.error = error
-            node.status({ fill: 'yellow', shape: 'dot', text: 'wrong title' })
+            node.status({ fill: 'yellow', shape: 'dot', text: `can't retreive cookie` })
             send([null, msg])
             done()
+          } else {
+            node.status({ fill: 'red', shape: 'dot', text: 'error' })
+            node.error(
+              "Can't get title of the browser window. Check msg.error for more information"
+            )
+            done(e)
           }
-          node.status({ fill: 'red', shape: 'dot', text: 'error' })
-          node.error(
-            "Can't get title of the browser window. Check msg.error for more information"
-          )
-          done(e)
         }
       }, waitFor)
     }

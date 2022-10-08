@@ -8,11 +8,20 @@
     <input type="text" id="node-input-cookieName" />
   </div>
   <div class="form-row">
+    <label for="node-input-delete"
+      ><i class="fa fa-cookie"></i> <span>Delete</span></label>
+      <input
+        type="checkbox"
+        id="node-input-delete"
+        style="display: inline-block; width: auto; vertical-align: top;"
+      />
+  </div>
+  <div class="form-row" id="cookie-value">
     <label for="node-input-cookieValue"
       ><i class="fa fa-cookie"></i> <span>Value</span></label>
     <input type="text" id="node-input-cookieValue" />
   </div>
-  <div class="form-row">
+  <div class="form-row" id="advanced-checkbox">
     <label for="node-input-advanced"
       ><i class="fa fa-cookie"></i> <span>Advanced options</span></label>
       <input
@@ -149,6 +158,9 @@
       name: {
         value: ''
       },
+      delete: {
+        value: false
+      },
       advanced: {
         value: false
       },
@@ -200,9 +212,21 @@
     oneditprepare: function () {
       let node = this
       $('#node-input-advanced').on('change', event => {
-        debugger
         if ($('#node-input-advanced').is(':checked')) $('#advanced-options').show()
         else $('#advanced-options').hide()
+      })
+      $('#node-input-delete').on('change', event => {
+        if ($('#node-input-delete').is(':checked')) {
+          $('#node-input-advanced').prop( "checked", false )
+          $('#cookie-value').hide()
+          $('#advanced-options').hide()
+          $('#advanced-checkbox').hide()
+
+        } 
+        else {
+          $('#advanced-checkbox').show()
+          $('#cookie-value').show()
+        }
       })
     }
   })

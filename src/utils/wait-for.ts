@@ -14,21 +14,33 @@ export async function waitForValue<T>(
   let value: T
   let found = false
   const timer = new Timer(timeout)
+  let err : any
 
   if (expectedValue instanceof Function) {
     do {
+      try {
       value = await func(...args)
       if (expectedValue(value)) found = true
+      } catch (e) {
+        err = e
+      }
     } while (!found && !timer.done)
   } else {
     do {
-      value = await func(...args)
-      if (value == expectedValue) found = true
+      try {
+        value = await func(...args)
+        if (value == expectedValue) found = true
+      } catch (e) {
+        err = e
+      }
     } while (!found && !timer.done)
   }
   if (found) return value
 
-  const error = new Error(`Timeout before value is found, last value returned : ${value}`)
-  error.name = 'WaitForError'
+  const error = {
+    message : `Timeout before value is found, last value returned : ${value}`,
+    name : 'WaitForError',
+    parent : err
+  }  
   throw error
 }

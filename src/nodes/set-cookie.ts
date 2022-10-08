@@ -18,6 +18,7 @@ export interface NodeSetCookieDef extends SeleniumNodeDef {
   cookieExpiry: string
   cookieSameSite: 'None' | 'Lax' | 'Strict'
   advanced: boolean
+  delete : boolean
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -56,9 +57,18 @@ export function NodeSetCookieConstructor(this: NodeSetCookie, conf: NodeSetCooki
         falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
         10
       )
+      node.status({
+        fill: 'blue',
+        shape: 'ring',
+        text: 'waiting for ' + (waitFor / 1000).toFixed(1) + ' s'
+      })
       setTimeout(async () => {
+        node.status({ fill: 'blue', shape: 'dot', text: 'setting cookie' })
         try {
-          await msg.browser.cookie().create(cookie)
+          if (conf.delete)
+            await msg.browser.cookie().delete(name);
+          else
+            await msg.browser.cookie().create(cookie)
           if (msg.error) {
             delete msg.error
           }
@@ -70,24 +80,16 @@ export function NodeSetCookieConstructor(this: NodeSetCookie, conf: NodeSetCooki
           if (checkIfCritical(e)) {
             node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
             done(e)
-          }
-          if (e.name == 'WaitForError') {
-            msg.payload = e.value
-            const error = {
-              message: `Can't find cookie with name : ${name}`,
-              name: 'WaitForError'
-            }
-            node.warn(error.message)
-            msg.error = error
-            node.status({ fill: 'yellow', shape: 'dot', text: 'wrong title' })
+          } else {
+            node.status({ fill: 'yellow', shape: 'dot', text: `can't set cookie` })
+            node.error(
+              "Can't set the requested cookie. Check msg.error for more information"
+            )
+            msg.error = e
             send([null, msg])
             done()
           }
-          node.status({ fill: 'red', shape: 'dot', text: 'error' })
-          node.error(
-            "Can't set the requested cookie. Check msg.error for more information"
-          )
-          done(e)
+
         }
       }, waitFor)
     }
