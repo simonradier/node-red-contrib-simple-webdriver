@@ -5,7 +5,7 @@
 
 Simplewebdriver nodes for Node-Red allow web browser automation initially based on the [Selenium-Webdriver](https://www.selenium.dev/documentation/) API. Based on [node-red-contrib-selenium-webdriver](https://flows.nodered.org/node/node-red-contrib-selenium-webdriver) library and forked from node-red-contrib-selenium-wd2, it was rewritten in Typescript to ease its maintenance, improve the overall stability and upgrade a little bit the set of features.
 
-![simple-webdriver workflow example](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/master/doc/img/workflow.png 'simple-webdriver workflow example')
+![simple-webdriver workflow example](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/main/docs/img/workflow.png 'simple-webdriver workflow example')
 
 ## Prerequisite
 
@@ -22,7 +22,7 @@ In order to use node-red-contrib-selenium-wd2, you must fullfill the following p
 
 Launch Node-red `node-red` and the simplewebdriver nodes will be loaded automatically. You should see the list of node under the simplewebdriver section.
 
-![simplewebdriver section overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/master/doc/img/swd.png 'simplewebdriver section')
+![simplewebdriver section overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/main/docs/img/swd.png 'simplewebdriver section')
 ## Behavior
 ### Create a new flow
 
@@ -41,7 +41,7 @@ Most of the nodes' properties support simplified mustache syntax to retrieve val
 
 All nodes provides their own documentation directly inside node-red.
 
-![swd help overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/master/doc/img/node-help.png 'simple-webdriver help')
+![swd help overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/main/docs/img/node-help.png 'simple-webdriver help')
 
 
 ## Develop
