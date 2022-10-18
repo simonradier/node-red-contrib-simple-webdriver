@@ -9,7 +9,7 @@ Simplewebdriver nodes for Node-Red allow web browser automation initially based 
 
 ## Prerequisite
 
-In order to use node-red-contrib-selenium-wd2, you must fullfill the following prerequisite :
+In order to use node-red-contrib-simple-webdriver, you must fullfill the following prerequisite :
 
 - Install a webdriver server : `npm install -g chromedriver` (can be replaced with geckodriver, edgedriver, safaridriver)
 - Install a node-red server : `npm install -g --unsafe-perm node-red`

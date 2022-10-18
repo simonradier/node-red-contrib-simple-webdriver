@@ -32,13 +32,13 @@ export const WD_SERVER_URL_HTTPS = {
 }
 
 export const WD_WEBSITE_URL_HTTP =
-  'https://simonradier.github.io/node-red-contrib-selenium-wd2/test/'
+  'https://simonradier.github.io/node-red-contrib-simple-webdriver/test/'
 
 export const WD_WEBSITE_URL_HTTP_1 =
-  'https://simonradier.github.io/node-red-contrib-selenium-wd2/test/test1.html'
+  'https://simonradier.github.io/node-red-contrib-simple-webdriver/test/test1.html'
 
 export const WD_WEBSITE_URL_HTTP_2 =
-  'https://simonradier.github.io/node-red-contrib-selenium-wd2/test/test2.html'
+  'https://simonradier.github.io/node-red-contrib-simple-webdriver/test/test2.html'
 
 export const WD_SESSION_ID = 'session-test-id-1337'
 
