@@ -45,7 +45,7 @@ async function inputAction(
         reject(err)
       } else {
         msg.error = {
-          message: "Can't send keys on the the element : " + err.message
+          message: `Can't get text of the element : ${err.message}`
         }
         node.warn(msg.error.message)
         node.status({

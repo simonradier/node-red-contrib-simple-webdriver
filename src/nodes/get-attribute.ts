@@ -52,13 +52,13 @@ async function inputAction(
         reject(err)
       } else {
         msg.error = {
-          message: "Can't send keys on the the element : " + err.message
+          message: `Can't get ${mode} of the element : ${err.message}`
         }
         node.warn(msg.error.message)
         node.status({
           fill: 'yellow',
           shape: 'dot',
-          text: 'expected value error'
+          text: `get-${mode} error`
         })
         action.send([null, msg])
         action.done()
