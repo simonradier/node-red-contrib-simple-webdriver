@@ -6,10 +6,13 @@ import { GenericNodeConstructor } from './node-constructor'
 export interface NodeGetAttributeDef extends SeleniumNodeDef {
   expected: string
   attribute: string
+  property: string
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeGetAttribute extends SeleniumNode {}
+export interface NodeGetAttribute extends SeleniumNode {
+  property: string
+}
 
 async function inputAction(
   node: NodeGetAttribute,
@@ -20,20 +23,20 @@ async function inputAction(
     const msg = action.msg
     const expected = falseIfEmpty(replaceMustache(conf.expected, msg)) || msg.expected
     const attribute = falseIfEmpty(replaceMustache(conf.attribute, msg)) || msg.attribute
-    const step = ''
+    const property = falseIfEmpty(replaceMustache(conf.property, msg)) || msg.property
+    let mode = "attibute"
     try {
-      msg.payload = await msg.element.getAttribute(attribute)
+      if (attribute && attribute !== '')
+        msg.payload = await msg.element.getAttribute(attribute)
+      else { 
+        msg.payload = await msg.element.getProperty(property)
+        mode = "property"
+      }
       if (expected && expected !== msg.payload) {
         msg.error = {
-          message:
-            'Expected attribute (' +
-            attribute +
-            ') value is not aligned, expected : ' +
-            expected +
-            ', value : ' +
-            msg.payload
+          message: `Expected ${mode} ${attribute || property} value is not aligned, expected : ${expected}, value : ${msg.payload}`
         }
-        node.status({ fill: 'yellow', shape: 'dot', text: step + 'error' })
+        node.status({ fill: 'yellow', shape: 'dot', text: `get ${mode} error` })
         action.send([null, msg])
         action.done()
       } else {

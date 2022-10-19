@@ -53,6 +53,7 @@ export interface WebDriverMessage extends NodeMessageInFlow {
   value?: string
   expected?: string
   attribute?: string
+  property?: string
   script?: string
   url?: string
   navType?: string
