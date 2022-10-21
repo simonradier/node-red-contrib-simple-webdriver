@@ -4,7 +4,8 @@ import {
   REDAPI,
   waitForValue,
   replaceMustache,
-  falseIfEmpty
+  falseIfEmpty,
+  sleep
 } from '../utils'
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
 
@@ -46,51 +47,50 @@ export function NodeGetCookieConstructor(this: NodeGetCookie, conf: NodeGetCooki
         shape: 'ring',
         text: 'waiting for ' + (waitFor / 1000).toFixed(1) + ' s'
       })
-      setTimeout(async () => {
-        try {
-          node.status({ fill: 'blue', shape: 'dot', text: 'retreiving cookie' })
-          const cookie: CookieDef = await waitForValue(
-            timeout,
-            (val: CookieDef) => {
-              return val?.name == name && 'value' in val
-            },
-            (name: string) => {
-              return msg.browser.cookie().get(name)
-            },
-            name
-          )
-          if (msg.error) {
-            delete msg.error
-          }
-          msg.payload = cookie
-          send([msg, null])
-          node.status({ fill: 'green', shape: 'dot', text: 'success' })
-          done()
-        } catch (e) {
-          if (checkIfCritical(e)) {
-            node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
-            done(e)
-          }
-          if (e.name === 'WaitForError') {
-            msg.payload = e.value
-            const error = {
-              message: `Can't find cookie with name : ${name}`,
-              name: 'WaitForError'
-            }
-            node.warn(error.message)
-            msg.error = error
-            node.status({ fill: 'yellow', shape: 'dot', text: `can't retreive cookie` })
-            send([null, msg])
-            done()
-          } else {
-            node.status({ fill: 'red', shape: 'dot', text: 'error' })
-            node.error(
-              "Can't get title of the browser window. Check msg.error for more information"
-            )
-            done(e)
-          }
+      await sleep(waitFor)
+      try {
+        node.status({ fill: 'blue', shape: 'dot', text: 'retreiving cookie' })
+        const cookie: CookieDef = await waitForValue(
+          timeout,
+          (val: CookieDef) => {
+            return val?.name == name && 'value' in val
+          },
+          (name: string) => {
+            return msg.browser.cookie().get(name)
+          },
+          name
+        )
+        if (msg.error) {
+          delete msg.error
         }
-      }, waitFor)
+        msg.payload = cookie
+        send([msg, null])
+        node.status({ fill: 'green', shape: 'dot', text: 'success' })
+        done()
+      } catch (e) {
+        if (checkIfCritical(e)) {
+          node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
+          done(e)
+        }
+        if (e.name === 'WaitForError') {
+          msg.payload = e.value
+          const error = {
+            message: `Can't find cookie with name : ${name}`,
+            name: 'WaitForError'
+          }
+          node.warn(error.message)
+          msg.error = error
+          node.status({ fill: 'yellow', shape: 'dot', text: `can't retreive cookie` })
+          send([null, msg])
+          done()
+        } else {
+          node.status({ fill: 'red', shape: 'dot', text: 'error' })
+          node.error(
+            "Can't get title of the browser window. Check msg.error for more information"
+          )
+          done(e)
+        }
+      }
     }
   })
 }

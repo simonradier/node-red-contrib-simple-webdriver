@@ -1,4 +1,4 @@
-import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty } from '../utils'
+import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty, sleep } from '../utils'
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
 
 // tslint:disable-next-line: no-empty-interface
@@ -33,45 +33,44 @@ export function NodeNavigateConstructor(this: NodeNavigate, conf: NodeNavigateDe
         falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
         10
       )
-      setTimeout(async () => {
-        try {
-          node.status({ fill: 'blue', shape: 'ring', text: 'loading' })
-          switch (type) {
-            case 'forward':
-              await msg.browser.navigate().forward()
-              break
-            case 'back':
-              await msg.browser.navigate().back()
-              break
-            case 'refresh':
-              await msg.browser.navigate().refresh()
-              break
-            default:
-              await msg.browser.navigate().to(url)
-          }
-          send([msg, null])
-          node.status({ fill: 'green', shape: 'dot', text: 'success' })
-          done()
-        } catch (e) {
-          if (checkIfCritical(e)) {
-            node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
-            done(e)
-          } else {
-            const error = {
-              message: "Can't navigate " + type + (type === 'to') ? ' : ' + url : ''
-            }
-            node.warn(error.message)
-            msg.error = error
-            node.status({
-              fill: 'yellow',
-              shape: 'dot',
-              text: 'navigate error'
-            })
-            send([null, msg])
-            done()
-          }
+      await sleep(waitFor)
+      try {
+        node.status({ fill: 'blue', shape: 'ring', text: 'loading' })
+        switch (type) {
+          case 'forward':
+            await msg.browser.navigate().forward()
+            break
+          case 'back':
+            await msg.browser.navigate().back()
+            break
+          case 'refresh':
+            await msg.browser.navigate().refresh()
+            break
+          default:
+            await msg.browser.navigate().to(url)
         }
-      }, waitFor)
+        send([msg, null])
+        node.status({ fill: 'green', shape: 'dot', text: 'success' })
+        done()
+      } catch (e) {
+        if (checkIfCritical(e)) {
+          node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
+          done(e)
+        } else {
+          const error = {
+            message: "Can't navigate " + type + (type === 'to') ? ' : ' + url : ''
+          }
+          node.warn(error.message)
+          msg.error = error
+          node.status({
+            fill: 'yellow',
+            shape: 'dot',
+            text: 'navigate error'
+          })
+          send([null, msg])
+          done()
+        }
+      }
     }
   })
 }

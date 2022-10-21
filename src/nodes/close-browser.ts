@@ -1,4 +1,4 @@
-import { REDAPI } from '../utils'
+import { REDAPI, sleep } from '../utils'
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
 
 // tslint:disable-next-line: no-empty-interface
@@ -28,22 +28,21 @@ export function NodeCloseWebConstructor(this: NodeCloseWeb, conf: NodeCloseWebDe
         shape: 'ring',
         text: 'waiting for ' + (waitFor / 1000).toFixed(1) + ' s'
       })
-      setTimeout(async () => {
-        try {
-          this.status({ fill: 'blue', shape: 'ring', text: 'closing' })
-          await msg.browser.close()
-          msg.browser = null
-          this.status({ fill: 'green', shape: 'dot', text: 'closed' })
-          send(msg)
-          done()
-        } catch (e) {
-          this.warn("Can't close the browser, check msg.error for more information")
-          msg.browser = null
-          msg.error = e
-          this.status({ fill: 'red', shape: 'dot', text: 'critical error' })
-          done(e)
-        }
-      }, waitFor)
+      await sleep(waitFor);
+      try {
+        this.status({ fill: 'blue', shape: 'ring', text: 'closing' })
+        await msg.browser.close()
+        msg.browser = null
+        this.status({ fill: 'green', shape: 'dot', text: 'closed' })
+        send(msg)
+        done()
+      } catch (e) {
+        this.warn("Can't close the browser, check msg.error for more information")
+        msg.browser = null
+        msg.error = e
+        this.status({ fill: 'red', shape: 'dot', text: 'critical error' })
+        done(e)
+      }
     }
   })
 }

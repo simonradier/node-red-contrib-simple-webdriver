@@ -3,7 +3,8 @@ import {
   checkIfCritical,
   REDAPI,
   replaceMustache,
-  falseIfEmpty
+  falseIfEmpty,
+  sleep
 } from '../utils'
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
 
@@ -62,36 +63,34 @@ export function NodeSetCookieConstructor(this: NodeSetCookie, conf: NodeSetCooki
         shape: 'ring',
         text: 'waiting for ' + (waitFor / 1000).toFixed(1) + ' s'
       })
-      setTimeout(async () => {
-        node.status({ fill: 'blue', shape: 'dot', text: 'setting cookie' })
-        try {
-          if (conf.delete)
-            await msg.browser.cookie().delete(name);
-          else
-            await msg.browser.cookie().create(cookie)
-          if (msg.error) {
-            delete msg.error
-          }
-          msg.payload = cookie
-          send([msg, null])
-          node.status({ fill: 'green', shape: 'dot', text: 'success' })
-          done()
-        } catch (e) {
-          if (checkIfCritical(e)) {
-            node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
-            done(e)
-          } else {
-            node.status({ fill: 'yellow', shape: 'dot', text: `can't set cookie` })
-            node.error(
-              "Can't set the requested cookie. Check msg.error for more information"
-            )
-            msg.error = e
-            send([null, msg])
-            done()
-          }
-
+      await sleep(waitFor)
+      node.status({ fill: 'blue', shape: 'dot', text: 'setting cookie' })
+      try {
+        if (conf.delete)
+          await msg.browser.cookie().delete(name);
+        else
+          await msg.browser.cookie().create(cookie)
+        if (msg.error) {
+          delete msg.error
         }
-      }, waitFor)
+        msg.payload = cookie
+        send([msg, null])
+        node.status({ fill: 'green', shape: 'dot', text: 'success' })
+        done()
+      } catch (e) {
+        if (checkIfCritical(e)) {
+          node.status({ fill: 'red', shape: 'dot', text: 'critical error' })
+          done(e)
+        } else {
+          node.status({ fill: 'yellow', shape: 'dot', text: `can't set cookie` })
+          node.error(
+            "Can't set the requested cookie. Check msg.error for more information"
+          )
+          msg.error = e
+          send([null, msg])
+          done()
+        }
+      }
     }
   })
 }

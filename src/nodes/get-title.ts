@@ -3,7 +3,8 @@ import {
   REDAPI,
   waitForValue,
   replaceMustache,
-  falseIfEmpty
+  falseIfEmpty,
+  sleep
 } from '../utils'
 import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
 
@@ -40,8 +41,8 @@ export function NodeGetTitleConstructor(this: NodeGetTitle, conf: NodeGetTitleDe
         falseIfEmpty(replaceMustache(conf.timeout, msg)) || msg.timeout,
         10
       )
-      setTimeout(async () => {
-        try {
+      await sleep(waitFor);
+      try {
           const title: string =
             expected && expected !== ''
               ? await waitForValue(
@@ -84,7 +85,6 @@ export function NodeGetTitleConstructor(this: NodeGetTitle, conf: NodeGetTitleDe
           )
           done(e)
         }
-      }, waitFor)
     }
   })
 }
