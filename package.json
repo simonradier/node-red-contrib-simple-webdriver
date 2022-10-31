@@ -16,7 +16,7 @@
     "@typescript-eslint/parser": "^5.33.1",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
-    "chromedriver": "105.0.0",
+    "chromedriver": "107.0.2",
     "coveralls": "^3.1.1",
     "eslint": "8.22.0",
     "geckodriver": "^3.0.2",
