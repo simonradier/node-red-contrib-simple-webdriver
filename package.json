@@ -18,7 +18,7 @@
     "chai-as-promised": "^7.1.1",
     "chromedriver": "105.0.0",
     "coveralls": "^3.1.1",
-    "eslint": "8.22.0",
+    "eslint": "8.28.0",
     "geckodriver": "^3.0.2",
     "mocha": "^10.0.0",
     "nock": "^13.2.9",
