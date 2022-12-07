@@ -56,15 +56,17 @@
 </script>
 
 <script type="text/html" data-help-name="switch frame">
-  <p>Get the text of the <code>msg.element</code> passed from previous node or after waiting for the expected element is located.</p>
+  <p>Switch to the specific (i)frame of the web page, based on its number, id, parent or the top context</p>
   <h3>Inputs</h3>
   	<dl class="message-properties">
   		<dt>browser</dt>
   		<dd>the browser session object required to execute browsing actions.</dd>
+  		<dt>switchMode</dt>
+  		<dd>the mode to use for the frame switch.</dd>
+  		<dt class="optional">frameNumber</dt>
+  		<dd>the number of the frame in case of a <i>number</i> switch. <span class="property-type">number</span></dd>
   		<dt class="optional">element</dt>
-  		<dd>the Element object required to execute the required action.</dd>
-  		<dt class="optional">expected<span class="property-type">string</span></dt>
-  		<dd> the expected value of the text.</dd>
+  		<dd>the Element object (must be an iframe or a frame) required to execute the required action (only in case of an </i>id</i> switch).</dd>
   		<dt class="optional">selector<span class="property-type">string</span></dt>
   		<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
   		<dt class="optional">target<span class="property-type">string</span></dt>
@@ -84,11 +86,7 @@
   			</dl>
   			<dl class="message-properties">
   				<dt class="optional">element</dt>
-  				<dd>the Element object required to execute the required action.</dd>
-  			</dl>
-  			<dl class="message-properties">
-  				<dt>payload <span class="property-type">string</span></dt>
-  				<dd>the text value.</dd>
+  				<dd>the Element object (must be an iframe or a frame) required to execute the required action, only in case of an <i>id</i> switch</dd>
   			</dl>
   		</li>
   		<li>Failure output (Secondary)
@@ -121,8 +119,9 @@
   	<p> This node is used to retreive the text from an element in the web page.</p>
   	<p>
   		<ul>
-  			<li><a>Expected</a>: (if set) specify the expected value of the attribute to retrieve and go to failure output in case of disalignment. The <code>msg.expected</code> will be overrided by the <code>Attribute</code> field if set.</li>
-  			<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will be overrided by the <code>By</code> field if set.</li>
+  			<li><a>Switch Mode</a>: the mode which is used to do the switch <i>id</i>, <i>number</i>, <i>parent</i>, <i>top-context</i>. The <code>msg.switchMode</code> will be overrided by the <code>Attribute</code> field if set.</li>
+  			<li><a>Frame Number</a>: (if Switch Mode is set to <code>number</code>) the number of the frame or iframe to do the switch. The <code>msg.frameNumber</code> will be overrided by the <code>Attribute</code> field if set.</li>
+        <li><a>By</a>: (if set and if Switch Mode is set to <code>id</code>) specify the way to find an element (must be an frame or iframe) by selector. The <code>msg.selector</code> will be overrided by the <code>By</code> field if set.</li>
   			<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will be overrided by the <code>Target</code> field if set.</li>
   			<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will be overrided by the <code>Timeout</code> field if set.</li>
   			<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
