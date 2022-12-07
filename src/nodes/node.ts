@@ -20,6 +20,8 @@ export * from './get-text'
 export * from './run-script'
 export * from './screenshot'
 export * from './set-attribute'
+export * from './switch-frame'
+
 
 export interface SeleniumNodeDef extends NodeDef {
   selector: string
@@ -60,6 +62,8 @@ export interface WebDriverMessage extends NodeMessageInFlow {
   filePath?: string
   cookieName?: string
   cookie?: CookieDef
+  frameNumber: string
+  switchMode : 'id' | 'number' | 'parent' | 'top-context'
 }
 
 /**

@@ -16,7 +16,8 @@ import {
   NodeSendKeysConstructor,
   NodeSetAttributeConstructor,
   NodeSetValueConstructor,
-  NodeSetCookieConstructor
+  NodeSetCookieConstructor,
+  NodeSwitchFrameConstructor
 } from './nodes/node'
 import { REDAPI } from './utils'
 
@@ -39,4 +40,5 @@ export = (RED: NodeAPI<NodeAPISettingsWithData>) => {
   REDAPI.get().nodes.registerType('run script', NodeRunScriptConstructor)
   REDAPI.get().nodes.registerType('navigate', NodeNavigateConstructor)
   REDAPI.get().nodes.registerType('screenshot', NodeScreenshotConstructor)
+  REDAPI.get().nodes.registerType('switch frame', NodeSwitchFrameConstructor)
 }

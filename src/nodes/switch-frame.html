@@ -1,0 +1,220 @@
+<script type="text/html" data-template-name="switch frame">
+  <div class="form-row">
+    <label for="node-input-switchMode"><i class="fa fa-bars"></i> <span>Switch To</span></label>
+    <select id="node-input-switchMode" style="width:125px !important">
+      <option value="id">Frame Id (element)</option>
+      <option value="number">Frame number</option>
+      <option value="top-context">Top context</option>
+      <option value="parent">Parent</option>
+    </select>
+  </div>
+  <hr align="middle" />
+  <div class="form-row" id="row-input-selector">
+    <label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
+    <select id="node-input-selector" style="width:125px !important">
+      <option value=""></option>
+      <option value="id">id</option>
+      <option value="name">name</option>
+      <option value="link">link</option>
+      <option value="xpath">xpath</option>
+      <option value="tag name">tagName</option>
+      <option value="className">className</option>
+      <option value="link text">linkText</option>
+      <option value="css selector">cssSelector</option>
+    </select>
+  </div>
+  <div class="form-row" id="row-input-target">
+    <label for="node-input-target"
+      ><i class="fa fa-dot-circle-o"></i> <span>Target</span></label
+    >
+    <input type="text" id="node-input-target" />
+  </div>
+  <div class="form-row" id="row-input-timeout">
+    <label for="node-input-timeout"
+      ><i class="fa fa-clock-o"></i> <span>Timeout</span></label
+    >
+    <input type="text" id="node-input-timeout" value="1000" />
+  </div>
+  <div class="form-row" id="row-input-frameNumber">
+    <label for="node-input-frameNumber"
+      ><i class="fa fa-dot-circle-o"></i> <span>Number</span></label
+    >
+    <input type="text" id="node-input-frameNumber" />
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-waitFor"
+      ><i class="fa fa-pause"></i> <span>Wait For</span></label
+    >
+    <input type="text" id="node-input-waitFor" value="500" />
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+    <input type="text" id="node-input-name" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="switch frame">
+  <p>Get the text of the <code>msg.element</code> passed from previous node or after waiting for the expected element is located.</p>
+  <h3>Inputs</h3>
+  	<dl class="message-properties">
+  		<dt>browser</dt>
+  		<dd>the browser session object required to execute browsing actions.</dd>
+  		<dt class="optional">element</dt>
+  		<dd>the Element object required to execute the required action.</dd>
+  		<dt class="optional">expected<span class="property-type">string</span></dt>
+  		<dd> the expected value of the text.</dd>
+  		<dt class="optional">selector<span class="property-type">string</span></dt>
+  		<dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
+  		<dt class="optional">target<span class="property-type">string</span></dt>
+  		<dd> the name of the target to find.</dd>
+  		<dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
+  		<dd> the timeout value of the find request.</dd>
+  		<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+  		<dd> the pause time before launching the node action.</dd>
+  	</dl>
+
+  <h3>Outputs</h3>
+  	<ol class="node-ports">
+  		<li>Success output (Primary)
+  			<dl class="message-properties">
+  				<dt>browser</dt>
+  				<dd>the browser session object required to execute browsing actions.</dd>
+  			</dl>
+  			<dl class="message-properties">
+  				<dt class="optional">element</dt>
+  				<dd>the Element object required to execute the required action.</dd>
+  			</dl>
+  			<dl class="message-properties">
+  				<dt>payload <span class="property-type">string</span></dt>
+  				<dd>the text value.</dd>
+  			</dl>
+  		</li>
+  		<li>Failure output (Secondary)
+  		<dl class="message-properties">
+  			<dt>browser</dt>
+  			<dd>the browser session object required to execute browsing actions.</dd>
+  		</dl>
+  		<dl class="message-properties">
+  			<dt class="optional">element</dt>
+  			<dd>the Element object required to execute the required action.</dd>
+  		</dl>
+  		<dl class="message-properties">
+  			<dt>payload <span class="property-type">string</span></dt>
+  			<dd>the text value.</dd>
+  		</dl>
+  		<dl class="message-properties">
+  			<dt>error<span class="property-type">Error</span></dt>
+  			<dd>the selenium error which describe the failure cause.</dd>
+  		</dl>
+  	</li>
+  		<li>Critical error
+  		<dl class="message-properties">
+  			<dt>error<span class="property-type">Error</span></dt>
+  			<dd>the critical error which describe the issue encoutered.</dd>
+  		</dl>
+  	</li>
+  	</ol>
+
+  <h3>Details</h3>
+  	<p> This node is used to retreive the text from an element in the web page.</p>
+  	<p>
+  		<ul>
+  			<li><a>Expected</a>: (if set) specify the expected value of the attribute to retrieve and go to failure output in case of disalignment. The <code>msg.expected</code> will be overrided by the <code>Attribute</code> field if set.</li>
+  			<li><a>By</a>: (if set) specify the way to find an element by selector. The <code>msg.selector</code> will be overrided by the <code>By</code> field if set.</li>
+  			<li><a>Target</a>: specify the selector's value to lookup. The<code>msg.target</code> will be overrided by the <code>Target</code> field if set.</li>
+  			<li><a>Timeout</a>: specify the timeout during lookup operation. The <code>msg.timeout</code> will be overrided by the <code>Timeout</code> field if set.</li>
+  			<li><a>Wait For</a>: specify the time to wait before looking up. The <code>msg.waitFor</code> will be overrided by the <code>Wait For</code> field if set.</li>
+  		</ul>
+  	</p>
+  	<p>In case of find error, the secondary output will be used with an error which detailled the failure case</p>
+  	<p>In case of a critical error (meaning the driver connection is lost), the node will raise an error and put it in msg.error, msg.driver is cleaned as well and unset.</p>
+  <h3>References</h3>
+  	<ul>
+  		<li><a href="https://github.com/simonradier/node-red-contrib-simple-webdriver">GitHub</a> - the nodes github repository</li>
+  	</ul>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('switch frame', {
+    category: 'webdriver',
+    defaults: {
+      name: {
+        value: ''
+      },
+      switchMode: {
+        value: ''
+      },
+      frameNumber: {
+        value: ''
+      },
+      selector: {
+        value: ''
+      },
+      target: {
+        value: ''
+      },
+      timeout: {
+        value: 1000,
+        validate: RED.validators.number()
+      },
+      waitFor: {
+        value: 500,
+        validate: RED.validators.number()
+      },
+      savetofile: {
+        value: false
+      }
+    },
+    color: '#47B6EE',
+    inputs: 1,
+    outputs: 2,
+    outputLabels: ['success', 'failure'],
+    icon: 'font-awesome/fa-code',
+    label: function () {
+      return this.name || 'Switch Frame'
+    },
+    labelStyle: function () {
+      return this.name ? 'node_label_italic' : ''
+    },
+    oneditprepare: function () {
+      let node = this
+      $('#node-input-selector').on('change', event => {
+        if ($('#node-input-selector').val() === '') {
+          $('#row-input-target').hide()
+          $('#row-input-timeout').hide()
+        } else if ($('#node-input-switchMode').val() === 'id') {
+          $('#row-input-target').show()
+          $('#row-input-timeout').show()
+        }
+      });
+      $('#node-input-switchMode').on('change', event => {
+        switch ($('#node-input-switchMode').val()) {
+          case 'id' : 
+            $('#row-input-selector').show()
+            $('#row-input-frameNumber').hide()
+            if ($('#node-input-selector').val() !== '') {
+              $('#row-input-target').show()
+              $('#row-input-timeout').show()
+            }
+          break;
+          case 'number' : 
+            $('#row-input-frameNumber').show()
+            $('#row-input-selector').hide()
+            $('#row-input-target').hide()
+            $('#row-input-timeout').hide()
+            break;
+          case 'top-context' : 
+          case 'parent' : 
+            $('#row-input-frameNumber').hide()
+            $('#row-input-selector').hide()
+            $('#row-input-target').hide()
+            $('#row-input-timeout').hide()
+          break;
+        }
+      })
+      $('#row-input-frameNumber').hide()
+    }
+  })
+</script>
