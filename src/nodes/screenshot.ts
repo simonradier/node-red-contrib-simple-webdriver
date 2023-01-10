@@ -1,22 +1,22 @@
-import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
+import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
 import * as fs from 'fs'
 import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty, sleep } from '../utils'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeScreenshotDef extends SeleniumNodeDef {
+export interface NodeScreenshotConf extends SimpleWebdriverNodeConf {
   filePath: string
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeScreenshot extends SeleniumNode {}
+export interface NodeScreenshot extends SimpleWebdriverNode {}
 
-export function NodeScreenshotConstructor(this: NodeScreenshot, conf: NodeScreenshotDef) {
+export function NodeScreenshotConstructor(this: NodeScreenshot, conf: NodeScreenshotConf) {
   REDAPI.get().nodes.createNode(this, conf)
   this.status({})
 
   this.on('input', async (message: any, send, done) => {
     // Cheat to allow correct typing in typescript
-    const msg: WebDriverMessage = message
+    const msg: SimpleWebDriverMessage<NodeScreenshotConf> = message
     const node = this
     node.status({})
     if (msg.browser == null) {

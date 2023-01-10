@@ -1,20 +1,18 @@
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
-import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
+import { SimpleWebDriverAction, SimpleWebdriverNode, FindElementNodeConf } from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
-export interface NodeSendKeysDef extends SeleniumNodeDef {
+export interface NodeSendKeysConf extends FindElementNodeConf {
   keys: string
   clearVal: string
 }
 
-export interface NodeSendKeys extends SeleniumNode {
-  __msg: WebDriverMessage
-}
+export interface NodeSendKeys extends SimpleWebdriverNode {}
 
 async function inputAction(
   node: NodeSendKeys,
-  conf: NodeSendKeysDef,
-  action: WebDriverAction
+  conf: NodeSendKeysConf,
+  action: SimpleWebDriverAction<NodeSendKeysConf>
 ): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     const msg = action.msg

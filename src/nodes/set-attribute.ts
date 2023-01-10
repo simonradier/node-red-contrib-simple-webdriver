@@ -1,20 +1,20 @@
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
-import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from './node'
+import { SimpleWebDriverAction, SimpleWebdriverNode, FindElementNodeConf } from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeSetAttributeDef extends SeleniumNodeDef {
+export interface NodeSetAttributeConf extends FindElementNodeConf {
   attribute: string
   value: string
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeSetAttribute extends SeleniumNode {}
+export interface NodeSetAttribute extends SimpleWebdriverNode {}
 
 async function inputAction(
   node: NodeSetAttribute,
-  conf: NodeSetAttributeDef,
-  action: WebDriverAction
+  conf: NodeSetAttributeConf,
+  action: SimpleWebDriverAction<NodeSetAttributeConf>
 ): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     const msg = action.msg

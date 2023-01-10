@@ -6,23 +6,26 @@ import {
   falseIfEmpty,
   sleep
 } from '../utils'
-import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
+import { SimpleWebDriverMessage, SimpleWebdriverNode, FindElementNodeConf } from './node'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeGetTitleDef extends SeleniumNodeDef {
-  expected: string
+export interface NodeGetTitleConf extends FindElementNodeConf {
+  //inputs
+  expected: string,
+  //outputs
+  webTitle: string
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeGetTitle extends SeleniumNode {}
+export interface NodeGetTitle extends SimpleWebdriverNode {}
 
-export function NodeGetTitleConstructor(this: NodeGetTitle, conf: NodeGetTitleDef) {
+export function NodeGetTitleConstructor(this: NodeGetTitle, conf: NodeGetTitleConf) {
   REDAPI.get().nodes.createNode(this, conf)
   this.status({})
 
   this.on('input', async (message: any, send, done) => {
     // Cheat to allow correct typing in typescript
-    const msg: WebDriverMessage = message
+    const msg: SimpleWebDriverMessage<NodeGetTitleConf> = message
     const node = this
     node.status({})
     if (msg.browser == null) {

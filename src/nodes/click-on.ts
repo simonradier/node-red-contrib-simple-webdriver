@@ -1,19 +1,20 @@
 import { checkIfCritical, REDAPI } from '../utils'
-import { WebDriverAction, WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
-import { GenericNodeConstructor } from './node-constructor'
+import { FindElementNodeConf, GenericNodeConstructor, SimpleWebDriverAction, SimpleWebDriverMessage, SimpleWebdriverNode } from './node'
 
-export interface NodeClickOnDef extends SeleniumNodeDef {
+
+interface ClickOnNodeConf extends FindElementNodeConf {
   clickOn?: boolean
+  clickEvent? : boolean
 }
 
-export interface NodeClickOn extends SeleniumNode {
-  __msg: WebDriverMessage
+interface NodeClickOn extends SimpleWebdriverNode {
+  __msg: SimpleWebDriverMessage<ClickOnNodeConf>
 }
 
 async function inputPreCondAction(
   node: NodeClickOn,
-  conf: NodeClickOnDef,
-  action: WebDriverAction
+  conf: ClickOnNodeConf,
+  action: SimpleWebDriverAction<ClickOnNodeConf>
 ): Promise<boolean> {
   return new Promise<boolean>(async (resolve, reject) => {
     const waitingNode = node.context().get('waiting') || false
@@ -53,8 +54,8 @@ async function inputPreCondAction(
 
 async function inputAction(
   node: NodeClickOn,
-  conf: NodeClickOnDef,
-  action: WebDriverAction
+  conf: ClickOnNodeConf,
+  action: SimpleWebDriverAction<ClickOnNodeConf>
 ): Promise<void> {
   const msg = action.msg
   return new Promise<void>(async (resolve, reject) => {

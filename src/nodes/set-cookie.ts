@@ -6,10 +6,10 @@ import {
   falseIfEmpty,
   sleep
 } from '../utils'
-import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
+import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeSetCookieDef extends SeleniumNodeDef {
+export interface NodeSetCookieConf extends SimpleWebdriverNodeConf {
   cookieName: string
   cookieValue: string
   cookiePath: string
@@ -23,15 +23,15 @@ export interface NodeSetCookieDef extends SeleniumNodeDef {
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeSetCookie extends SeleniumNode {}
+export interface NodeSetCookie extends SimpleWebdriverNode {}
 
-export function NodeSetCookieConstructor(this: NodeSetCookie, conf: NodeSetCookieDef) {
+export function NodeSetCookieConstructor(this: NodeSetCookie, conf: NodeSetCookieConf) {
   REDAPI.get().nodes.createNode(this, conf)
   this.status({})
 
   this.on('input', async (message: any, send, done) => {
     // Cheat to allow correct typing in typescript
-    const msg: WebDriverMessage = message
+    const msg: SimpleWebDriverMessage<{ cookie : CookieDef, cookieName : string } & SimpleWebdriverNodeConf> = message
     const node = this
     node.status({})
     if (msg.browser == null) {

@@ -8,8 +8,8 @@ export class WaitForError extends Error {
 export async function waitForValue<T>(
   timeout: number,
   expectedValue: ((value: T) => boolean) | T,
-  func: (...args) => Promise<T>,
-  ...args
+  func: (...args : any[]) => Promise<T>,
+  ...args : any[]
 ): Promise<T> {
   let value: T
   let found = false

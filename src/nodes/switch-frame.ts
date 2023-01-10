@@ -1,21 +1,21 @@
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
-import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from './node'
+import { FindElementNodeConf, SimpleWebDriverAction, SimpleWebdriverNode } from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeSwitchFrameDef extends SeleniumNodeDef {
+export interface NodeSwitchFrameConf extends FindElementNodeConf {
   switchMode : 'id' | 'number' | 'parent' | 'top-context'
   frameNumber: string
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeSwitchFrame extends SeleniumNode {
+export interface NodeSwitchFrame extends SimpleWebdriverNode {
 }
 
 async function inputAction(
   node: NodeSwitchFrame,
-  conf: NodeSwitchFrameDef,
-  action: WebDriverAction
+  conf: NodeSwitchFrameConf,
+  action: SimpleWebDriverAction<NodeSwitchFrameConf>
 ): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     const msg = action.msg
