@@ -1,5 +1,6 @@
 import { checkIfCritical, REDAPI } from '../utils'
-import { FindElementNodeConf, GenericNodeConstructor, SimpleWebDriverAction, SimpleWebDriverMessage, SimpleWebdriverNode } from './node'
+import { FindElementNodeConf, SimpleWebDriverAction, SimpleWebDriverMessage, SimpleWebdriverNode } from './node'
+import { GenericNodeConstructor } from './node-constructor'
 
 
 interface ClickOnNodeConf extends FindElementNodeConf {

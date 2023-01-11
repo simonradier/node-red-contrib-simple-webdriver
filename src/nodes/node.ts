@@ -18,8 +18,6 @@ export * from './run-script'
 export * from './screenshot'
 export * from './set-attribute'
 export * from './switch-frame'
-export * from './node-constructor'
-
 
 export type SimpleWebdriverNodeConf = NodeDef & {
   // inputs

@@ -1,4 +1,5 @@
-import { FindElementNodeConf, GenericNodeConstructor, SimpleWebDriverAction, SimpleWebdriverNode } from './node'
+import { FindElementNodeConf, SimpleWebDriverAction, SimpleWebdriverNode } from './node'
+import { GenericNodeConstructor } from './node-constructor'
 
 
 // tslint:disable-next-line: no-empty-interface

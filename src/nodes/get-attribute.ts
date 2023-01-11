@@ -1,5 +1,6 @@
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
-import { FindElementNodeConf, GenericNodeConstructor, SimpleWebDriverAction, SimpleWebdriverNode } from './node'
+import { FindElementNodeConf, SimpleWebDriverAction, SimpleWebdriverNode } from './node'
+import { GenericNodeConstructor } from './node-constructor'
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeGetAttributeConf extends FindElementNodeConf {
