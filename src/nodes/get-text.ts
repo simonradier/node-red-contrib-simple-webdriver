@@ -29,7 +29,7 @@ async function inputAction(
             ', value : ' +
             msg.payload
         }
-        node.status({ fill: 'yellow', shape: 'dot', text: step + 'error' })
+        node.status({ fill: 'yellow', shape: 'dot', text: 'expected value error' })
         action.send([null, msg])
         action.done()
       } else {
