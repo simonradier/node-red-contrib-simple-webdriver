@@ -1,707 +1,983 @@
 [
-  {
-      "id": "6a5fd7c2.ab7598",
-      "type": "tab",
-      "label": "Example 1 : Navigation & Find Element",
-      "disabled": false,
-      "info": ""
-  },
-  {
-      "id": "8035baaa.c1b388",
-      "type": "inject",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "props": [
-          {
-              "p": "payload"
-          },
-          {
-              "p": "topic",
-              "vt": "str"
-          },
-          {
-              "p": "value",
-              "v": "node-red",
-              "vt": "str"
-          },
-          {
-              "p": "website",
-              "v": "https://www.duckduckgo.com/",
-              "vt": "str"
-          }
-      ],
-      "repeat": "",
-      "crontab": "",
-      "once": false,
-      "onceDelay": 0.1,
-      "topic": "",
-      "payload": "",
-      "payloadType": "date",
-      "x": 180,
-      "y": 120,
-      "wires": [
-          [
-              "ac56ed7b69e039f1"
-          ]
-      ]
-  },
-  {
-      "id": "8206817b.71a7c",
-      "type": "find element",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Find Search input",
-      "selector": "id",
-      "target": "search_form_input_homepage",
-      "timeout": 3000,
-      "waitFor": "2000",
-      "x": 390,
-      "y": 220,
-      "wires": [
-          [
-              "b9d2517e.a6d7c"
-          ],
-          [
-              "2f745a90.666676"
-          ]
-      ]
-  },
-  {
-      "id": "c7c135a0.c0d6e8",
-      "type": "debug",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "active": true,
-      "tosidebar": true,
-      "console": false,
-      "tostatus": false,
-      "complete": "true",
-      "targetType": "full",
-      "statusVal": "",
-      "statusType": "auto",
-      "x": 1190,
-      "y": 320,
-      "wires": []
-  },
-  {
-      "id": "c028eb25.13e088",
-      "type": "catch",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "scope": null,
-      "uncaught": false,
-      "x": 180,
-      "y": 40,
-      "wires": [
-          [
-              "5647d8a4.05c3e8"
-          ]
-      ]
-  },
-  {
-      "id": "5647d8a4.05c3e8",
-      "type": "debug",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "active": true,
-      "tosidebar": true,
-      "console": false,
-      "tostatus": false,
-      "complete": "true",
-      "targetType": "full",
-      "statusVal": "",
-      "statusType": "auto",
-      "x": 390,
-      "y": 40,
-      "wires": []
-  },
-  {
-      "id": "d210dfa4.b7c89",
-      "type": "click on",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Click on search button",
-      "selector": "id",
-      "target": "search_button_homepage",
-      "timeout": 1000,
-      "waitFor": 500,
-      "clickOn": false,
-      "x": 400,
-      "y": 420,
-      "wires": [
-          [
-              "858ace24.4a56"
-          ],
-          [
-              "2f745a90.666676"
-          ]
-      ]
-  },
-  {
-      "id": "858ace24.4a56",
-      "type": "click on",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Click on first result",
-      "selector": "xpath",
-      "target": "//article[1]",
-      "timeout": "2000",
-      "waitFor": 3000,
-      "clickOn": true,
-      "x": 410,
-      "y": 520,
-      "wires": [
-          [
-              "a2206fd8.d9eb"
-          ],
-          [
-              "2f745a90.666676"
-          ]
-      ]
-  },
-  {
-      "id": "a2206fd8.d9eb",
-      "type": "get title",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Get web page title",
-      "expected": "Node-RED",
-      "timeout": 3000,
-      "waitFor": 500,
-      "x": 390,
-      "y": 620,
-      "wires": [
-          [
-              "2ba887ee.fc34d8",
-              "c2056332.91fa4"
-          ],
-          [
-              "2f745a90.666676",
-              "c2056332.91fa4"
-          ]
-      ]
-  },
-  {
-      "id": "2f745a90.666676",
-      "type": "screenshot",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "filePath": "./test.png",
-      "waitFor": 500,
-      "x": 870,
-      "y": 320,
-      "wires": [
-          [
-              "edb3ba8283829ac1"
-          ],
-          [
-              "edb3ba8283829ac1"
-          ]
-      ]
-  },
-  {
-      "id": "e99182df.60e55",
-      "type": "comment",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Load Brower and look for node-red website",
-      "info": "",
-      "x": 280,
-      "y": 80,
-      "wires": []
-  },
-  {
-      "id": "a25ea2e3.ea1ec",
-      "type": "comment",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Navigate on Node-Red Website",
-      "info": "",
-      "x": 250,
-      "y": 480,
-      "wires": []
-  },
-  {
-      "id": "2ba887ee.fc34d8",
-      "type": "get text",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Get H1 text",
-      "expected": "",
-      "selector": "tag name",
-      "target": "h1",
-      "timeout": 1000,
-      "waitFor": 500,
-      "savetofile": false,
-      "x": 370,
-      "y": 700,
-      "wires": [
-          [
-              "26a1b5e4.c3c18a",
-              "c2056332.91fa4"
-          ],
-          [
-              "2f745a90.666676",
-              "c2056332.91fa4"
-          ]
-      ]
-  },
-  {
-      "id": "26a1b5e4.c3c18a",
-      "type": "navigate",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "url": "https://flows.nodered.org/",
-      "navType": "to",
-      "waitFor": 500,
-      "x": 360,
-      "y": 780,
-      "wires": [
-          [
-              "14574237.855fbe"
-          ],
-          [
-              "2f745a90.666676"
-          ]
-      ]
-  },
-  {
-      "id": "e83ff6a8.152d08",
-      "type": "click on",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Click on first result",
-      "selector": "xpath",
-      "target": "//div[contains(@class,\"filter-results\")]//a[1]",
-      "timeout": 1000,
-      "waitFor": 500,
-      "clickOn": false,
-      "x": 390,
-      "y": 940,
-      "wires": [
-          [
-              "95e0c843.9bcf48"
-          ],
-          [
-              "2f745a90.666676"
-          ]
-      ]
-  },
-  {
-      "id": "14574237.855fbe",
-      "type": "send keys",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Write search text",
-      "keys": "selenium",
-      "selector": "id",
-      "target": "filter-term",
-      "timeout": 1000,
-      "waitFor": 500,
-      "clearval": false,
-      "x": 390,
-      "y": 860,
-      "wires": [
-          [
-              "e83ff6a8.152d08"
-          ],
-          [
-              "2f745a90.666676"
-          ]
-      ]
-  },
-  {
-      "id": "b9d2517e.a6d7c",
-      "type": "set value",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Set value to search",
-      "value": "",
-      "selector": "",
-      "target": "filter-term",
-      "timeout": "2000",
-      "waitFor": "2000",
-      "x": 390,
-      "y": 320,
-      "wires": [
-          [
-              "d210dfa4.b7c89"
-          ],
-          [
-              "2f745a90.666676"
-          ]
-      ]
-  },
-  {
-      "id": "95e0c843.9bcf48",
-      "type": "get attribute",
-      "z": "6a5fd7c2.ab7598",
-      "name": "Check style from H1 flow-title",
-      "attribute": "style",
-      "expected": "margin-bottom: 10px;",
-      "selector": "className",
-      "target": "flow-title",
-      "timeout": 1000,
-      "waitFor": 500,
-      "savetofile": false,
-      "x": 430,
-      "y": 1020,
-      "wires": [
-          [
-              "2f745a90.666676",
-              "c2056332.91fa4"
-          ],
-          [
-              "2f745a90.666676",
-              "c2056332.91fa4"
-          ]
-      ]
-  },
-  {
-      "id": "c2056332.91fa4",
-      "type": "debug",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "active": true,
-      "tosidebar": true,
-      "console": false,
-      "tostatus": false,
-      "complete": "false",
-      "statusVal": "",
-      "statusType": "auto",
-      "x": 900,
-      "y": 760,
-      "wires": []
-  },
-  {
-      "id": "ac56ed7b69e039f1",
-      "type": "open browser",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "browserType": "chrome",
-      "webURL": "{{msg.website}}",
-      "width": 1280,
-      "height": 1024,
-      "timeout": 3000,
-      "maximized": true,
-      "headless": false,
-      "args": [
-          "--disable-web-security"
-      ],
-      "serverURL": "http://localhost:9515",
-      "x": 370,
-      "y": 120,
-      "wires": [
-          [
-              "8206817b.71a7c"
-          ]
-      ]
-  },
-  {
-      "id": "edb3ba8283829ac1",
-      "type": "close browser",
-      "z": "6a5fd7c2.ab7598",
-      "name": "",
-      "waitFor": 500,
-      "x": 1050,
-      "y": 320,
-      "wires": [
-          [
-              "c7c135a0.c0d6e8"
-          ]
-      ]
-  },
-  {
-      "id": "f0421dd89023bcf4",
-      "type": "tab",
-      "label": "Example 2 : Cookies",
-      "disabled": false,
-      "info": "",
-      "env": []
-  },
-  {
-      "id": "caf806fd0a2faf01",
-      "type": "inject",
-      "z": "f0421dd89023bcf4",
-      "name": "",
-      "props": [
-          {
-              "p": "payload"
-          },
-          {
-              "p": "topic",
-              "vt": "str"
-          }
-      ],
-      "repeat": "",
-      "crontab": "",
-      "once": false,
-      "onceDelay": 0.1,
-      "topic": "",
-      "payload": "",
-      "payloadType": "date",
-      "x": 180,
-      "y": 80,
-      "wires": [
-          [
-              "12582a7e503867c9"
-          ]
-      ]
-  },
-  {
-      "id": "12582a7e503867c9",
-      "type": "open browser",
-      "z": "f0421dd89023bcf4",
-      "name": "",
-      "browserType": "chrome",
-      "webURL": "https://simonradier.github.io/simple-webdriver/test/html/",
-      "width": 1280,
-      "height": 1024,
-      "timeout": 3000,
-      "maximized": true,
-      "headless": false,
-      "args": [],
-      "serverURL": "http://localhost:9515",
-      "x": 190,
-      "y": 160,
-      "wires": [
-          [
-              "9b8dbcec2e59e672"
-          ]
-      ]
-  },
-  {
-      "id": "5a51c46752286227",
-      "type": "debug",
-      "z": "f0421dd89023bcf4",
-      "name": "Result",
-      "active": true,
-      "tosidebar": true,
-      "console": false,
-      "tostatus": false,
-      "complete": "true",
-      "targetType": "full",
-      "statusVal": "",
-      "statusType": "auto",
-      "x": 790,
-      "y": 460,
-      "wires": []
-  },
-  {
-      "id": "f07f4e70bc28c542",
-      "type": "close browser",
-      "z": "f0421dd89023bcf4",
-      "name": "",
-      "waitFor": 500,
-      "x": 650,
-      "y": 460,
-      "wires": [
-          [
-              "5a51c46752286227"
-          ]
-      ]
-  },
-  {
-      "id": "9b8dbcec2e59e672",
-      "type": "get title",
-      "z": "f0421dd89023bcf4",
-      "name": "",
-      "expected": "WD2 Test Page",
-      "timeout": 3000,
-      "waitFor": 500,
-      "x": 180,
-      "y": 260,
-      "wires": [
-          [
-              "45314bc6d0d0b6d2",
-              "f3d47f690c1d69ed"
-          ],
-          [
-              "f08f6dcd21ded000"
-          ]
-      ]
-  },
-  {
-      "id": "45314bc6d0d0b6d2",
-      "type": "debug",
-      "z": "f0421dd89023bcf4",
-      "name": "payload",
-      "active": true,
-      "tosidebar": true,
-      "console": false,
-      "tostatus": false,
-      "complete": "payload",
-      "targetType": "msg",
-      "statusVal": "",
-      "statusType": "auto",
-      "x": 640,
-      "y": 120,
-      "wires": []
-  },
-  {
-      "id": "20992e44e0799919",
-      "type": "link in",
-      "z": "f0421dd89023bcf4",
-      "name": "link in 1",
-      "links": [],
-      "x": 525,
-      "y": 460,
-      "wires": [
-          [
-              "f07f4e70bc28c542"
-          ]
-      ]
-  },
-  {
-      "id": "f08f6dcd21ded000",
-      "type": "link call",
-      "z": "f0421dd89023bcf4",
-      "name": "End",
-      "links": [
-          "20992e44e0799919"
-      ],
-      "linkType": "static",
-      "timeout": "30",
-      "x": 550,
-      "y": 340,
-      "wires": [
-          []
-      ]
-  },
-  {
-      "id": "f3d47f690c1d69ed",
-      "type": "get text",
-      "z": "f0421dd89023bcf4",
-      "name": "",
-      "expected": "test id",
-      "selector": "id",
-      "target": "id_1234",
-      "timeout": 1000,
-      "waitFor": 500,
-      "savetofile": false,
-      "x": 180,
-      "y": 340,
-      "wires": [
-          [
-              "45314bc6d0d0b6d2",
-              "f289b8bbe0ded55d"
-          ],
-          [
-              "f08f6dcd21ded000"
-          ]
-      ]
-  },
-  {
-      "id": "f289b8bbe0ded55d",
-      "type": "get cookie",
-      "z": "f0421dd89023bcf4",
-      "name": "",
-      "cookieName": "cookie2",
-      "timeout": 3000,
-      "waitFor": 500,
-      "x": 190,
-      "y": 440,
-      "wires": [
-          [
-              "45314bc6d0d0b6d2",
-              "d56f71a3cf4f2243"
-          ],
-          [
-              "f08f6dcd21ded000"
-          ]
-      ]
-  },
-  {
-      "id": "b5a68dfd94d1ba04",
-      "type": "get cookie",
-      "z": "f0421dd89023bcf4",
-      "name": "Get test cookie",
-      "cookieName": "test",
-      "timeout": 3000,
-      "waitFor": 500,
-      "x": 200,
-      "y": 600,
-      "wires": [
-          [
-              "4a5548620e295f42",
-              "45314bc6d0d0b6d2"
-          ],
-          [
-              "f08f6dcd21ded000"
-          ]
-      ]
-  },
-  {
-      "id": "d56f71a3cf4f2243",
-      "type": "set cookie",
-      "z": "f0421dd89023bcf4",
-      "name": "Create test cookie",
-      "delete": false,
-      "advanced": false,
-      "cookieName": "test",
-      "cookieValue": "test",
-      "cookiePath": "",
-      "cookieDomain": "",
-      "cookieSecure": false,
-      "cookieHttpOnly": false,
-      "cookieExpiry": "",
-      "timeout": 3000,
-      "waitFor": 500,
-      "x": 210,
-      "y": 520,
-      "wires": [
-          [
-              "b5a68dfd94d1ba04"
-          ],
-          [
-              "45314bc6d0d0b6d2"
-          ]
-      ]
-  },
-  {
-      "id": "4a5548620e295f42",
-      "type": "set cookie",
-      "z": "f0421dd89023bcf4",
-      "name": "Delete test cookie",
-      "delete": true,
-      "advanced": false,
-      "cookieName": "test",
-      "cookieValue": "test",
-      "cookiePath": "",
-      "cookieDomain": "",
-      "cookieSecure": false,
-      "cookieHttpOnly": false,
-      "cookieExpiry": "",
-      "timeout": 3000,
-      "waitFor": 500,
-      "x": 210,
-      "y": 680,
-      "wires": [
-          [
-              "63ab3c1332419b7c"
-          ],
-          [
-              "f08f6dcd21ded000"
-          ]
-      ]
-  },
-  {
-      "id": "63ab3c1332419b7c",
-      "type": "get cookie",
-      "z": "f0421dd89023bcf4",
-      "name": "Get test cookie again",
-      "cookieName": "test",
-      "timeout": 3000,
-      "waitFor": 500,
-      "x": 220,
-      "y": 780,
-      "wires": [
-          [
-              "45314bc6d0d0b6d2"
-          ],
-          [
-              "f08f6dcd21ded000"
-          ]
-      ]
-  },
-  {
-      "id": "f1a5b48fb0c7658b",
-      "type": "comment",
-      "z": "f0421dd89023bcf4",
-      "name": "Get test cookie should fail",
-      "info": "",
-      "x": 230,
-      "y": 740,
-      "wires": []
-  }
+    {
+        "id": "6a5fd7c2.ab7598",
+        "type": "tab",
+        "label": "Example 1 : Navigation & Find Element",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "f0421dd89023bcf4",
+        "type": "tab",
+        "label": "Example 2 : Cookies",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "344d20bdc278fdd1",
+        "type": "tab",
+        "label": "Example 3 : Frames",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8035baaa.c1b388",
+        "type": "inject",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "value",
+                "v": "node-red",
+                "vt": "str"
+            },
+            {
+                "p": "website",
+                "v": "https://www.duckduckgo.com/",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "ac56ed7b69e039f1"
+            ]
+        ]
+    },
+    {
+        "id": "8206817b.71a7c",
+        "type": "find element",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Find Search input",
+        "selector": "id",
+        "target": "search_form_input_homepage",
+        "timeout": 3000,
+        "waitFor": "2000",
+        "x": 390,
+        "y": 220,
+        "wires": [
+            [
+                "b9d2517e.a6d7c"
+            ],
+            [
+                "2f745a90.666676"
+            ]
+        ]
+    },
+    {
+        "id": "c7c135a0.c0d6e8",
+        "type": "debug",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "c028eb25.13e088",
+        "type": "catch",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 180,
+        "y": 40,
+        "wires": [
+            [
+                "5647d8a4.05c3e8"
+            ]
+        ]
+    },
+    {
+        "id": "5647d8a4.05c3e8",
+        "type": "debug",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "d210dfa4.b7c89",
+        "type": "click on",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Click on search button",
+        "selector": "id",
+        "target": "search_button_homepage",
+        "timeout": 1000,
+        "waitFor": 500,
+        "clickOn": false,
+        "x": 400,
+        "y": 420,
+        "wires": [
+            [
+                "858ace24.4a56"
+            ],
+            [
+                "2f745a90.666676"
+            ]
+        ]
+    },
+    {
+        "id": "858ace24.4a56",
+        "type": "click on",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Click on first result",
+        "selector": "xpath",
+        "target": "//article[1]",
+        "timeout": "2000",
+        "waitFor": 3000,
+        "clickOn": true,
+        "x": 410,
+        "y": 520,
+        "wires": [
+            [
+                "a2206fd8.d9eb"
+            ],
+            [
+                "2f745a90.666676"
+            ]
+        ]
+    },
+    {
+        "id": "a2206fd8.d9eb",
+        "type": "get title",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Get web page title",
+        "expected": "Node-RED",
+        "timeout": 3000,
+        "waitFor": 500,
+        "x": 390,
+        "y": 620,
+        "wires": [
+            [
+                "2ba887ee.fc34d8",
+                "c2056332.91fa4"
+            ],
+            [
+                "2f745a90.666676",
+                "c2056332.91fa4"
+            ]
+        ]
+    },
+    {
+        "id": "2f745a90.666676",
+        "type": "screenshot",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "filePath": "./test.png",
+        "waitFor": 500,
+        "x": 870,
+        "y": 320,
+        "wires": [
+            [
+                "edb3ba8283829ac1"
+            ],
+            [
+                "edb3ba8283829ac1"
+            ]
+        ]
+    },
+    {
+        "id": "e99182df.60e55",
+        "type": "comment",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Load Brower and look for node-red website",
+        "info": "",
+        "x": 280,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a25ea2e3.ea1ec",
+        "type": "comment",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Navigate on Node-Red Website",
+        "info": "",
+        "x": 250,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "2ba887ee.fc34d8",
+        "type": "get text",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Get H1 text",
+        "expected": "",
+        "selector": "tag name",
+        "target": "h1",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 370,
+        "y": 700,
+        "wires": [
+            [
+                "26a1b5e4.c3c18a",
+                "c2056332.91fa4"
+            ],
+            [
+                "2f745a90.666676",
+                "c2056332.91fa4"
+            ]
+        ]
+    },
+    {
+        "id": "26a1b5e4.c3c18a",
+        "type": "navigate",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "url": "https://flows.nodered.org/",
+        "navType": "to",
+        "waitFor": 500,
+        "x": 360,
+        "y": 780,
+        "wires": [
+            [
+                "14574237.855fbe"
+            ],
+            [
+                "2f745a90.666676"
+            ]
+        ]
+    },
+    {
+        "id": "e83ff6a8.152d08",
+        "type": "click on",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Click on first result",
+        "selector": "xpath",
+        "target": "//div[contains(@class,\"filter-results\")]//a[1]",
+        "timeout": 1000,
+        "waitFor": 500,
+        "clickOn": false,
+        "x": 390,
+        "y": 940,
+        "wires": [
+            [
+                "95e0c843.9bcf48"
+            ],
+            [
+                "2f745a90.666676"
+            ]
+        ]
+    },
+    {
+        "id": "14574237.855fbe",
+        "type": "send keys",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Write search text",
+        "keys": "selenium",
+        "selector": "id",
+        "target": "filter-term",
+        "timeout": 1000,
+        "waitFor": 500,
+        "x": 390,
+        "y": 860,
+        "wires": [
+            [
+                "e83ff6a8.152d08"
+            ],
+            [
+                "2f745a90.666676"
+            ]
+        ]
+    },
+    {
+        "id": "b9d2517e.a6d7c",
+        "type": "set value",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Set value to search",
+        "value": "",
+        "selector": "",
+        "target": "filter-term",
+        "timeout": "2000",
+        "waitFor": "2000",
+        "x": 390,
+        "y": 320,
+        "wires": [
+            [
+                "d210dfa4.b7c89"
+            ],
+            [
+                "2f745a90.666676"
+            ]
+        ]
+    },
+    {
+        "id": "95e0c843.9bcf48",
+        "type": "get attribute",
+        "z": "6a5fd7c2.ab7598",
+        "name": "Check style from H1 flow-title",
+        "attribute": "style",
+        "expected": "margin-bottom: 10px;",
+        "selector": "className",
+        "target": "flow-title",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 430,
+        "y": 1020,
+        "wires": [
+            [
+                "2f745a90.666676",
+                "c2056332.91fa4"
+            ],
+            [
+                "2f745a90.666676",
+                "c2056332.91fa4"
+            ]
+        ]
+    },
+    {
+        "id": "c2056332.91fa4",
+        "type": "debug",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "ac56ed7b69e039f1",
+        "type": "open browser",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "browserType": "chrome",
+        "webURL": "{{msg.website}}",
+        "width": 1280,
+        "height": 1024,
+        "timeout": 3000,
+        "maximized": true,
+        "headless": false,
+        "args": [
+            "--disable-web-security"
+        ],
+        "serverURL": "http://localhost:9515",
+        "x": 370,
+        "y": 120,
+        "wires": [
+            [
+                "8206817b.71a7c"
+            ]
+        ]
+    },
+    {
+        "id": "edb3ba8283829ac1",
+        "type": "close browser",
+        "z": "6a5fd7c2.ab7598",
+        "name": "",
+        "waitFor": 500,
+        "x": 1050,
+        "y": 320,
+        "wires": [
+            [
+                "c7c135a0.c0d6e8"
+            ]
+        ]
+    },
+    {
+        "id": "caf806fd0a2faf01",
+        "type": "inject",
+        "z": "f0421dd89023bcf4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 80,
+        "wires": [
+            [
+                "12582a7e503867c9"
+            ]
+        ]
+    },
+    {
+        "id": "12582a7e503867c9",
+        "type": "open browser",
+        "z": "f0421dd89023bcf4",
+        "name": "",
+        "browserType": "chrome",
+        "webURL": "https://simonradier.github.io/simple-webdriver/test/html/",
+        "width": 1280,
+        "height": 1024,
+        "timeout": 3000,
+        "maximized": true,
+        "headless": false,
+        "args": [],
+        "serverURL": "http://localhost:9515",
+        "x": 190,
+        "y": 160,
+        "wires": [
+            [
+                "9b8dbcec2e59e672"
+            ]
+        ]
+    },
+    {
+        "id": "5a51c46752286227",
+        "type": "debug",
+        "z": "f0421dd89023bcf4",
+        "name": "Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "f07f4e70bc28c542",
+        "type": "close browser",
+        "z": "f0421dd89023bcf4",
+        "name": "",
+        "waitFor": 500,
+        "x": 690,
+        "y": 460,
+        "wires": [
+            [
+                "5a51c46752286227"
+            ]
+        ]
+    },
+    {
+        "id": "9b8dbcec2e59e672",
+        "type": "get title",
+        "z": "f0421dd89023bcf4",
+        "name": "",
+        "expected": "WD2 Test Page",
+        "timeout": 3000,
+        "waitFor": 500,
+        "x": 180,
+        "y": 260,
+        "wires": [
+            [
+                "45314bc6d0d0b6d2",
+                "f3d47f690c1d69ed"
+            ],
+            [
+                "f08f6dcd21ded000"
+            ]
+        ]
+    },
+    {
+        "id": "45314bc6d0d0b6d2",
+        "type": "debug",
+        "z": "f0421dd89023bcf4",
+        "name": "payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "20992e44e0799919",
+        "type": "link in",
+        "z": "f0421dd89023bcf4",
+        "name": "link in 1",
+        "links": [],
+        "x": 575,
+        "y": 460,
+        "wires": [
+            [
+                "f07f4e70bc28c542"
+            ]
+        ]
+    },
+    {
+        "id": "f08f6dcd21ded000",
+        "type": "link call",
+        "z": "f0421dd89023bcf4",
+        "name": "End",
+        "links": [
+            "20992e44e0799919"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 610,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f3d47f690c1d69ed",
+        "type": "get text",
+        "z": "f0421dd89023bcf4",
+        "name": "",
+        "expected": "test id",
+        "selector": "id",
+        "target": "id_1234",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 180,
+        "y": 340,
+        "wires": [
+            [
+                "45314bc6d0d0b6d2",
+                "f289b8bbe0ded55d"
+            ],
+            [
+                "f08f6dcd21ded000"
+            ]
+        ]
+    },
+    {
+        "id": "f289b8bbe0ded55d",
+        "type": "get cookie",
+        "z": "f0421dd89023bcf4",
+        "name": "",
+        "cookieName": "cookie2",
+        "timeout": 3000,
+        "waitFor": 500,
+        "x": 190,
+        "y": 440,
+        "wires": [
+            [
+                "45314bc6d0d0b6d2",
+                "d56f71a3cf4f2243"
+            ],
+            [
+                "f08f6dcd21ded000"
+            ]
+        ]
+    },
+    {
+        "id": "b5a68dfd94d1ba04",
+        "type": "get cookie",
+        "z": "f0421dd89023bcf4",
+        "name": "Get test cookie",
+        "cookieName": "test",
+        "timeout": 3000,
+        "waitFor": 500,
+        "x": 200,
+        "y": 600,
+        "wires": [
+            [
+                "4a5548620e295f42",
+                "45314bc6d0d0b6d2"
+            ],
+            [
+                "f08f6dcd21ded000"
+            ]
+        ]
+    },
+    {
+        "id": "d56f71a3cf4f2243",
+        "type": "set cookie",
+        "z": "f0421dd89023bcf4",
+        "name": "Create test cookie",
+        "delete": false,
+        "advanced": false,
+        "cookieName": "test",
+        "cookieValue": "test",
+        "cookiePath": "",
+        "cookieDomain": "",
+        "cookieSecure": false,
+        "cookieHttpOnly": false,
+        "cookieExpiry": "",
+        "timeout": 3000,
+        "waitFor": 500,
+        "x": 210,
+        "y": 520,
+        "wires": [
+            [
+                "b5a68dfd94d1ba04"
+            ],
+            [
+                "45314bc6d0d0b6d2"
+            ]
+        ]
+    },
+    {
+        "id": "4a5548620e295f42",
+        "type": "set cookie",
+        "z": "f0421dd89023bcf4",
+        "name": "Delete test cookie",
+        "delete": true,
+        "advanced": false,
+        "cookieName": "test",
+        "cookieValue": "test",
+        "cookiePath": "",
+        "cookieDomain": "",
+        "cookieSecure": false,
+        "cookieHttpOnly": false,
+        "cookieExpiry": "",
+        "timeout": 3000,
+        "waitFor": 500,
+        "x": 210,
+        "y": 680,
+        "wires": [
+            [
+                "63ab3c1332419b7c"
+            ],
+            [
+                "f08f6dcd21ded000"
+            ]
+        ]
+    },
+    {
+        "id": "63ab3c1332419b7c",
+        "type": "get cookie",
+        "z": "f0421dd89023bcf4",
+        "name": "Get test cookie again",
+        "cookieName": "test",
+        "timeout": 3000,
+        "waitFor": 500,
+        "x": 220,
+        "y": 780,
+        "wires": [
+            [
+                "45314bc6d0d0b6d2"
+            ],
+            [
+                "f08f6dcd21ded000"
+            ]
+        ]
+    },
+    {
+        "id": "f1a5b48fb0c7658b",
+        "type": "comment",
+        "z": "f0421dd89023bcf4",
+        "name": "Get test cookie should fail",
+        "info": "",
+        "x": 230,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "5894633167536a87",
+        "type": "inject",
+        "z": "344d20bdc278fdd1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 80,
+        "wires": [
+            [
+                "61c8946dda8dcedb"
+            ]
+        ]
+    },
+    {
+        "id": "61c8946dda8dcedb",
+        "type": "open browser",
+        "z": "344d20bdc278fdd1",
+        "name": "",
+        "browserType": "chrome",
+        "webURL": "https://simonradier.github.io/simple-webdriver/test/html/",
+        "width": 1280,
+        "height": 1024,
+        "timeout": 3000,
+        "maximized": true,
+        "headless": false,
+        "args": [],
+        "serverURL": "http://localhost:9515",
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "a27e4be40fa9fe2a"
+            ]
+        ]
+    },
+    {
+        "id": "a27e4be40fa9fe2a",
+        "type": "get text",
+        "z": "344d20bdc278fdd1",
+        "name": "",
+        "expected": "Hello",
+        "selector": "tag name",
+        "target": "h1",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "b0fae3b2c5f9fc4e"
+            ],
+            [
+                "b29debd04cca249f"
+            ]
+        ]
+    },
+    {
+        "id": "b0fae3b2c5f9fc4e",
+        "type": "switch frame",
+        "z": "344d20bdc278fdd1",
+        "name": "Swith Frame by Number",
+        "switchMode": "number",
+        "frameNumber": "0",
+        "selector": "",
+        "target": "",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 230,
+        "y": 360,
+        "wires": [
+            [
+                "f53318f966c87c1f"
+            ],
+            [
+                "b29debd04cca249f"
+            ]
+        ]
+    },
+    {
+        "id": "f53318f966c87c1f",
+        "type": "get text",
+        "z": "344d20bdc278fdd1",
+        "name": "",
+        "expected": "Hello World",
+        "selector": "tag name",
+        "target": "h1",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 180,
+        "y": 440,
+        "wires": [
+            [
+                "ed1bdac6d446feab"
+            ],
+            [
+                "b29debd04cca249f"
+            ]
+        ]
+    },
+    {
+        "id": "ed1bdac6d446feab",
+        "type": "switch frame",
+        "z": "344d20bdc278fdd1",
+        "name": "Go to Parent",
+        "switchMode": "parent",
+        "frameNumber": "0",
+        "selector": "",
+        "target": "",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 190,
+        "y": 520,
+        "wires": [
+            [
+                "24a26d30b598ee3d"
+            ],
+            [
+                "b29debd04cca249f"
+            ]
+        ]
+    },
+    {
+        "id": "24a26d30b598ee3d",
+        "type": "get text",
+        "z": "344d20bdc278fdd1",
+        "name": "",
+        "expected": "Hello",
+        "selector": "tag name",
+        "target": "h1",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 180,
+        "y": 580,
+        "wires": [
+            [
+                "787e1563e40338a2"
+            ],
+            [
+                "b29debd04cca249f"
+            ]
+        ]
+    },
+    {
+        "id": "787e1563e40338a2",
+        "type": "switch frame",
+        "z": "344d20bdc278fdd1",
+        "name": "Switch Frame by Element",
+        "switchMode": "id",
+        "frameNumber": "0",
+        "selector": "id",
+        "target": "frame-test2",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 230,
+        "y": 660,
+        "wires": [
+            [
+                "1702b01926daa96b"
+            ],
+            [
+                "b29debd04cca249f"
+            ]
+        ]
+    },
+    {
+        "id": "ac74894930207891",
+        "type": "debug",
+        "z": "344d20bdc278fdd1",
+        "name": "Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "9f9a1b8a621ded0c",
+        "type": "close browser",
+        "z": "344d20bdc278fdd1",
+        "name": "",
+        "waitFor": 500,
+        "x": 770,
+        "y": 580,
+        "wires": [
+            [
+                "ac74894930207891"
+            ]
+        ]
+    },
+    {
+        "id": "c31da43ea5248b78",
+        "type": "link in",
+        "z": "344d20bdc278fdd1",
+        "name": "link in 2",
+        "links": [],
+        "x": 655,
+        "y": 580,
+        "wires": [
+            [
+                "9f9a1b8a621ded0c"
+            ]
+        ]
+    },
+    {
+        "id": "b29debd04cca249f",
+        "type": "link call",
+        "z": "344d20bdc278fdd1",
+        "name": "End",
+        "links": [
+            "c31da43ea5248b78"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 810,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1702b01926daa96b",
+        "type": "get text",
+        "z": "344d20bdc278fdd1",
+        "name": "",
+        "expected": "This is a test",
+        "selector": "tag name",
+        "target": "h1",
+        "timeout": 1000,
+        "waitFor": 500,
+        "savetofile": false,
+        "x": 180,
+        "y": 740,
+        "wires": [
+            [
+                "b29debd04cca249f"
+            ],
+            [
+                "b29debd04cca249f"
+            ]
+        ]
+    }
 ]
