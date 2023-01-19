@@ -1,12 +1,10 @@
 import { CookieDef } from '@critik/simple-webdriver/dist/interface'
+import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty, sleep } from '../utils'
 import {
-  checkIfCritical,
-  REDAPI,
-  replaceMustache,
-  falseIfEmpty,
-  sleep
-} from '../utils'
-import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeSetCookieConf extends SimpleWebdriverNodeConf {
@@ -19,7 +17,7 @@ export interface NodeSetCookieConf extends SimpleWebdriverNodeConf {
   cookieExpiry: string
   cookieSameSite: 'None' | 'Lax' | 'Strict'
   advanced: boolean
-  delete : boolean
+  delete: boolean
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -31,7 +29,9 @@ export function NodeSetCookieConstructor(this: NodeSetCookie, conf: NodeSetCooki
 
   this.on('input', async (message: any, send, done) => {
     // Cheat to allow correct typing in typescript
-    const msg: SimpleWebDriverMessage<{ cookie : CookieDef, cookieName : string } & SimpleWebdriverNodeConf> = message
+    const msg: SimpleWebDriverMessage<
+      { cookie: CookieDef; cookieName: string } & SimpleWebdriverNodeConf
+    > = message
     const node = this
     node.status({})
     if (msg.browser == null) {
@@ -66,10 +66,8 @@ export function NodeSetCookieConstructor(this: NodeSetCookie, conf: NodeSetCooki
       await sleep(waitFor)
       node.status({ fill: 'blue', shape: 'dot', text: 'setting cookie' })
       try {
-        if (conf.delete)
-          await msg.browser.cookie().delete(name);
-        else
-          await msg.browser.cookie().create(cookie)
+        if (conf.delete) await msg.browser.cookie().delete(name)
+        else await msg.browser.cookie().create(cookie)
         if (msg.error) {
           delete msg.error
         }

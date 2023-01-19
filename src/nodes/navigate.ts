@@ -1,5 +1,9 @@
 import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty, sleep } from '../utils'
-import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeNavigateConf extends SimpleWebdriverNodeConf {

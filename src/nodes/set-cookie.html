@@ -217,13 +217,11 @@
       })
       $('#node-input-delete').on('change', event => {
         if ($('#node-input-delete').is(':checked')) {
-          $('#node-input-advanced').prop( "checked", false )
+          $('#node-input-advanced').prop('checked', false)
           $('#cookie-value').hide()
           $('#advanced-options').hide()
           $('#advanced-checkbox').hide()
-
-        } 
-        else {
+        } else {
           $('#advanced-checkbox').show()
           $('#cookie-value').show()
         }

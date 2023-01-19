@@ -1,4 +1,8 @@
-import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 import * as fs from 'fs'
 import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty, sleep } from '../utils'
 
@@ -10,7 +14,10 @@ export interface NodeScreenshotConf extends SimpleWebdriverNodeConf {
 // tslint:disable-next-line: no-empty-interface
 export interface NodeScreenshot extends SimpleWebdriverNode {}
 
-export function NodeScreenshotConstructor(this: NodeScreenshot, conf: NodeScreenshotConf) {
+export function NodeScreenshotConstructor(
+  this: NodeScreenshot,
+  conf: NodeScreenshotConf
+) {
   REDAPI.get().nodes.createNode(this, conf)
   this.status({})
 

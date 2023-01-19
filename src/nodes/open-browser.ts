@@ -1,6 +1,10 @@
 import { Capabilities, WebDriver, Protocol, BrowserType } from '@critik/simple-webdriver'
 import { checkIfOnline as checkIfReachable, REDAPI, replaceMustache } from '../utils'
-import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeOpenBrowserConf extends SimpleWebdriverNodeConf {

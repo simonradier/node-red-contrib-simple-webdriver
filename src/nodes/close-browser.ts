@@ -1,5 +1,9 @@
 import { REDAPI, sleep } from '../utils'
-import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
 interface NodeCloseWebConf extends SimpleWebdriverNodeConf {}
@@ -28,7 +32,7 @@ export function NodeCloseWebConstructor(this: NodeCloseWeb, conf: NodeCloseWebCo
         shape: 'ring',
         text: 'waiting for ' + (waitFor / 1000).toFixed(1) + ' s'
       })
-      await sleep(waitFor);
+      await sleep(waitFor)
       try {
         this.status({ fill: 'blue', shape: 'ring', text: 'closing' })
         await msg.browser.close()
