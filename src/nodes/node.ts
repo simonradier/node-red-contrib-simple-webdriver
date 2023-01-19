@@ -29,9 +29,7 @@ export enum Mode {
   AllErrorStopLastMsg = 'all-error-stop-last',
   AllErrorStopEachMsg = 'all-error-stop-each',
   AllLastMsg = 'all-last',
-  AllEachMsg = 'all-each',
-  AllOnlyError = 'all-only-error',
-  AllOnlySuccess = 'all-only-success'
+  AllEachMsg = 'all-each'
 }
 
 export interface FindElementNodeConf extends SimpleWebdriverNodeConf {

@@ -32,6 +32,20 @@
     >
     <input type="text" id="node-input-timeout" value="1000" />
   </div>
+  <div class="form-row">
+    <label for="node-input-mode"><i class="fa fa-bars"></i> <span>Mode</span></label>
+    <select id="node-input-mode" style="width:125px !important">
+      <option value="first">first</option>
+      <option value="all-error-stop-last">
+        all (stop at first error) / last generate a message
+      </option>
+      <option value="all-last">all (continue if error) / last generate a message</option>
+      <option value="all-error-stop-each">
+        all (stop at first error) / each generate a message
+      </option>
+      <option value="all-each">all (continue if error) / each generate a message</option>
+    </select>
+  </div>
   <hr align="middle" />
   <div class="form-row">
     <label for="node-input-waitFor"
@@ -143,6 +157,9 @@
       },
       target: {
         value: ''
+      },
+      mode: {
+        value: 'first'
       },
       timeout: {
         value: 1000,
