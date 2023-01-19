@@ -1,19 +1,23 @@
 import { REDAPI, sleep } from '../utils'
-import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeCloseWebDef extends SeleniumNodeDef {}
+interface NodeCloseWebConf extends SimpleWebdriverNodeConf {}
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeCloseWeb extends SeleniumNode {}
+export interface NodeCloseWeb extends SimpleWebdriverNode {}
 
-export function NodeCloseWebConstructor(this: NodeCloseWeb, conf: NodeCloseWebDef) {
+export function NodeCloseWebConstructor(this: NodeCloseWeb, conf: NodeCloseWebConf) {
   REDAPI.get().nodes.createNode(this, conf)
   this.status({})
 
   this.on('input', async (message: any, send, done) => {
     // Cheat to allow correct typing in typescript
-    const msg: WebDriverMessage = message
+    const msg: SimpleWebDriverMessage<SimpleWebdriverNodeConf> = message
 
     if (null === msg.browser) {
       const error = new Error(
@@ -28,7 +32,7 @@ export function NodeCloseWebConstructor(this: NodeCloseWeb, conf: NodeCloseWebDe
         shape: 'ring',
         text: 'waiting for ' + (waitFor / 1000).toFixed(1) + ' s'
       })
-      await sleep(waitFor);
+      await sleep(waitFor)
       try {
         this.status({ fill: 'blue', shape: 'ring', text: 'closing' })
         await msg.browser.close()

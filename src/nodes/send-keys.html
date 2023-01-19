@@ -44,6 +44,21 @@
     >
     <input type="text" id="node-input-timeout" value="1000" />
   </div>
+  <div class="form-row">
+    <label for="node-input-mode"><i class="fa fa-bars"></i> <span>Mode</span></label>
+    <select id="node-input-mode" style="width:125px !important">
+      <option value=""></option>
+      <option value="first">first</option>
+      <option value="all-error-stop-last">
+        all (stop at first error) / last generate a message
+      </option>
+      <option value="all-last">all (continue if error) / last generate a message</option>
+      <option value="all-error-stop-each">
+        all (stop at first error) / each generate a message
+      </option>
+      <option value="all-each">all (continue if error) / each generate a message</option>
+    </select>
+  </div>
   <hr align="middle" />
   <div class="form-row">
     <label for="node-input-waitFor"
@@ -112,6 +127,19 @@
   	</li>
   </ol>
 
+  <h3>Mode</h3>
+  <p>Mode allow to define the behavior of the node if multiple elements are selected.</p>
+  <p>
+    <ul>
+      <li><a>First</a> (default) : only the first element is used by the node.</li>
+      <li><a>All (continue if error) / each generate a message</a>: all elements will be used by the node. An output message will be generated for each element.</li>
+      <li><a>All (stop at first error) / each generate a message</a> : all elements will be used by the node until an error is detected. An output message will be generated for each element (until the end or an error is met).</li>
+      <li><a>All (continue if error) / last generate a message</a>all elements will be used by the node. An output message will be generated only for the last element.</li>
+      <li><a>All (stop at first error) / last generate a message</a>all elements will be used by the node until an error is detected. An output message will be generated only for the last element (or the first detected error).</li>
+    </ul>
+  </p>
+  <p>Except for the <a>First</a> choice, the last message will have a <code>msg.last</code> property set to <code>true</code></p>
+
   <h3>Details</h3>
   	<p>This node is used to send keys to the element of the browser.</p>
   	<p>
@@ -145,6 +173,9 @@
       },
       target: {
         value: ''
+      },
+      mode: {
+        value: 'first'
       },
       timeout: {
         value: 1000,

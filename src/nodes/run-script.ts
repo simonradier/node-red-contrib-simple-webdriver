@@ -1,45 +1,60 @@
+import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
-import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from './node'
+import { modeExecute } from '../utils/mode-execute'
+import {
+  SimpleWebDriverAction,
+  SimpleWebdriverNode,
+  FindElementNodeConf,
+  Mode
+} from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeRunScriptDef extends SeleniumNodeDef {
+export interface NodeRunScriptConf extends FindElementNodeConf {
   script: string
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeRunScript extends SeleniumNode {}
+export interface NodeRunScript extends SimpleWebdriverNode {}
 
 async function inputAction(
   node: NodeRunScript,
-  conf: NodeRunScriptDef,
-  action: WebDriverAction
+  conf: NodeRunScriptConf,
+  action: SimpleWebDriverAction<NodeRunScriptConf>
 ): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     const msg = action.msg
     const script = falseIfEmpty(replaceMustache(conf.script, msg)) || msg.script
-    try {
-      msg.payload = await msg.browser.executeSync(script, msg.element)
-      node.status({ fill: 'green', shape: 'dot', text: 'success' })
-      if (msg.error) {
-        delete msg.error
-      }
-      action.send([msg, null])
-      action.done()
-    } catch (err) {
-      if (checkIfCritical(err)) {
-        reject(err)
-      } else {
-        msg.error = {
-          message: "Can't run script on the the element : " + err.message
+    const mode: Mode = <Mode>falseIfEmpty(conf.mode) || msg.mode
+    modeExecute(mode, msg.elements, async (e: Element) => {
+      try {
+        msg.payload = await msg.browser.executeSync(script, e)
+        node.status({ fill: 'green', shape: 'dot', text: 'success' })
+        if (msg.error) {
+          delete msg.error
         }
-        node.warn(msg.error.message)
-        node.status({ fill: 'yellow', shape: 'dot', text: 'run script error' })
-        action.send([null, msg])
-        action.done()
+        return [msg, null]
+      } catch (err) {
+        if (checkIfCritical(err)) {
+          reject(err)
+        } else {
+          msg.error = {
+            message: "Can't run script on the the element : " + err.message
+          }
+          node.warn(msg.error.message)
+          node.status({ fill: 'yellow', shape: 'dot', text: 'run script error' })
+          return [null, msg]
+        }
       }
-    }
-    resolve()
+    }).subscribe({
+      next(val) {
+        action.send(val)
+      },
+      complete() {
+        action.done()
+        resolve()
+      }
+    })
   })
 }
 

@@ -1,16 +1,13 @@
-import { WebDriverAction, SeleniumNode, SeleniumNodeDef } from './node'
+import { FindElementNodeConf, SimpleWebDriverAction, SimpleWebdriverNode } from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeFindElementDef extends SeleniumNodeDef {}
-
-// tslint:disable-next-line: no-empty-interface
-export interface NodeFindElement extends SeleniumNode {}
+export interface NodeFindElement extends SimpleWebdriverNode {}
 
 async function inputAction(
   node: NodeFindElement,
-  conf: NodeFindElementDef,
-  action: WebDriverAction
+  conf: FindElementNodeConf,
+  action: SimpleWebDriverAction<FindElementNodeConf>
 ): Promise<void> {
   return new Promise<void>(resolve => {
     const msg = action.msg

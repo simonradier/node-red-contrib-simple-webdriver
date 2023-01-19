@@ -1,6 +1,8 @@
 <script type="text/html" data-template-name="switch frame">
   <div class="form-row">
-    <label for="node-input-switchMode"><i class="fa fa-bars"></i> <span>Switch To</span></label>
+    <label for="node-input-switchMode"
+      ><i class="fa fa-bars"></i> <span>Switch To</span></label
+    >
     <select id="node-input-switchMode" style="width:125px !important">
       <option value="id">Frame Id (element)</option>
       <option value="number">Frame number</option>
@@ -187,30 +189,30 @@
           $('#row-input-target').show()
           $('#row-input-timeout').show()
         }
-      });
+      })
       $('#node-input-switchMode').on('change', event => {
         switch ($('#node-input-switchMode').val()) {
-          case 'id' : 
+          case 'id':
             $('#row-input-selector').show()
             $('#row-input-frameNumber').hide()
             if ($('#node-input-selector').val() !== '') {
               $('#row-input-target').show()
               $('#row-input-timeout').show()
             }
-          break;
-          case 'number' : 
+            break
+          case 'number':
             $('#row-input-frameNumber').show()
             $('#row-input-selector').hide()
             $('#row-input-target').hide()
             $('#row-input-timeout').hide()
-            break;
-          case 'top-context' : 
-          case 'parent' : 
+            break
+          case 'top-context':
+          case 'parent':
             $('#row-input-frameNumber').hide()
             $('#row-input-selector').hide()
             $('#row-input-target').hide()
             $('#row-input-timeout').hide()
-          break;
+            break
         }
       })
       $('#row-input-frameNumber').hide()

@@ -1,9 +1,13 @@
 import { Capabilities, WebDriver, Protocol, BrowserType } from '@critik/simple-webdriver'
 import { checkIfOnline as checkIfReachable, REDAPI, replaceMustache } from '../utils'
-import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeOpenBrowserDef extends SeleniumNodeDef {
+export interface NodeOpenBrowserConf extends SimpleWebdriverNodeConf {
   serverURL: string
   name: string
   browserType: BrowserType
@@ -16,9 +20,9 @@ export interface NodeOpenBrowserDef extends SeleniumNodeDef {
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeOpenWeb extends SeleniumNode {}
+export interface NodeOpenWeb extends SimpleWebdriverNode {}
 
-export function NodeOpenBrowserConstructor(this: NodeOpenWeb, conf: NodeOpenBrowserDef) {
+export function NodeOpenBrowserConstructor(this: NodeOpenWeb, conf: NodeOpenBrowserConf) {
   REDAPI.get().nodes.createNode(this, conf)
 
   if (!conf.serverURL) {
@@ -49,7 +53,7 @@ export function NodeOpenBrowserConstructor(this: NodeOpenWeb, conf: NodeOpenBrow
   }
   this.on('input', async (message: any, send, done) => {
     // Cheat to allow correct typing in typescript
-    const msg: WebDriverMessage = message
+    const msg: SimpleWebDriverMessage<NodeOpenBrowserConf> = message
     const node = this
     let driverError = false
     const driver = new WebDriver(conf.serverURL, Protocol.W3C)

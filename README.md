@@ -1,4 +1,5 @@
 # node-red-contrib-simplewebdriver
+
 [![Coverage Status](https://coveralls.io/repos/github/simonradier/node-red-contrib-simplewebdriver/badge.svg)](https://coveralls.io/github/simonradier/node-red-contrib-simplewebdriver)
 ![npm](https://img.shields.io/npm/dw/node-red-contrib-simple-webdriver)
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/node-red-contrib-simple-webdriver)
@@ -23,7 +24,9 @@ In order to use node-red-contrib-simple-webdriver, you must fullfill the followi
 Launch Node-red `node-red` and the simplewebdriver nodes will be loaded automatically. You should see the list of node under the simplewebdriver section.
 
 ![simplewebdriver section overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/main/docs/img/swd.png 'simplewebdriver section')
+
 ## Behavior
+
 ### Create a new flow
 
 You will always have to start with an `open-browser` node.
@@ -35,6 +38,7 @@ Most of the nodes will provide two outputs a success and a failure one.
 - Error is launched in case of "critical" error (i.e. the driver can't be used anymore). It means you will have to handle yourselft the cleaning on the simple-webdriver side in this case.
 
 ### Mustache support for node properties
+
 Most of the nodes' properties support simplified mustache syntax to retrieve value directly from the `msg` object (e.g. `{{msg.property}}`) or the environment (e.g. `{{env.property}}`)
 
 ## Documentation
@@ -42,7 +46,6 @@ Most of the nodes' properties support simplified mustache syntax to retrieve val
 All nodes provides their own documentation directly inside node-red.
 
 ![swd help overview](https://raw.githubusercontent.com/simonradier/node-red-contrib-simple-webdriver/main/docs/img/node-help.png 'simple-webdriver help')
-
 
 ## Develop
 
@@ -56,4 +59,3 @@ To test it, you will have to :
 - Launch, from the `node-red` folder, the following command to debug :
 
   `npm install [PATH_TO_CONTRIB_SIMPLEWEBDRIVER] && node --inspect node_modules/node-red/red.js`
-

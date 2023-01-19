@@ -1,22 +1,89 @@
-import { Node } from 'node-red'
-import { checkIfCritical, REDAPI } from '../utils'
+import { Element, Using } from '@critik/simple-webdriver'
+import { Node, NodeMessage } from 'node-red'
+import { Observable } from 'rxjs'
+import { checkIfCritical, falseIfEmpty, REDAPI, replaceMustache } from '../utils'
 import {
-  WebDriverAction,
-  WebDriverMessage,
-  SeleniumNodeDef,
-  waitForElement
+  FindElementNodeConf,
+  Mode,
+  SimpleWebDriverAction,
+  SimpleWebDriverMessage
 } from './node'
+
+/**
+ * Wait for the location of an element based on a target & selector.
+ * @param driver A valid WebDriver instance
+ * @param conf A configuration of a node
+ * @param msg  A node message
+ */
+export function waitForElement(
+  conf: FindElementNodeConf,
+  msg: NodeMessage & SimpleWebDriverMessage<FindElementNodeConf>
+): Observable<string | Array<Element>> {
+  return new Observable<string | Array<Element>>(subscriber => {
+    const waitFor: number = parseInt(
+      falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
+      10
+    )
+    const timeout: number = parseInt(
+      falseIfEmpty(replaceMustache(conf.timeout, msg)) || msg.timeout,
+      10
+    )
+    const target: string = falseIfEmpty(replaceMustache(conf.target, msg)) || msg.target
+    const multiple: boolean = conf.multiple
+    const selector: string =
+      falseIfEmpty(replaceMustache(conf.selector, msg)) || msg.selector
+    let elements: Array<Element>
+    subscriber.next('waiting for ' + (waitFor / 1000).toFixed(1) + ' s')
+    setTimeout(async () => {
+      try {
+        subscriber.next('locating')
+        if (selector && selector !== '') {
+          if (multiple || conf?.mode !== Mode.First) {
+            elements = await msg.browser.findElements(<Using>selector, target, timeout)
+          } else {
+            elements = [await msg.browser.findElement(<Using>selector, target, timeout)]
+          }
+        } else {
+          if (msg.elements) {
+            elements = msg.elements
+          }
+        }
+        subscriber.next(elements)
+        subscriber.complete()
+      } catch (e) {
+        let error: any
+        if (e.toString().includes('TimeoutError'))
+          error = new Error(
+            'catch timeout after ' +
+              timeout +
+              ' milliseconds for selector type ' +
+              selector +
+              ' for  ' +
+              target
+          )
+        else error = e
+        error.selector = selector
+        error.target = target
+        subscriber.error(error)
+      }
+    }, waitFor)
+  })
+}
 
 export function GenericNodeConstructor<
   TNode extends Node<any>,
-  TNodeDef extends SeleniumNodeDef
+  TNodeDef extends FindElementNodeConf
 >(
   inputPreCondAction: (
     node: TNode,
     conf: TNodeDef,
-    action: WebDriverAction
+    action: SimpleWebDriverAction<TNodeDef>
   ) => Promise<boolean>,
-  inputAction: (node: TNode, conf: TNodeDef, action: WebDriverAction) => Promise<void>,
+  inputAction: (
+    node: TNode,
+    conf: TNodeDef,
+    action: SimpleWebDriverAction<TNodeDef>
+  ) => Promise<void>,
   nodeCreation: () => void = null
 ) {
   return function (this: TNode, conf: TNodeDef): void {
@@ -25,8 +92,8 @@ export function GenericNodeConstructor<
     node.status({})
     this.on('input', async (message: any, send, done) => {
       // Cheat to allow correct typing in typescript
-      let msg: WebDriverMessage = message
-      const action: WebDriverAction = { msg, send, done }
+      let msg: SimpleWebDriverMessage<TNodeDef> = message
+      const action: SimpleWebDriverAction<TNodeDef> = { msg, send, done }
       node.status({})
       try {
         if (!inputPreCondAction || (await inputPreCondAction(node, conf, action))) {
@@ -45,7 +112,7 @@ export function GenericNodeConstructor<
                 if (typeof val === 'string') {
                   node.status({ fill: 'blue', shape: 'dot', text: val })
                 } else {
-                  msg.element = val
+                  msg.elements = val
                 }
               },
               error(err) {

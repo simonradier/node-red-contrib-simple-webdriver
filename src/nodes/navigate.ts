@@ -1,22 +1,26 @@
 import { checkIfCritical, REDAPI, replaceMustache, falseIfEmpty, sleep } from '../utils'
-import { WebDriverMessage, SeleniumNode, SeleniumNodeDef } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeNavigateDef extends SeleniumNodeDef {
+export interface NodeNavigateConf extends SimpleWebdriverNodeConf {
   url: string
   navType: string
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface NodeNavigate extends SeleniumNode {}
+export interface NodeNavigate extends SimpleWebdriverNode {}
 
-export function NodeNavigateConstructor(this: NodeNavigate, conf: NodeNavigateDef) {
+export function NodeNavigateConstructor(this: NodeNavigate, conf: NodeNavigateConf) {
   REDAPI.get().nodes.createNode(this, conf)
   this.status({})
 
   this.on('input', async (message: any, send, done) => {
     // Cheat to allow correct typing in typescript
-    const msg: WebDriverMessage = message
+    const msg: SimpleWebDriverMessage<NodeNavigateConf> = message
     const node = this
     node.status({})
     if (msg.browser == null) {

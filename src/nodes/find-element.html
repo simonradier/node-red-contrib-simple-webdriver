@@ -20,6 +20,19 @@
     <input type="text" id="node-input-target" />
   </div>
   <div class="form-row">
+    <label for="node-input-multiple"
+      ><i class="fa fa-window-maximize"></i> <span>Multiple</span></label
+    >
+    <input
+      type="checkbox"
+      id="node-input-multiple"
+      style="display: inline-block; width: auto; vertical-align: top;"
+    />
+    <label for="node-input-multiple" style="width: 70%;"
+      ><span>Look for multiple elements</span></label
+    >
+  </div>
+  <div class="form-row">
     <label for="node-input-timeout"
       ><i class="fa fa-clock-o"></i> <span>Timeout</span></label
     >
@@ -62,8 +75,8 @@
   				<dd>the browser session object required to execute browsing actions.</dd>
   			</dl>
   			<dl class="message-properties">
-  				<dt class="optional">element</dt>
-  				<dd>the Element object required to execute the required action.</dd>
+  				<dt class="optional">elements</dt>
+  				<dd>An array of Element objects required to execute the required action.</dd>
   		</dl>
   		</li>
   		<li>Failure output (Secondary)
@@ -115,6 +128,10 @@
       },
       target: {
         value: '',
+        required: true
+      },
+      multiple: {
+        value: false,
         required: true
       },
       timeout: {

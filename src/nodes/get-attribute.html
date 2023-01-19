@@ -1,19 +1,36 @@
 <script type="text/html" data-template-name="get attribute">
   <div class="form-row">
-    <label for="node-input-attribute"><i class="fa fa-quote-right"></i> <span>Attribute or Property</span></label>
+    <label for="node-input-attribute"
+      ><i class="fa fa-quote-right"></i> <span>Attribute or Property</span></label
+    >
     <span class="button-group">
-      <button type="button" id="button-group-attribute" class="red-ui-button toggle selected my-button-group">Attribute</button>
-      <button type="button" id="button-group-property" class="red-ui-button toggle my-button-group" style="margin-left: -5px;">Property</button>
-      </span>
+      <button
+        type="button"
+        id="button-group-attribute"
+        class="red-ui-button toggle selected my-button-group"
+      >
+        Attribute
+      </button>
+      <button
+        type="button"
+        id="button-group-property"
+        class="red-ui-button toggle my-button-group"
+        style="margin-left: -5px;"
+      >
+        Property
+      </button>
+    </span>
   </div>
   <div class="form-row" id="attribute-field">
     <label for="node-input-attribute">
-      <i class="fa fa-quote-right"></i> <span>Attribute</span></label>
+      <i class="fa fa-quote-right"></i> <span>Attribute</span></label
+    >
     <input type="text" id="node-input-attribute" />
   </div>
   <div class="form-row" id="property-field" style="display: none;">
     <label for="node-input-property">
-      <i class="fa fa-quote-right"></i> <span>Property</span></label>
+      <i class="fa fa-quote-right"></i> <span>Property</span></label
+    >
     <input type="text" id="node-input-property" />
   </div>
   <div class="form-row">
@@ -48,6 +65,21 @@
       ><i class="fa fa-clock-o"></i> <span>Timeout</span></label
     >
     <input type="text" id="node-input-timeout" value="1000" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-mode"><i class="fa fa-bars"></i> <span>Mode</span></label>
+    <select id="node-input-mode" style="width:125px !important">
+      <option value=""></option>
+      <option value="first">first</option>
+      <option value="all-error-stop-last">
+        all (stop at first error) / last generate a message
+      </option>
+      <option value="all-last">all (continue if error) / last generate a message</option>
+      <option value="all-error-stop-each">
+        all (stop at first error) / each generate a message
+      </option>
+      <option value="all-each">all (continue if error) / each generate a message</option>
+    </select>
   </div>
   <hr align="middle" />
   <div class="form-row">
@@ -129,6 +161,19 @@
   	</li>
   	</ol>
 
+  <h3>Mode</h3>
+  <p>Mode allow to define the behavior of the node if multiple elements are selected.</p>
+  <p>
+    <ul>
+      <li><a>First</a> (default) : only the first element is used by the node.</li>
+      <li><a>All (continue if error) / each generate a message</a>: all elements will be used by the node. An output message will be generated for each element.</li>
+      <li><a>All (stop at first error) / each generate a message</a> : all elements will be used by the node until an error is detected. An output message will be generated for each element (until the end or an error is met).</li>
+      <li><a>All (continue if error) / last generate a message</a>all elements will be used by the node. An output message will be generated only for the last element.</li>
+      <li><a>All (stop at first error) / last generate a message</a>all elements will be used by the node until an error is detected. An output message will be generated only for the last element (or the first detected error).</li>
+    </ul>
+  </p>
+  <p>Except for the <a>First</a> choice, the last message will have a <code>msg.last</code> property set to <code>true</code></p>
+
   <h3>Details</h3>
   	<p> This node is used to retreive the attribute value from an element in the web page.</p>
   	<p>
@@ -171,6 +216,9 @@
       target: {
         value: ''
       },
+      mode: {
+        value: 'first'
+      },
       timeout: {
         value: 1000,
         validate: RED.validators.number()
@@ -191,7 +239,7 @@
     label: function () {
       /*if ($('#node-input-property').val() !== '')
         return this.name || 'Get Property'*/
-      return this.name || 'Get Attribute'    
+      return this.name || 'Get Attribute'
     },
     labelStyle: function () {
       return this.name ? 'node_label_italic' : ''
@@ -207,18 +255,17 @@
           $('#row-input-timeout').show()
         }
       })
-      if ($('#node-input-property').val() !== '')
-      {
-        $(".my-button-group").removeClass("selected");
-        $("#button-group-property").addClass("selected");
+      if ($('#node-input-property').val() !== '') {
+        $('.my-button-group').removeClass('selected')
+        $('#button-group-property').addClass('selected')
         $('#attribute-field').hide()
-        $('#property-field').show()    
+        $('#property-field').show()
       }
 
-      $(".my-button-group").on("click", function() {
-        $(".my-button-group").removeClass("selected");
-        $(this).addClass("selected");
-        if($(this).text() === "Attribute") {
+      $('.my-button-group').on('click', function () {
+        $('.my-button-group').removeClass('selected')
+        $(this).addClass('selected')
+        if ($(this).text() === 'Attribute') {
           $('#node-input-attribute').val($('#node-input-property').val())
           $('#node-input-property').val(undefined)
           $('#attribute-field').show()
@@ -227,9 +274,8 @@
           $('#node-input-property').val($('#node-input-attribute').val())
           $('#node-input-attribute').val(undefined)
           $('#attribute-field').hide()
-          $('#property-field').show()          
+          $('#property-field').show()
         }
-
       })
     }
   })
