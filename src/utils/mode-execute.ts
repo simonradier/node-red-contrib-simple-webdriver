@@ -2,11 +2,9 @@ import { Element } from '@critik/simple-webdriver'
 import { Observable } from 'rxjs'
 import { Mode } from '../nodes/node'
 
-const addLast = (obj : [any, any]) => {
-  if (obj[0] != null)
-    obj[0].last = true
-  else
-    obj[1].last = true
+const addLast = (obj: [any, any]) => {
+  if (obj[0] != null) obj[0].last = true
+  else obj[1].last = true
 }
 
 export const modeExecute = (
@@ -21,14 +19,13 @@ export const modeExecute = (
         mode = Mode.First
       let skip = false
       switch (mode) {
-        case Mode.First:     
-            subscriber.next(await func(elements[0]))
+        case Mode.First:
+          subscriber.next(await func(elements[0]))
           break
         case Mode.AllEachMsg:
           for (const [i, e] of elements.entries()) {
             const result = await func(e)
-            if (i == elements.length - 1)
-              addLast(result);
+            if (i == elements.length - 1) addLast(result)
             subscriber.next(result)
           }
           break
@@ -38,8 +35,7 @@ export const modeExecute = (
               const result = await func(e)
               addLast(result)
               subscriber.next(result)
-            }
-            else await func(e)
+            } else await func(e)
           }
           break
         case Mode.AllErrorStopEachMsg:
@@ -47,10 +43,8 @@ export const modeExecute = (
             let result: [any, any]
             if (!skip) {
               result = await func(e)
-              if (result[0] === null)
-                skip = true
-              if (skip || i == elements.length - 1)
-                addLast(result);
+              if (result[0] === null) skip = true
+              if (skip || i == elements.length - 1) addLast(result)
               subscriber.next(result)
             }
           }
@@ -60,41 +54,17 @@ export const modeExecute = (
             let result: [any, any]
             if (!skip) {
               result = await func(e)
-              if (result[0] == null)
-                skip = true
+              if (result[0] == null) skip = true
               // If skip = true mean it will be the last action done.
               if (skip || i == elements.length - 1) {
-                addLast(result);
+                addLast(result)
                 subscriber.next(result)
               }
             }
           }
-        break
+          break
       }
       subscriber.complete()
     })()
   })
 }
-/*
-    switch (mode) {
-        case Mode.First : 
-            return await func(elements[0]);
-        break
-        case Mode.AllContinueEachMsg :
-            elements.map()
-    }
-}
-
-/* 
-modeExecute(conf.mode, msg.elements, async (e : Element) => {
-
-}).subscribe({
-    next(val) {
-       action.send(val);
-    },
-    complete() {
-        action.done();
-        resolve();
-    }
-})
-*/

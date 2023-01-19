@@ -1,7 +1,12 @@
 import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
 import { modeExecute } from '../utils/mode-execute'
-import { SimpleWebDriverAction, SimpleWebdriverNode, FindElementNodeConf } from './node'
+import {
+  SimpleWebDriverAction,
+  SimpleWebdriverNode,
+  FindElementNodeConf,
+  Mode
+} from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 export interface NodeSendKeysConf extends FindElementNodeConf {
@@ -20,8 +25,8 @@ async function inputAction(
     const msg = action.msg
     const clearVal = falseIfEmpty(replaceMustache(conf.clearVal, msg)) || msg.clearVal
     const keys = falseIfEmpty(replaceMustache(conf.keys, msg)) || msg.keys
-
-    modeExecute(conf.mode, msg.elements, async (element: Element) => {
+    const mode: Mode = <Mode>falseIfEmpty(conf.mode) || msg.mode
+    modeExecute(mode, msg.elements, async (element: Element) => {
       let step = ''
       try {
         if (clearVal) {

@@ -31,8 +31,9 @@ async function inputAction(
     const expected = falseIfEmpty(replaceMustache(conf.expected, msg)) || msg.expected
     const attribute = falseIfEmpty(replaceMustache(conf.attribute, msg)) || msg.attribute
     const property = falseIfEmpty(replaceMustache(conf.property, msg)) || msg.property
+    const mode: Mode = <Mode>falseIfEmpty(conf.mode) || msg.mode
     let getMode = 'attibute'
-    modeExecute(conf.mode, msg.elements, async (e: Element) => {
+    modeExecute(mode, msg.elements, async (e: Element) => {
       try {
         if (attribute && attribute !== '') msg.payload = await e.getAttribute(attribute)
         else {

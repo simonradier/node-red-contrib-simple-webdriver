@@ -1,7 +1,12 @@
 import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
 import { modeExecute } from '../utils/mode-execute'
-import { SimpleWebDriverAction, SimpleWebdriverNode, FindElementNodeConf } from './node'
+import {
+  SimpleWebDriverAction,
+  SimpleWebdriverNode,
+  FindElementNodeConf,
+  Mode
+} from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 // tslint:disable-next-line: no-empty-interface
@@ -22,7 +27,8 @@ async function inputAction(
     const msg = action.msg
     const attribute = falseIfEmpty(replaceMustache(conf.attribute, msg)) || msg.attribute
     const value = falseIfEmpty(replaceMustache(conf.value, msg)) || msg.value
-    modeExecute(conf.mode, msg.elements, async (element: Element) => {
+    const mode: Mode = <Mode>falseIfEmpty(conf.mode) || msg.mode
+    modeExecute(mode, msg.elements, async (element: Element) => {
       try {
         await msg.browser.executeSync(
           'arguments[0].setAttribute(' + "'" + attribute + "', '" + value + "')",

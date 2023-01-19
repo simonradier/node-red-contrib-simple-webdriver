@@ -1,8 +1,9 @@
 import { Element } from '@critik/simple-webdriver'
-import { checkIfCritical, REDAPI } from '../utils'
+import { checkIfCritical, falseIfEmpty, REDAPI } from '../utils'
 import { modeExecute } from '../utils/mode-execute'
 import {
   FindElementNodeConf,
+  Mode,
   SimpleWebDriverAction,
   SimpleWebDriverMessage,
   SimpleWebdriverNode
@@ -26,10 +27,11 @@ async function inputPreCondAction(
   return new Promise<boolean>(async (resolve, reject) => {
     const waitingNode = node.context().get('waiting') || false
     const msg = action.msg
+    const mode: Mode = <Mode>falseIfEmpty(conf.mode) || msg.mode
     if (msg.clickEvent) {
       if (waitingNode) {
         const msg = node.__msg
-        modeExecute(conf.mode, msg.elements, async (e: Element) => {
+        modeExecute(mode, msg.elements, async (e: Element) => {
           try {
             node.status({ fill: 'blue', shape: 'dot', text: 'in progress' })
             await e.click()
@@ -78,8 +80,9 @@ async function inputAction(
   const msg = action.msg
   return new Promise<void>(async (resolve, reject) => {
     const waitingNode = node.context().get('waiting') || false
+    const mode: Mode = <Mode>falseIfEmpty(conf.mode) || msg.mode
     if (!conf.clickOn || waitingNode) {
-      modeExecute(conf.mode, msg.elements, async (e: Element) => {
+      modeExecute(mode, msg.elements, async (e: Element) => {
         try {
           node.status({ fill: 'blue', shape: 'dot', text: 'in progress' })
           await e.click()

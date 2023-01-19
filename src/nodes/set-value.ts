@@ -1,7 +1,12 @@
 import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
 import { modeExecute } from '../utils/mode-execute'
-import { SimpleWebDriverAction, SimpleWebdriverNode, FindElementNodeConf } from './node'
+import {
+  SimpleWebDriverAction,
+  SimpleWebdriverNode,
+  FindElementNodeConf,
+  Mode
+} from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 export interface NodeSetValueDef extends FindElementNodeConf {
@@ -19,7 +24,8 @@ async function inputAction(
   return new Promise<void>(async (resolve, reject) => {
     const msg = action.msg
     const value = falseIfEmpty(replaceMustache(conf.value, msg)) || msg.value
-    modeExecute(conf.mode, msg.elements, async (element: Element) => {
+    const mode: Mode = <Mode>falseIfEmpty(conf.mode) || msg.mode
+    modeExecute(mode, msg.elements, async (element: Element) => {
       try {
         await msg.browser.executeSync(
           "arguments[0].setAttribute('value', '" + value + "')",

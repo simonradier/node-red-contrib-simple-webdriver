@@ -60,6 +60,20 @@
   		</li>
   	</ol>
 
+  <h3>Mode</h3>
+  <p>Mode allow to define the behavior of the node if multiple elements are selected.</p>
+  <p>
+    <ul>
+      <li><a>First</a> (default) : only the first element is used by the node.</li>
+      <li><a>All (continue if error) / each generate a message</a>: all elements will be used by the node. An output message will be generated for each element.</li>
+      <li><a>All (stop at first error) / each generate a message</a> : all elements will be used by the node until an error is detected. An output message will be generated for each element (until the end or an error is met).</li>
+      <li><a>All (continue if error) / last generate a message</a>all elements will be used by the node. An output message will be generated only for the last element.</li>
+      <li><a>All (stop at first error) / last generate a message</a>all elements will be used by the node until an error is detected. An output message will be generated only for the last element (or the first detected error).</li>
+    </ul>
+  </p>
+  <p>Except for the <a>First</a> choice, the last message will have a <code>msg.last</code> property set to <code>true</code></p>
+
+
   <h3>Details</h3>
   	<p> This node is used to navigate accordingly to specified options.</p>
   	<p>
