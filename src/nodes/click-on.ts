@@ -1,11 +1,17 @@
+import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, REDAPI } from '../utils'
-import { FindElementNodeConf, SimpleWebDriverAction, SimpleWebDriverMessage, SimpleWebdriverNode } from './node'
+import { modeExecute } from '../utils/mode-execute'
+import {
+  FindElementNodeConf,
+  SimpleWebDriverAction,
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode
+} from './node'
 import { GenericNodeConstructor } from './node-constructor'
-
 
 interface ClickOnNodeConf extends FindElementNodeConf {
   clickOn?: boolean
-  clickEvent? : boolean
+  clickEvent?: boolean
 }
 
 interface NodeClickOn extends SimpleWebdriverNode {
@@ -23,33 +29,44 @@ async function inputPreCondAction(
     if (msg.clickEvent) {
       if (waitingNode) {
         const msg = node.__msg
-        try {
-          await msg.element.click()
-          node.status({ fill: 'green', shape: 'dot', text: 'success' })
-          if (msg.error) {
-            delete msg.error
-          }
-          action.send([msg, null])
-          action.done()
-        } catch (err) {
-          if (checkIfCritical(err)) {
-            reject(err)
-          } else {
-            msg.error = {
-              value: "Can't click on the the element : " + err.message
+        modeExecute(conf.mode, msg.elements, async (e: Element) => {
+          try {
+            node.status({ fill: 'blue', shape: 'dot', text: 'in progress' })
+            await e.click()
+            node.status({ fill: 'green', shape: 'dot', text: 'success' })
+            if (msg.error) {
+              delete msg.error
             }
-            node.status({ fill: 'yellow', shape: 'dot', text: 'click error' })
-            action.send([null, msg])
-            action.done()
+            return [msg, null]
+          } catch (err) {
+            if (checkIfCritical(err)) {
+              reject(err)
+            } else {
+              msg.error = {
+                value: "Can't click on the the element : " + err.message
+              }
+              node.status({ fill: 'yellow', shape: 'dot', text: 'click error' })
+              return [null, msg]
+            }
           }
-        }
+        }).subscribe({
+          next(val) {
+            action.send(val)
+          },
+          complete() {
+            node.context().set('waiting', false)
+            action.done()
+            resolve(false)
+          }
+        })
       } else {
         node.status({ fill: 'yellow', shape: 'ring', text: 'ignored' })
+        action.done()
         resolve(false)
       }
-      resolve(false)
+    } else {
+      resolve(true)
     }
-    resolve(true)
   })
 }
 
@@ -62,26 +79,35 @@ async function inputAction(
   return new Promise<void>(async (resolve, reject) => {
     const waitingNode = node.context().get('waiting') || false
     if (!conf.clickOn || waitingNode) {
-      try {
-        await msg.element.click()
-        node.status({ fill: 'green', shape: 'dot', text: 'success' })
-        if (msg.error) {
-          delete msg.error
-        }
-        action.send([msg, null])
-        action.done()
-      } catch (err) {
-        if (checkIfCritical(err)) {
-          reject(err)
-        } else {
-          msg.error = {
-            value: "Can't click on the the element : " + err.message
+      modeExecute(conf.mode, msg.elements, async (e: Element) => {
+        try {
+          node.status({ fill: 'blue', shape: 'dot', text: 'in progress' })
+          await e.click()
+          node.status({ fill: 'green', shape: 'dot', text: 'success' })
+          if (msg.error) {
+            delete msg.error
           }
-          node.status({ fill: 'yellow', shape: 'dot', text: 'click error' })
-          action.send([null, msg])
-          action.done()
+          return [msg, null]
+        } catch (err) {
+          if (checkIfCritical(err)) {
+            reject(err)
+          } else {
+            msg.error = {
+              value: "Can't click on the the element : " + err.message
+            }
+            node.status({ fill: 'yellow', shape: 'dot', text: 'click error' })
+            return [null, msg]
+          }
         }
-      }
+      }).subscribe({
+        next(val) {
+          action.send(val)
+        },
+        complete() {
+          action.done()
+          resolve()
+        }
+      })
     } else {
       // If we have to wait for the user click and we save the msg
       node.status({
@@ -91,8 +117,8 @@ async function inputAction(
       })
       node.context().set('waiting', true)
       node.__msg = msg
+      resolve()
     }
-    resolve()
   })
 }
 

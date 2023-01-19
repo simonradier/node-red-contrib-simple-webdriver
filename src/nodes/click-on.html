@@ -33,6 +33,24 @@
     >
     <input type="text" id="node-input-target" />
   </div>
+  <div class="form-row">
+    <label for="node-input-mode"><i class="fa fa-bars"></i> <span>Mode</span></label>
+    <select id="node-input-mode" style="width:125px !important">
+      <option value="first">first</option>
+      <option value="all-error-stop-last">
+        all (stop at first error) / last generate a message
+      </option>
+      <option value="all-last">all (continue if error) / last generate a message</option>
+      <option value="all-error-stop-each">
+        all (stop at first error) / each generate a message
+      </option>
+      <option value="all-each">all (continue if error) / each generate a message</option>
+      <option value="all-only-error">all but only error will generate a message</option>
+      <option value="all-only-success">
+        all but only success will generate a message
+      </option>
+    </select>
+  </div>
   <div class="form-row" id="row-input-timeout">
     <label for="node-input-timeout"
       ><i class="fa fa-clock-o"></i> <span>Timeout</span></label
@@ -135,6 +153,9 @@
       target: {
         value: ''
       },
+      mode: {
+        value: 'first'
+      },
       timeout: {
         value: 1000,
         validate: RED.validators.number()
@@ -165,12 +186,18 @@
         return this.clickOn
       },
       onclick: function () {
-        var node = this
+        const node = this
+        const label = node._def.label.call(node, undefined)
         $.ajax({
           url: 'onclick/' + this.id,
           type: 'POST',
           success: function (resp) {
-            RED.notify(node._('inject.success', { label: label }), 'success')
+            //debugger
+            RED.notify(node._('inject.success', { label: label }), {
+              type: 'success',
+              id: 'click on',
+              timeout: 2000
+            })
           },
           error: function (jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 404) {

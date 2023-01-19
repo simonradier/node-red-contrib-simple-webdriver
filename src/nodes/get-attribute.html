@@ -1,19 +1,36 @@
 <script type="text/html" data-template-name="get attribute">
   <div class="form-row">
-    <label for="node-input-attribute"><i class="fa fa-quote-right"></i> <span>Attribute or Property</span></label>
+    <label for="node-input-attribute"
+      ><i class="fa fa-quote-right"></i> <span>Attribute or Property</span></label
+    >
     <span class="button-group">
-      <button type="button" id="button-group-attribute" class="red-ui-button toggle selected my-button-group">Attribute</button>
-      <button type="button" id="button-group-property" class="red-ui-button toggle my-button-group" style="margin-left: -5px;">Property</button>
-      </span>
+      <button
+        type="button"
+        id="button-group-attribute"
+        class="red-ui-button toggle selected my-button-group"
+      >
+        Attribute
+      </button>
+      <button
+        type="button"
+        id="button-group-property"
+        class="red-ui-button toggle my-button-group"
+        style="margin-left: -5px;"
+      >
+        Property
+      </button>
+    </span>
   </div>
   <div class="form-row" id="attribute-field">
     <label for="node-input-attribute">
-      <i class="fa fa-quote-right"></i> <span>Attribute</span></label>
+      <i class="fa fa-quote-right"></i> <span>Attribute</span></label
+    >
     <input type="text" id="node-input-attribute" />
   </div>
   <div class="form-row" id="property-field" style="display: none;">
     <label for="node-input-property">
-      <i class="fa fa-quote-right"></i> <span>Property</span></label>
+      <i class="fa fa-quote-right"></i> <span>Property</span></label
+    >
     <input type="text" id="node-input-property" />
   </div>
   <div class="form-row">
@@ -191,7 +208,7 @@
     label: function () {
       /*if ($('#node-input-property').val() !== '')
         return this.name || 'Get Property'*/
-      return this.name || 'Get Attribute'    
+      return this.name || 'Get Attribute'
     },
     labelStyle: function () {
       return this.name ? 'node_label_italic' : ''
@@ -207,18 +224,17 @@
           $('#row-input-timeout').show()
         }
       })
-      if ($('#node-input-property').val() !== '')
-      {
-        $(".my-button-group").removeClass("selected");
-        $("#button-group-property").addClass("selected");
+      if ($('#node-input-property').val() !== '') {
+        $('.my-button-group').removeClass('selected')
+        $('#button-group-property').addClass('selected')
         $('#attribute-field').hide()
-        $('#property-field').show()    
+        $('#property-field').show()
       }
 
-      $(".my-button-group").on("click", function() {
-        $(".my-button-group").removeClass("selected");
-        $(this).addClass("selected");
-        if($(this).text() === "Attribute") {
+      $('.my-button-group').on('click', function () {
+        $('.my-button-group').removeClass('selected')
+        $(this).addClass('selected')
+        if ($(this).text() === 'Attribute') {
           $('#node-input-attribute').val($('#node-input-property').val())
           $('#node-input-property').val(undefined)
           $('#attribute-field').show()
@@ -227,9 +243,8 @@
           $('#node-input-property').val($('#node-input-attribute').val())
           $('#node-input-attribute').val(undefined)
           $('#attribute-field').hide()
-          $('#property-field').show()          
+          $('#property-field').show()
         }
-
       })
     }
   })

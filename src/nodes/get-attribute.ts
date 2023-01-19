@@ -1,5 +1,12 @@
+import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
-import { FindElementNodeConf, SimpleWebDriverAction, SimpleWebdriverNode } from './node'
+import { modeExecute } from '../utils/mode-execute'
+import {
+  FindElementNodeConf,
+  Mode,
+  SimpleWebDriverAction,
+  SimpleWebdriverNode
+} from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
 // tslint:disable-next-line: no-empty-interface
@@ -24,47 +31,54 @@ async function inputAction(
     const expected = falseIfEmpty(replaceMustache(conf.expected, msg)) || msg.expected
     const attribute = falseIfEmpty(replaceMustache(conf.attribute, msg)) || msg.attribute
     const property = falseIfEmpty(replaceMustache(conf.property, msg)) || msg.property
-    let mode = "attibute"
-    try {
-      if (attribute && attribute !== '')
-        msg.payload = await msg.element.getAttribute(attribute)
-      else { 
-        msg.payload = await msg.element.getProperty(property)
-        mode = "property"
-      }
-      if (expected && expected !== msg.payload) {
-        msg.error = {
-          message: `Expected ${mode} ${attribute || property} value is not aligned, expected : ${expected}, value : ${msg.payload}`
+    let getMode = 'attibute'
+    modeExecute(conf.mode, msg.elements, async (e: Element) => {
+      try {
+        if (attribute && attribute !== '') msg.payload = await e.getAttribute(attribute)
+        else {
+          msg.payload = await e.getProperty(property)
+          getMode = 'property'
         }
-        node.status({ fill: 'yellow', shape: 'dot', text: `get ${mode} error` })
-        action.send([null, msg])
-        action.done()
-      } else {
-        node.status({ fill: 'green', shape: 'dot', text: 'success' })
-        if (msg.error) {
-          delete msg.error
+        if (expected && expected !== msg.payload) {
+          msg.error = {
+            message: `Expected ${getMode} ${
+              attribute || property
+            } value is not aligned, expected : ${expected}, value : ${msg.payload}`
+          }
+          node.status({ fill: 'yellow', shape: 'dot', text: `get ${getMode} error` })
+          return [null, msg]
+        } else {
+          node.status({ fill: 'green', shape: 'dot', text: 'success' })
+          if (msg.error) {
+            delete msg.error
+          }
+          return [msg, null]
         }
-        action.send([msg, null])
-        action.done()
-      }
-    } catch (err) {
-      if (checkIfCritical(err)) {
-        reject(err)
-      } else {
-        msg.error = {
-          message: `Can't get ${mode} of the element : ${err.message}`
+      } catch (err) {
+        if (checkIfCritical(err)) {
+          reject(err)
+        } else {
+          msg.error = {
+            message: `Can't get ${getMode} of the element : ${err.message}`
+          }
+          node.warn(msg.error.message)
+          node.status({
+            fill: 'yellow',
+            shape: 'dot',
+            text: `get-${getMode} error`
+          })
+          return [null, msg]
         }
-        node.warn(msg.error.message)
-        node.status({
-          fill: 'yellow',
-          shape: 'dot',
-          text: `get-${mode} error`
-        })
-        action.send([null, msg])
-        action.done()
       }
-    }
-    resolve()
+    }).subscribe({
+      next(val) {
+        action.send(val)
+      },
+      complete() {
+        action.done()
+        resolve()
+      }
+    })
   })
 }
 

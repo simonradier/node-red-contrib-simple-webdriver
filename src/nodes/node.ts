@@ -21,17 +21,28 @@ export * from './switch-frame'
 
 export type SimpleWebdriverNodeConf = NodeDef & {
   // inputs
-  waitFor : string
+  waitFor: string
+}
+
+export enum Mode {
+  First = 'first',
+  AllErrorStopLastMsg = 'all-error-stop-last',
+  AllErrorStopEachMsg = 'all-error-stop-each',
+  AllLastMsg = 'all-last',
+  AllEachMsg = 'all-each',
+  AllOnlyError = 'all-only-error',
+  AllOnlySuccess = 'all-only-success'
 }
 
 export interface FindElementNodeConf extends SimpleWebdriverNodeConf {
   // inputs
-  selector : string
-  target : string
-  timeout : string
-  multiple : string
+  selector: string
+  target: string
+  timeout: string
+  multiple: boolean
+  mode: Mode
   // ouputs
-  element : Element
+  elements: Array<Element>
 }
 
 export interface SimpleWebdriverNode extends Node<any> {}
@@ -42,10 +53,12 @@ export interface SimpleWebDriverAction<T> {
   msg: SimpleWebDriverMessage<T>
 }
 
-export type SimpleWebDriverMessage<T extends {}> = { [Property in keyof T]?: T[Property] } & NodeMessageInFlow & {
-  browser? : Browser
-  error? : any
-}
+export type SimpleWebDriverMessage<T extends {}> = {
+  [Property in keyof T]?: T[Property]
+} & NodeMessageInFlow & {
+    browser?: Browser
+    error?: any
+  }
 
 /*{
   browser: Browser

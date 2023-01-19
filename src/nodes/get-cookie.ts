@@ -7,11 +7,15 @@ import {
   falseIfEmpty,
   sleep
 } from '../utils'
-import { SimpleWebDriverMessage, SimpleWebdriverNode, SimpleWebdriverNodeConf } from './node'
+import {
+  SimpleWebDriverMessage,
+  SimpleWebdriverNode,
+  SimpleWebdriverNodeConf
+} from './node'
 
 // tslint:disable-next-line: no-empty-interface
 export interface NodeGetCookieConf extends SimpleWebdriverNodeConf {
-  cookieName: string,
+  cookieName: string
   timeout: string
 }
 
@@ -84,7 +88,7 @@ export function NodeGetCookieConstructor(this: NodeGetCookie, conf: NodeGetCooki
           node.status({ fill: 'yellow', shape: 'dot', text: `can't retreive cookie` })
           send([null, msg])
           done()
-        } else {
+        } else {
           node.status({ fill: 'red', shape: 'dot', text: 'error' })
           node.error(
             "Can't get title of the browser window. Check msg.error for more information"

@@ -1,4 +1,6 @@
+import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
+import { modeExecute } from '../utils/mode-execute'
 import { SimpleWebDriverAction, SimpleWebdriverNode, FindElementNodeConf } from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
@@ -20,35 +22,42 @@ async function inputAction(
     const msg = action.msg
     const attribute = falseIfEmpty(replaceMustache(conf.attribute, msg)) || msg.attribute
     const value = falseIfEmpty(replaceMustache(conf.value, msg)) || msg.value
-    try {
-      await msg.browser.executeSync(
-        'arguments[0].setAttribute(' + "'" + attribute + "', '" + value + "')",
-        msg.element
-      )
-      node.status({ fill: 'green', shape: 'dot', text: 'success' })
-      if (msg.error) {
-        delete msg.error
-      }
-      action.send([msg, null])
-      action.done()
-    } catch (err) {
-      if (checkIfCritical(err)) {
-        reject(err)
-      } else {
-        msg.error = {
-          message: `Can't set attribute on the element : ${err.message}`
+    modeExecute(conf.mode, msg.elements, async (element: Element) => {
+      try {
+        await msg.browser.executeSync(
+          'arguments[0].setAttribute(' + "'" + attribute + "', '" + value + "')",
+          element
+        )
+        node.status({ fill: 'green', shape: 'dot', text: 'success' })
+        if (msg.error) {
+          delete msg.error
         }
-        node.warn(msg.error.message)
-        node.status({
-          fill: 'yellow',
-          shape: 'dot',
-          text: 'set-attribute error'
-        })
-        action.send([null, msg])
-        action.done()
+        return [msg, null]
+      } catch (err) {
+        if (checkIfCritical(err)) {
+          reject(err)
+        } else {
+          msg.error = {
+            message: `Can't set attribute on the element : ${err.message}`
+          }
+          node.warn(msg.error.message)
+          node.status({
+            fill: 'yellow',
+            shape: 'dot',
+            text: 'set-attribute error'
+          })
+          return [null, msg]
+        }
       }
-    }
-    resolve()
+    }).subscribe({
+      next(val) {
+        action.send(val)
+      },
+      complete() {
+        action.done()
+        resolve()
+      }
+    })
   })
 }
 

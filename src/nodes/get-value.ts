@@ -1,4 +1,6 @@
+import { Element } from '@critik/simple-webdriver'
 import { checkIfCritical, replaceMustache, falseIfEmpty } from '../utils'
+import { modeExecute } from '../utils/mode-execute'
 import { SimpleWebDriverAction, SimpleWebdriverNode, FindElementNodeConf } from './node'
 import { GenericNodeConstructor } from './node-constructor'
 
@@ -19,46 +21,51 @@ async function inputAction(
   return new Promise<void>(async (resolve, reject) => {
     const msg = action.msg
     const expected = falseIfEmpty(replaceMustache(conf.expected, msg)) || msg.expected
-    const step = ''
-    try {
-      msg.payload = await msg.element.getAttribute('value')
-      if (expected && expected !== msg.payload) {
-        msg.error = {
-          message:
-            'Expected value is not aligned, expected : ' +
-            expected +
-            ', value : ' +
-            msg.payload
+    modeExecute(conf.mode, msg.elements, async (e: Element) => {
+      try {
+        msg.payload = await e.getAttribute('value')
+        if (expected && expected !== msg.payload) {
+          msg.error = {
+            message:
+              'Expected value is not aligned, expected : ' +
+              expected +
+              ', value : ' +
+              msg.payload
+          }
+          node.status({ fill: 'yellow', shape: 'dot', text: 'expected value error' })
+          return [null, msg]
+        } else {
+          node.status({ fill: 'green', shape: 'dot', text: 'success' })
+          if (msg.error) {
+            delete msg.error
+          }
+          return [msg, null]
         }
-        node.status({ fill: 'yellow', shape: 'dot', text: 'expected value error' })
-        action.send([null, msg])
-        action.done()
-      } else {
-        node.status({ fill: 'green', shape: 'dot', text: 'success' })
-        if (msg.error) {
-          delete msg.error
+      } catch (err) {
+        if (checkIfCritical(err)) {
+          reject(err)
+        } else {
+          msg.error = {
+            message: `Can't get value on the element : ${err.message}`
+          }
+          node.warn(msg.error.message)
+          node.status({
+            fill: 'yellow',
+            shape: 'dot',
+            text: 'expected value error'
+          })
+          return [null, msg]
         }
-        action.send([msg, null])
-        action.done()
       }
-    } catch (err) {
-      if (checkIfCritical(err)) {
-        reject(err)
-      } else {
-        msg.error = {
-          message: `Can't get value on the element : ${err.message}`
-        }
-        node.warn(msg.error.message)
-        node.status({
-          fill: 'yellow',
-          shape: 'dot',
-          text: 'expected value error'
-        })
-        action.send([null, msg])
+    }).subscribe({
+      next(val) {
+        action.send(val)
+      },
+      complete() {
         action.done()
+        resolve()
       }
-    }
-    resolve()
+    })
   })
 }
 

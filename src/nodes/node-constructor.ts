@@ -1,11 +1,12 @@
-import { Element } from '@critik/simple-webdriver'
+import { Element, Using } from '@critik/simple-webdriver'
 import { Node, NodeMessage } from 'node-red'
 import { Observable } from 'rxjs'
 import { checkIfCritical, falseIfEmpty, REDAPI, replaceMustache } from '../utils'
 import {
   FindElementNodeConf,
+  Mode,
   SimpleWebDriverAction,
-  SimpleWebDriverMessage,
+  SimpleWebDriverMessage
 } from './node'
 
 /**
@@ -17,8 +18,8 @@ import {
 export function waitForElement(
   conf: FindElementNodeConf,
   msg: NodeMessage & SimpleWebDriverMessage<FindElementNodeConf>
-): Observable<string | Element> {
-  return new Observable<string | Element>(subscriber => {
+): Observable<string | Array<Element>> {
+  return new Observable<string | Array<Element>>(subscriber => {
     const waitFor: number = parseInt(
       falseIfEmpty(replaceMustache(conf.waitFor, msg)) || msg.waitFor,
       10
@@ -28,22 +29,26 @@ export function waitForElement(
       10
     )
     const target: string = falseIfEmpty(replaceMustache(conf.target, msg)) || msg.target
+    const multiple: boolean = conf.multiple
     const selector: string =
       falseIfEmpty(replaceMustache(conf.selector, msg)) || msg.selector
-    let element: Element
+    let elements: Array<Element>
     subscriber.next('waiting for ' + (waitFor / 1000).toFixed(1) + ' s')
     setTimeout(async () => {
       try {
         subscriber.next('locating')
         if (selector && selector !== '') {
-          // @ts-ignore
-          element = await msg.browser.findElement(selector, target, timeout)
+          if (multiple || conf?.mode !== Mode.First) {
+            elements = await msg.browser.findElements(<Using>selector, target, timeout)
+          } else {
+            elements = [await msg.browser.findElement(<Using>selector, target, timeout)]
+          }
         } else {
-          if (msg.element) {
-            element = msg.element
+          if (msg.elements) {
+            elements = msg.elements
           }
         }
-        subscriber.next(element)
+        subscriber.next(elements)
         subscriber.complete()
       } catch (e) {
         let error: any
@@ -65,7 +70,6 @@ export function waitForElement(
   })
 }
 
-
 export function GenericNodeConstructor<
   TNode extends Node<any>,
   TNodeDef extends FindElementNodeConf
@@ -75,7 +79,11 @@ export function GenericNodeConstructor<
     conf: TNodeDef,
     action: SimpleWebDriverAction<TNodeDef>
   ) => Promise<boolean>,
-  inputAction: (node: TNode, conf: TNodeDef, action: SimpleWebDriverAction<TNodeDef>) => Promise<void>,
+  inputAction: (
+    node: TNode,
+    conf: TNodeDef,
+    action: SimpleWebDriverAction<TNodeDef>
+  ) => Promise<void>,
   nodeCreation: () => void = null
 ) {
   return function (this: TNode, conf: TNodeDef): void {
@@ -104,7 +112,7 @@ export function GenericNodeConstructor<
                 if (typeof val === 'string') {
                   node.status({ fill: 'blue', shape: 'dot', text: val })
                 } else {
-                  msg.element = val
+                  msg.elements = val
                 }
               },
               error(err) {
