@@ -14,13 +14,13 @@ export const modeExecute = (
 ) => {
   return new Observable<[any | null, any | null]>(subscriber => {
     ;(async () => {
-      if (!mode)
+      if (!mode || !elements)
         // For compatibility
         mode = Mode.First
       let skip = false
       switch (mode) {
         case Mode.First:
-          subscriber.next(await func(elements[0]))
+          subscriber.next(await func(elements ? elements[0] : null))
           break
         case Mode.AllEachMsg:
           for (const [i, e] of elements.entries()) {
