@@ -6,6 +6,64 @@
     <input type="text" id="node-input-filePath" />
   </div>
   <div class="form-row">
+    <label for="node-input-maximized"
+      ><i class="fa fa-window-maximize"></i> <span>Fullscreen</span></label
+    >
+    <input
+      type="checkbox"
+      id="node-input-fullscreen"
+      style="display: inline-block; width: auto; vertical-align: top;"
+    />
+    <label for="node-input-fullscreen" style="width: 70%;"
+      ><span>Take a fullscreen screenshot</span></label
+    >
+  </div>
+  <div id="selector-group">
+    <hr align="middle" />
+    <div class="form-row">
+      <label for="node-input-selector"><i class="fa fa-bars"></i> <span>By</span></label>
+      <select id="node-input-selector" style="width:125px !important">
+        <option value=""></option>
+        <option value="id">id</option>
+        <option value="name">name</option>
+        <option value="link">link</option>
+        <option value="xpath">xpath</option>
+        <option value="tag name">tagName</option>
+        <option value="className">className</option>
+        <option value="link text">linkText</option>
+        <option value="css selector">cssSelector</option>
+      </select>
+    </div>
+    <div class="form-row" id="row-input-target">
+      <label for="node-input-target"
+        ><i class="fa fa-dot-circle-o"></i> <span>Target</span></label
+      >
+      <input type="text" id="node-input-target" />
+    </div>
+    <div class="form-row" id="row-input-timeout">
+      <label for="node-input-timeout"
+        ><i class="fa fa-clock-o"></i> <span>Timeout</span></label
+      >
+      <input type="text" id="node-input-timeout" value="1000" />
+    </div>
+    <div class="form-row">
+      <label for="node-input-mode"><i class="fa fa-bars"></i> <span>Mode</span></label>
+      <select id="node-input-mode" style="width:125px !important">
+        <option value=""></option>
+        <option value="first">first</option>
+        <option value="all-error-stop-last">
+          all (stop at first error) / last generate a message
+        </option>
+        <option value="all-last">all (continue if error) / last generate a message</option>
+        <option value="all-error-stop-each">
+          all (stop at first error) / each generate a message
+        </option>
+        <option value="all-each">all (continue if error) / each generate a message</option>
+      </select>
+    </div>
+  </div>
+  <hr align="middle" />
+  <div class="form-row">
     <label for="node-input-waitFor"
       ><i class="fa fa-pause"></i> <span>Wait For</span></label
     >
@@ -24,7 +82,17 @@
   	<dl class="message-properties">
   		<dt>browser</dt>
   		<dd>the browser session object required to execute browsing actions.</dd>
-  		<dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
+      <dt class="optional">filepath<span class="property-type">string</span></dt>
+  		<dd>the filepath to save the screenshot as a file.</dd>
+  		<dt class="optional">fullscreen<span class="property-type">boolean</span></dt>
+  		<dd> takes a fullscreen screenshot or an element screenshot </dd>
+      <dt class="optional">selector<span class="property-type">string</span></dt>
+      <dd> the way to find an element (can be id, name, link, xpath, tagName, className, linkText, css).</dd>
+      <dt class="optional">target<span class="property-type">string</span></dt>
+      <dd> the name of the target to find.</dd>
+      <dt class="optional">timeout (msec)<span class="property-type">number</span></dt>
+      <dd> the timeout value of the find request.</dd>
+      <dt class="optional">waitFor (msec)<span class="property-type">number</span></dt>
   		<dd> the pause time before launching the close request.</dd>
   	</dl>
   <h3>Outputs</h3>
@@ -74,9 +142,25 @@
       filePath: {
         value: ''
       },
+      selector: {
+        value: ''
+      },
+      target: {
+        value: ''
+      },
+      mode: {
+        value: 'first'
+      },
+      timeout: {
+        value: 1000,
+        validate: RED.validators.number()
+      },
       waitFor: {
         value: 500,
         validate: RED.validators.number()
+      },
+      fullscreen: {
+        value: true
       }
     },
     color: '#47B6EE',
@@ -89,6 +173,18 @@
     },
     labelStyle: function () {
       return this.name ? 'node_label_italic' : ''
+    },
+    oneditprepare: function() {
+      $('#node-input-fullscreen').on('click', event => {
+        if ($('#node-input-fullscreen').prop('checked')) {
+          $('#selector-group').hide()
+        } else
+          $('#selector-group').show()
+      })
+      if ($('#node-input-fullscreen').prop('checked')) {
+          $('#selector-group').hide()
+        } else
+          $('#selector-group').show()
     }
   })
 </script>
