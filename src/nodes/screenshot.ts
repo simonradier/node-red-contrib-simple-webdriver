@@ -44,7 +44,7 @@ async function inputAction(
         node.status({ fill: 'green', shape: 'dot', text: 'success' })
         action.done()
         resolve()
-      } catch (err) {$
+      } catch (err) {
         if (checkIfCritical(err))
            reject (err)
         else {
