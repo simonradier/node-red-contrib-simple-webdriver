@@ -14,7 +14,7 @@
     "@types/node-red-node-test-helper": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
-    "chai": "^4.3.10",
+    "chai": "^5.0.3",
     "chai-as-promised": "^7.1.1",
     "chromedriver": "^118.0.0",
     "coveralls": "^3.1.1",
